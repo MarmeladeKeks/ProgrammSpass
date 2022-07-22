@@ -1,4 +1,10 @@
+import java.util.*;
+
 public class Solution {
+    public static void main(String[] args){
+        Solution s = new Solution();
+        System.out.println(s.isHappy(19));
+    }
 
     private int roman(String s){
 
@@ -122,6 +128,32 @@ public class Solution {
         }
         return erg;
 
+    }
+    public boolean isHappy(int n){
+        List visited = new ArrayList() {
+        };
+        boolean Happy= true;
+        while(Happy){
+          String Zeichen =  Integer.toString(n);
+          int erg = 0;
+          for(char c : Zeichen.toCharArray()){
+              erg += Math.pow(Integer.parseInt(String.valueOf(c)), 2) ;
+
+          }
+          if(erg == 1){
+              Happy = true;
+              break;
+          }
+          if(visited.contains(erg)){
+              Happy= false;
+              break;
+          }
+          else{
+              visited.add(erg);
+          }
+          n = erg;
+        }
+        return Happy;
     }
 }
 
