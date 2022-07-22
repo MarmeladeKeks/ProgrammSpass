@@ -1,0 +1,127 @@
+public class Solution {
+
+    private int roman(String s){
+
+            char[]c = s.toCharArray();
+            int erg = 0;
+
+            for(int i= 0; i< c.length; i++){
+                switch(c[i]){
+                    case 'I': {
+                        if(i != c.length-1) {
+                            switch (c[i + 1]) {
+                                case 'V':
+                                    erg += 4;
+                                    i++;
+                                    break;
+                                case 'X':
+                                    erg += 9;
+                                    i++;
+                                    break;
+                                default:
+                                    erg++;
+                                    break;
+
+                            }
+                        }
+                        else erg +=1;
+
+                        break;
+                    }
+                    case 'V': {
+                        erg += 5;
+                        break;
+                    }
+                    case 'X': {
+                        if(i != c.length-1) {
+                            switch (c[i + 1]) {
+                                case 'L':
+                                    erg += 40;
+                                    i++;
+                                    break;
+                                case 'C':
+                                    erg += 90;
+                                    i++;
+                                    break;
+                                default:
+                                    erg += 10;
+                                    break;
+
+                            }
+                        }
+                        else erg +=10;
+
+                        break;
+                    }
+
+                    case 'L': {
+                        erg += 50;
+                        break;
+                    }
+
+                    case 'C': {
+                        if(i != c.length-1) {
+                            switch (c[i + 1]) {
+                                case 'D':
+                                    erg += 400;
+                                    i++;
+                                    break;
+                                case 'M':
+                                    erg += 900;
+                                    i++;
+                                    break;
+                                default:
+                                    erg += 100;
+                                    break;
+
+                            }
+                        }
+                        else erg += 100;
+
+                        break;
+                    }
+                    case 'D': {
+                        erg += 500;
+                        break;
+                    }
+                    case 'M': {
+                        erg += 1000;
+                        break;
+                    }
+
+
+
+                }
+
+            }
+            return erg;
+    }
+    private String LongestCommonPrefix( String[] strs){
+        String erg = "";
+        for(int i = 0; i < strs[0].length(); i++){
+            char tmp =  strs[0].charAt(i);
+            boolean append = true;
+            for(String s : strs){
+                if(i >= s.length()){
+                    append = false;
+                    break;
+                }
+                if(s.charAt(i) != tmp) {
+                    append = false;
+                    break;
+                }
+            }
+            if(append){
+                erg = erg + tmp;
+            }
+            else{
+                break;
+            }
+
+
+        }
+        return erg;
+
+    }
+}
+
