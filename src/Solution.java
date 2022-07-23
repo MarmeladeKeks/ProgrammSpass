@@ -1,9 +1,10 @@
+import java.sql.Array;
 import java.util.*;
 
 public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
-        System.out.println(s.titleToNumber("ZYR"));
+        System.out.println(s.maxLengthBetweenEqualCharacters("abrhjka"));
     }
 
     private int roman(String s) {
@@ -166,5 +167,47 @@ public class Solution {
         return erg;
 
     }
+    public int maxLengthBetweenEqualCharacters(String s) {
+        /*HashMap<Character , ArrayList<Integer>> h = new HashMap<Character, ArrayList<Integer>>();
+        int max = 0;
+        for (int i = 0; i < s.length() ; i++) {
+            if(!h.containsKey(s.charAt(i))){
+                ArrayList<Integer> tmp = new ArrayList<Integer>();
+                tmp.add(0);
+                //tmp.set(0, tmp.get(0)+1); addet 1 für den ersten Eintrag
+                h.put(s.charAt(i), tmp);
+
+            }
+            else{
+
+            }
+
+        }
+
+         */
+
+        ArrayList<Character> a = new ArrayList<Character>();
+        int max = 0;
+        boolean nothing = true;
+        for (int i = 0; i < s.length() ; i++) {
+            if(!a.contains(s.charAt(i))){
+                a.add(s.charAt(i));
+                continue;
+            }
+            else{
+                nothing= false;
+                int tmp = Math.abs(i- s.indexOf(s.charAt(i))) -1;
+                max = Math.max(max, tmp);
+            }
+
+
+        }
+        if(nothing)
+            max = -1;
+        return max;
+
+
+    }
+
 }
 
