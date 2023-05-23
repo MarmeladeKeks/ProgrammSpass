@@ -4,7 +4,7 @@ import java.util.*;
 public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
-        System.out.println(s.maxLengthBetweenEqualCharacters("abrhjka"));
+        System.out.println(s.isPerfectSquare(2147483647));
     }
 
     private int roman(String s) {
@@ -154,7 +154,7 @@ public class Solution {
     }
 
     public int titleToNumber(String columnTitle) {
-        char[] c = columnTitle.toCharArray();
+        char[] c = columnTitle.toCharArray();//unnötig
         // A = 10, Z = 35
         //System.out.println(Character.getNumericValue('Z') -9);
         int exp = 0;
@@ -186,7 +186,7 @@ public class Solution {
 
          */
 
-        ArrayList<Character> a = new ArrayList<Character>();
+        ArrayList<Character> a = new ArrayList<Character>();//Speicher um Matchende Character zu finden.
         int max = 0;
         boolean nothing = true;
         for (int i = 0; i < s.length() ; i++) {
@@ -208,6 +208,72 @@ public class Solution {
 
 
     }
+    public int findJudge(int n, int[][] trust) {
+        //Array [n - Person] [Trusten der Person, die Person Trustet denen]
+        int [][] person = new int[n][2];
+        for (int i = 0; i < trust.length ; i++) {
+            int Truster = (trust[i][0]) -1;
+            int WirdVertraut = (trust[i][1]) -1;
+            //if(person[Truster][1]== null){ ist das dann schon mit Nullen init?
+            person[Truster][1]++;
+            person[WirdVertraut][0]++;
+            }
+        int judge = -1;
+        for (int j = 0; j < person.length ; j++) {
+            if (person[j][0] == n-1 && person[j][1]== 0){
+                judge = j+1;
+                break;
+            }
+            }
+        return judge;
+
+        }
+
+//hier weitermachen lol xDDD
+
+
+
+    public boolean isPerfectSquare(int num) {
+        int i=1;
+        while(num>0){
+            num-=i;
+            i+=2;
+        }
+        return num==0;
+
+    }
+
+    public int guess(int n) {
+        return 0;
+    }
+
+
+    public int guessNumber(int n) {
+        int Divider =  (int) Math.ceil((float) n / 2);
+        int Pick = n - Divider;
+        while(true){
+             int currentGuess = guess(Pick);
+            if (currentGuess == 0)
+                break;
+            else if (currentGuess == -1){ //num is higher than the picked Number
+                Divider = (int) Math.ceil((float) Divider / 2);
+                Pick = Pick - Divider;
+            }
+            else{ // if num is lower than the picked number
+                Divider = (int) Math.ceil((float) Divider / 2);
+                Pick = Pick + Divider;
+            }
+        }
+        return Pick;
+
+    }
+
+
+
+
+
+
 
 }
+
 
