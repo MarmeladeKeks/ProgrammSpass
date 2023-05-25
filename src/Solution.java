@@ -1,10 +1,12 @@
+import javax.lang.model.type.NullType;
+import java.io.*;
 import java.sql.Array;
 import java.util.*;
 
 public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
-        System.out.println(s.isPerfectSquare(2147483647));
+        System.out.println( Arrays.toString(s.decode(new int []{1, 2, 3} , 1)));
     }
 
     private int roman(String s) {
@@ -246,8 +248,6 @@ public class Solution {
     public int guess(int n) {
         return 0;
     }
-
-
     public int guessNumber(int n) {
         int Divider =  (int) Math.ceil((float) n / 2);
         int Pick = n - Divider;
@@ -265,6 +265,35 @@ public class Solution {
             }
         }
         return Pick;
+
+    }
+    public int[] decode(int[] encoded, int first) {
+        int [] decode = new int[encoded.length + 1];
+        decode[0] = first;
+        for (int i = 0; i < encoded.length; i++) {
+            int ArrayAt = encoded[i];
+            decode[i+1] = first ^ ArrayAt;
+            first = decode[i+1];
+        }
+        return decode;
+
+    }
+    public int countGoodRectangles(int[][] rectangles) {
+        int max = 0;
+        int counter = 0;
+        for (int i = 0; i < rectangles.length ; i++) {
+            int tmp = Math.min(rectangles[i][0],rectangles[i][1] );
+            if( tmp > max) {
+                max = tmp;
+                counter = 1;
+            } else if (tmp == max) {
+                counter++;
+
+            }
+            else
+                continue;
+        }
+        return counter;
 
     }
 
