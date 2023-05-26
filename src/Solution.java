@@ -6,7 +6,7 @@ import java.util.*;
 public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
-        System.out.println( Arrays.toString(s.decode(new int []{1, 2, 3} , 1)));
+        System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
     }
 
     private int roman(String s) {
@@ -294,6 +294,28 @@ public class Solution {
                 continue;
         }
         return counter;
+
+    }
+    public int[][] flipAndInvertImage(int[][] image) {
+        int[][] result = new int[image.length][image[0].length];
+        for (int i = 0; i < image.length; i++) {
+            for (int j = 0; j < image[0].length ; j++) {
+                int tmp = image[i][image[i].length - (j + 1)];
+                result[i][j]= (tmp == 1)? 0 : 1;
+            }
+        }
+        return result;
+
+    }
+    public boolean isRectangleOverlap(int[] rec1, int[] rec2) {
+        int x_distance = Math.min(rec1[2], rec2[2]) - Math.max(rec1[0], rec2[0]);
+        if(x_distance <= 0)
+            return false;
+        int y_distance = Math.min(rec1[3], rec2[3]) - Math.max(rec1[1], rec2[1]);
+        if(y_distance <= 0)
+            return false;
+        return true;
+
 
     }
 
