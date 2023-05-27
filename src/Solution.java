@@ -395,10 +395,7 @@ public class Solution {
             String replace = Wort;
             double min = Double.POSITIVE_INFINITY;
             for (String potReplace : dictionary) {
-                if (potReplace.length() >= Wort.length())
-                    continue;
-                String toTest = Wort.substring(0, potReplace.length());
-                if (toTest.equals(potReplace) && potReplace.length() < min) {
+                if (Wort.startsWith(potReplace) && potReplace.length() < min) {
                     replace = potReplace;
                     min = potReplace.length();
                 }
