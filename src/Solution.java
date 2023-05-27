@@ -6,7 +6,8 @@ import java.util.*;
 public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
-        System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
+        //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
+        System.out.println(s.isPathCrossing("NESWW"));
     }
 
     private int roman(String s) {
@@ -315,16 +316,117 @@ public class Solution {
         if(y_distance <= 0)
             return false;
         return true;
+    }
+    public int xorOperation(int n, int start) {
+        int[] nums = new int[n];
+        for (int i = 0; i < n; i++) {
+            nums[i] = start + 2 * i;
+        }
+        int result = nums[0];
+        for (int i = 1; i < n ; i++) {
+            result = result ^ nums[i];
+        }
+        return result;
 
+    }
+    public double average(int[] salary) {
+        int max = salary[0], min = salary[0];
+        double gesamt = 0;
+        for ( int bezahlung: salary
+             ) {
+            gesamt += bezahlung;
+            min = Math.min(min, bezahlung);
+            max = Math.max(max, bezahlung);
+        }
+        gesamt -= (max + min);
+        return (double)(gesamt / (salary.length - 2));
+    }
+    public boolean isPathCrossing(String path) {
+        List visited = new LinkedList<int[]>();
+        int [] position = {0, 0};
+        visited.add(new int[]{position[0], position[1]});
+
+        for (int i = 0; i < path.length(); i++) {
+            char c = path.charAt(i);
+            switch (c){
+                case 'N': {
+                    position[0] += 1;
+                    break;
+                }
+                case 'S': {
+                    position[0] -= 1;
+                    break;
+                }
+                case 'W': {
+                    position[1] -= 1;
+                    break;
+                }
+                case 'E': {
+                    position[1] += 1;
+                    break;
+                }
+                 default:
+                     throw new IllegalArgumentException("Nicht so spezifiziert du Schwackkopf xDDDD lol");
+
+            }
+            if( isInList(visited, new int[] {position[0], position[1]})){
+                return true;
+            }
+            else {
+                visited.add(new int[]{position[0], position[1]});
+            }
+        }
+        return false;
+
+
+    }
+    public static boolean isInList(
+            final List<int[]> list, final int[] candidate) {
+
+        return list.stream().anyMatch(a -> Arrays.equals(a, candidate));
+        //  ^-- or you may want to use .parallelStream() here instead
+    }
+    public String replaceWords(List<String> dictionary, String sentence) {
+        String[] strgs = sentence.split(" ");
+        int counter = 0;
+        String ergebnis = "";
+        for (String Wort: strgs
+             ) {
+            String replace = Wort;
+            double min = Double.POSITIVE_INFINITY;
+            for (String potReplace : dictionary) {
+                if (potReplace.length() >= Wort.length())
+                    continue;
+                String toTest = Wort.substring(0, potReplace.length());
+                if (toTest.equals(potReplace) && potReplace.length() < min) {
+                    replace = potReplace;
+                    min = potReplace.length();
+                }
+            }
+            if(counter < strgs.length -1) {
+                ergebnis =ergebnis + replace + " ";
+            }
+            else{
+                ergebnis = ergebnis + replace;
+            }
+            counter++;
+
+        }
+        return ergebnis;
+//        String result = strgs[0];
+//        for (int i = 1; i < strgs.length ; i++) {
+//            result = result + strgs[i];
+//        }
+//        return result;
+
+
+
+
+        }
 
     }
 
 
 
-
-
-
-
-}
 
 
