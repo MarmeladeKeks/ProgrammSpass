@@ -415,13 +415,48 @@ public class Solution {
 //            result = result + strgs[i];
 //        }
 //        return result;
-
-
-
-
         }
 
+    public boolean canPlaceFlowers(int[] flowerbed, int n) {
+        int FlowerCounter = 0;
+        for (int i = 0; i < flowerbed.length ; i++) {
+            if(flowerbed[i] == 1)
+                continue;
+            int leftNeighbour = ( i - 1 >= 0) ? flowerbed[i - 1] : 0; //Damn bin ich ein krasser Dude xDD
+            int rightNeighbour = ( i + 1 < flowerbed.length) ? flowerbed[i + 1] : 0; //Damn bin ich ein krasser Dude xDD
+            if( leftNeighbour == 0 && rightNeighbour == 0) {
+                FlowerCounter++;
+                flowerbed[i] = 1;
+            }
+            else {
+                continue;
+            }
+
+        }
+        return FlowerCounter >= n;
+
     }
+    public int findPoisonedDuration(int[] timeSeries, int duration) {
+        int totalPoisonedTime = 0;
+        for (int i = 0; i < timeSeries.length; i++) {
+            if( i == timeSeries.length - 1){
+                totalPoisonedTime += duration;
+                continue;
+            }
+            if( (timeSeries[i] + duration -1) >= timeSeries[i + 1]){
+                totalPoisonedTime += timeSeries[i + 1] - (timeSeries[i]);
+            }
+            else{
+                totalPoisonedTime += duration;
+            }
+
+        }
+        return totalPoisonedTime;
+
+    }
+
+    }
+
 
 
 
