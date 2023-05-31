@@ -4,6 +4,8 @@ import java.sql.Array;
 import java.util.*;
 
 public class Solution {
+    double minimalCost = Double.POSITIVE_INFINITY;
+
     public static void main(String[] args) {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
@@ -454,8 +456,114 @@ public class Solution {
         return totalPoisonedTime;
 
     }
+    public char nextGreatestLetter(char[] letters, char target) {
+        char ResultLetter = letters[0];
+        for (char Buchstabe:
+             letters) {
+            if(Buchstabe > target){ //Ziel Buchstabe gefunden.
+                ResultLetter = Buchstabe;
+                break;
+            }
+        }
+        return ResultLetter;
+    }
+    public int minCostClimbingStairs(int[] cost) {
+        int[] minArray = new int[cost.length + 2];
+        minArray[cost.length] = 0;
+        minArray[cost.length + 1] = 0;
+        for (int i = cost.length - 1; i >= 0 ; i--) {
+            int currentMin = Math.min(minArray[i + 1], minArray[i + 2]);
+            minArray[i] = currentMin + cost[i];
+        }
+        return Math.min(minArray[0], minArray[1]);
 
     }
+    private int minCostHelper(int[] cost, int totalCost, int step){
+        if(totalCost > minimalCost)
+            return totalCost;
+        if(step > cost.length -1) {
+            minimalCost = Math.min(totalCost, minimalCost);
+            return totalCost;
+        }
+        totalCost += cost[step];
+        int oneStep = minCostHelper(cost, totalCost, step + 1);
+        int twoStep = minCostHelper(cost, totalCost, step + 2);
+        int possibleMin = Math.min(oneStep, twoStep);
+        minimalCost = Math.min( possibleMin, minimalCost);
+        return possibleMin;
+    }
+    public int climbStairs(int n) {
+        int[] resultArray = new int[n];
+        resultArray[0] = 1;
+        if(n == 1)
+            return 1;
+        resultArray[1] = 2;
+        for (int i = 2; i < n; i++) {
+            resultArray[i] = resultArray[i - 1] + resultArray[i - 2];
+        }
+        return resultArray[n - 1];
+
+    }
+    public int minimumRounds(int[] tasks) {
+        Arrays.sort(tasks);
+        int currentIndex = 0;
+        int minRounds = 0;
+        while(currentIndex != tasks.length){
+            int currentTaskDiff = tasks[currentIndex];
+            int counter = 1;
+            while (true){
+                currentIndex++;
+                if(currentIndex == tasks.length)
+                    break;
+                if(tasks[currentIndex] == currentTaskDiff){
+                    counter++;
+                }
+                else{
+                    break;
+                }
+            }
+            if(counter != 1){
+                minRounds +=  (int) Math.ceil((double)counter / 3);
+            } else {
+                return -1;
+            }
+        }
+        return minRounds;
+
+    }
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> Karte = new HashMap<Integer, Integer>();
+        for (int i = 0; i <nums.length ; i++) {
+            int diff = target - nums[i];
+            if(Karte.containsKey(diff)){
+                return new int []{i, Karte.get(diff)};
+            }
+            Karte.put(nums[i], i);
+
+        }
+        return new int [] {-1, -1};
+    }
+    private int[] twoSumsHelper(int[] nums, int target, int index, int currentTotal, List<Integer> result){
+        if(currentTotal == target) {
+            return result.stream().mapToInt(Integer::intValue).toArray();
+        }
+        if (currentTotal > target){
+            return null;
+        }
+        if(index >= nums.length)
+            return null;
+        int [] without = twoSumsHelper(nums, target, index + 1, currentTotal,new ArrayList<Integer>(result));
+        result.add(index);
+        int [] with = twoSumsHelper(nums, target, index + 1, currentTotal + nums[index],new ArrayList<Integer>(result));
+        if(without != null)
+            return without;
+        else
+            return with;
+
+    }
+
+
+}
 
 
 
