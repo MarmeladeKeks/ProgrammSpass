@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Solution {
     double minimalCost = Double.POSITIVE_INFINITY;
+    public HashMap<Integer, Integer> Tribu = new HashMap<Integer, Integer>();
 
     public static void main(String[] args) {
         Solution s = new Solution();
@@ -561,7 +562,51 @@ public class Solution {
             return with;
 
     }
+    public int tribonacci(int n) {
+        if( n == 1 || n == 2){
+            return 1;
+        }
+        if(n == 0)
+            return 0;
+        int n_th_number = n - 3;
+        int n1_th_number = n - 2;
+        int n2_th_number = n - 1;
+        if(Tribu.containsKey(n_th_number))
+            n_th_number = Tribu.get(n_th_number);
+        else {
+            n_th_number = tribonacci(n_th_number);
+            Tribu.put(n - 3, n_th_number);
+        }
 
+        if(Tribu.containsKey(n1_th_number))
+            n1_th_number = Tribu.get(n1_th_number);
+        else {
+            n1_th_number = tribonacci(n1_th_number);
+            Tribu.put(n - 2, n1_th_number);
+        }
+
+        if(Tribu.containsKey(n2_th_number))
+            n2_th_number = Tribu.get(n2_th_number);
+        else {
+            n2_th_number = tribonacci(n2_th_number);
+            Tribu.put(n - 1, n2_th_number);
+        }
+        return n_th_number + n1_th_number + n2_th_number;
+    }
+    public boolean isPowerOfTwo(int n) {
+        String s = Integer.toBinaryString(n);
+        int counter = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '1') {
+                counter++;
+                if(counter >= 2)
+                    return false;
+            }
+        }
+        return counter == 1 && n >= 0;
+
+    }
 
 }
 
