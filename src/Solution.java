@@ -685,14 +685,12 @@ public class Solution {
         List<Character> kev = new LinkedList<Character>();
         for (int i = 0; i < resZahl.length() ; i++) {
             char c = resZahl.charAt(i);
-            if(c == '0')
-                return false;
-            if(kev.contains(c))
+            if(c == '0' || kev.contains(c))
                 return false;
             else
                 kev.add(c);
         }
-        return (kev.size() == 9) ? true :false;
+        return kev.size() == 9;
 
     }
 
