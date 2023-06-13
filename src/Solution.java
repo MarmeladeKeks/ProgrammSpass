@@ -10,7 +10,7 @@ public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
-        System.out.println(s.isPathCrossing("NESWW"));
+        System.out.println(s.searchInsert(new int[] {1, 3, 5, 6},2));
     }
 
     private int roman(String s) {
@@ -661,6 +661,26 @@ public class Solution {
         }
         return LongestKey;
     }
+    public int searchInsert(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length - 1;
+        while (start <= end){
+            int mid = start + (int) Math.floor((double)(end - start ) / 2);
+            if(nums[mid] == target)
+                return mid;
+            else if(target > nums [mid]){
+                start = mid + 1;
+            }
+            else{
+                end = mid - 1;
+
+            }
+        }
+        return start;
+
+
+    }
+
 
 
 }
