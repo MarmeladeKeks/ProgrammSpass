@@ -693,6 +693,26 @@ public class Solution {
         return kev.size() == 9;
 
     }
+    public String[] findRestaurant(String[] list1, String[] list2) {
+        int leastindex = list1.length + list2.length;
+        List<String> resultList = new LinkedList<String>();
+        for (int i = 0; i < list1.length ; i++) {
+            for (int j = 0; j < list2.length ; j++) {
+                if(list1[i].equals(list2[j])){
+                    if (i + j < leastindex){
+                        resultList.clear();
+                        resultList.add(list1[i]);
+                        leastindex = i + j;
+                    } else if (i + j == leastindex) {
+                        resultList.add(list1[i]);
+                    }
+                }
+
+            }
+        }
+    return resultList.toArray(new String[0]); //mit Map machen :( Ich lerne dass ich öfter an Map denken muss!
+
+    }
 
 
 
