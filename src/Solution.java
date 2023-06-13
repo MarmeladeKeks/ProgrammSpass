@@ -677,7 +677,22 @@ public class Solution {
             }
         }
         return start;
-
+    }
+    public boolean isFascinating(int n) {
+        String zweiN = Integer.toString(2 * n);
+        String dreiN = Integer.toString(3 * n);
+        String resZahl = Integer.toString(n) + zweiN +dreiN;
+        List<Character> kev = new LinkedList<Character>();
+        for (int i = 0; i < resZahl.length() ; i++) {
+            char c = resZahl.charAt(i);
+            if(c == '0')
+                return false;
+            if(kev.contains(c))
+                return false;
+            else
+                kev.add(c);
+        }
+        return (kev.size() == 9) ? true :false;
 
     }
 
