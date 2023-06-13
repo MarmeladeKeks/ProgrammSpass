@@ -605,6 +605,19 @@ public class Solution {
             }
         }
         return counter == 1 && n >= 0;
+    }
+
+    public int maxLengthBetweenEqualCharacters2(String s) {
+        int MaxLength = -1;
+        for (int i = 0; i < s.length(); i++) {
+            char Buchstabe = s.charAt(i);
+            for (int j = i + 1; j < s.length(); j++) {
+                if (s.charAt(j) == Buchstabe && ( j - 1 - i) > MaxLength) {
+                    MaxLength = ( j - 1 - i);
+                }
+            }
+        }
+        return MaxLength;
 
     }
     public int[][] largestLocal(int[][] grid) {
@@ -631,6 +644,23 @@ public class Solution {
 
     }
 
+
+    public char slowestKey(int[] releaseTimes, String keysPressed) {
+        int maxDuration = releaseTimes[0];
+        char LongestKey = keysPressed.charAt(0);
+        for (int i = 1; i <keysPressed.length() ; i++) {
+            int tmpDuration = releaseTimes[i] - releaseTimes[i - 1];
+            char c = keysPressed.charAt(i);
+            if( tmpDuration >= maxDuration){
+                if ( tmpDuration > maxDuration)
+                    LongestKey = c;
+                else
+                    LongestKey = ( c > LongestKey) ? c : LongestKey;
+                maxDuration = tmpDuration;
+            }
+        }
+        return LongestKey;
+    }
 
 
 }
