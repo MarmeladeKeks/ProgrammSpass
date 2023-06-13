@@ -607,6 +607,31 @@ public class Solution {
         return counter == 1 && n >= 0;
 
     }
+    public int[][] largestLocal(int[][] grid) {
+        int n = grid.length;
+        int [][] maxGrad = new int[n - 2][n - 2];
+        for (int i = 0; i < maxGrad.length; i++) {
+            for (int j = 0; j < maxGrad[0].length ; j++) {
+                int middle_x = i + 1;
+                int middle_y = j + 1;
+                int max = grid[middle_x][middle_y];
+                max = Math.max(max, grid [middle_x + 1][middle_y]);
+                max = Math.max(max, grid [middle_x - 1][middle_y]);
+                max = Math.max(max, grid [middle_x - 1][middle_y - 1]);
+                max = Math.max(max, grid [middle_x - 1][middle_y + 1]);
+                max = Math.max(max, grid [middle_x + 1][middle_y + 1]);
+                max = Math.max(max, grid [middle_x + 1][middle_y - 1]);
+                max = Math.max(max, grid [middle_x][middle_y + 1]);
+                max = Math.max(max, grid [middle_x][middle_y - 1]);
+                maxGrad[i][j] = max;
+            }
+
+        }
+        return maxGrad;
+
+    }
+
+
 
 }
 
