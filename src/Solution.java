@@ -804,6 +804,19 @@ public class Solution {
         }
 
     }
+    public int majorityElement(int[] nums) {
+        HashMap<Integer, Integer> CountList = new HashMap<Integer, Integer>();
+        int  majority = 0;
+        for (int i: nums
+             ) {
+            CountList.merge(i, 1, (oldvalue, newvalue) -> oldvalue + 1);
+            if(CountList.get(i) >= (double) nums.length / 2){
+                majority = i;
+                break;
+            }
+        }
+        return majority;
+    }
 
 
 
