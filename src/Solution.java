@@ -713,10 +713,104 @@ public class Solution {
     return resultList.toArray(new String[0]); //mit Map machen :( Ich lerne dass ich öfter an Map denken muss!
 
     }
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+
+    public int maxLevelSum(TreeNode root) {
+        HashMap<Integer, Integer> levels = new HashMap<Integer, Integer>();
+        maxLevelSumhelper(root, levels, 1);
+        return Collections.max(levels.entrySet(), Map.Entry.comparingByValue()).getKey();
+    }
+    private void maxLevelSumhelper(TreeNode currNode, HashMap<Integer, Integer> levels , int currLevel ){
+        levels.merge(currLevel, currNode.val, (oldValue, newValue) -> oldValue + newValue);
+        TreeNode left = currNode.left;
+        TreeNode right = currNode.right;
+        if(left != null){
+            maxLevelSumhelper(left, levels, currLevel + 1);
+        }
+        if(right != null){
+            maxLevelSumhelper(right, levels, currLevel + 1);
+        }
+    }
+
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+
+        TreeNode() {
+        }
+
+        TreeNode(int val) {
+            this.val = val;
+        }
+
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+
+    }
+    public int maxProfit(int[] prices) {
+        int profit = 0;
+        int currentMin = prices[0];
+        int currentMax = prices[0];
+        for (int i = 0; i < prices.length ; i++) {
+            if(prices[i] > currentMin ){
+                profit = profit + (prices[i] - currentMin);
+                currentMin = prices[i];
+                continue;
+            }
+            if(prices[i] < currentMin)
+                currentMin = prices[i];
+        }
+        return profit;
+
+
+    }
+    private int maxProfitHelper(int[] prices, int currIndex, boolean bought, int P_length, int currentProfit, int maxProfit){
+        if(currIndex >= P_length){
+            return currentProfit;
+        }
+        if(!bought){
+            int not_b = maxProfitHelper(prices, currIndex + 1, false, P_length, currentProfit, maxProfit);
+            if( currIndex < P_length -1 && (prices[currIndex] >prices[currIndex + 1]))
+                return Math.max(not_b, maxProfit);
+            currentProfit = currentProfit -prices[currIndex];
+            int did_b = maxProfitHelper(prices, currIndex + 1, true, P_length, currentProfit, maxProfit);
+            return Math.max(Math.max(not_b, did_b), maxProfit);
+        }
+        else {
+            int not_s = maxProfitHelper(prices, currIndex + 1, true, P_length, currentProfit, maxProfit);
+            currentProfit = currentProfit + prices[currIndex];
+            if(currentProfit <= 0)
+                return Math.max(not_s, maxProfit);
+            int did_s = maxProfitHelper(prices, currIndex + 1, false, P_length, currentProfit, maxProfit);
+            return Math.max(Math.max(not_s, did_s), maxProfit);
+        }
+
+    }
+
+
 
 
 
 }
+
 
 
 
