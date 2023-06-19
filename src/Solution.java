@@ -10,7 +10,8 @@ public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
-        System.out.println(s.searchInsert(new int[] {1, 3, 5, 6},2));
+        System.out.println(s.minSessions(new int[] {1,2,3},3));
+        //[3,1,3,1,1]
     }
 
     private int roman(String s) {
@@ -816,6 +817,43 @@ public class Solution {
             }
         }
         return majority;
+    }
+    public int largestAltitude(int[] gain) {
+        int heighest = 0;
+        int currentAltitude = 0;
+        for (int i:
+             gain) {
+            currentAltitude += i;
+            heighest = Math.max(heighest, currentAltitude);
+        }
+        return heighest;
+    }
+    public int minSessions(int[] tasks, int sessionTime) {
+        List<Integer> list = new ArrayList<>(Arrays.stream(tasks).boxed().toList());
+        int minCounter = (int) Double.POSITIVE_INFINITY;
+        return minSessionsHelper((ArrayList<Integer>) list, sessionTime, sessionTime, minCounter );
+
+
+    }
+    private int minSessionsHelper(ArrayList<Integer> list, int remTime, int sessTime, int min) {
+        if(list.isEmpty())
+            return 1;
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i) <= remTime){
+                ArrayList<Integer> tmp = new ArrayList<Integer>(list);
+                tmp.remove(i);
+                min = Math.min(minSessionsHelper(tmp, remTime - list.get(i), sessTime, min), min);
+            }
+            else {
+                ArrayList<Integer> tmp = new ArrayList<Integer>(list);
+                tmp.remove(i);
+                min = Math.min(minSessionsHelper(tmp, sessTime - list.get(i), sessTime, min) + 1, min);
+
+            }
+
+        }
+        return min;
+
     }
 
 
