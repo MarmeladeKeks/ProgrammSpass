@@ -33,4 +33,25 @@ public class Hackerank {
         else
             System.out.println("Not Weird");
     }
+    private static void dritteExercise(){
+        Scanner eingabe = new Scanner(System.in);
+        int firstInt = eingabe.nextInt();
+        double firstDouble = eingabe.nextDouble();
+        String firstString = eingabe.nextLine();
+        firstString = eingabe.nextLine();
+        System.out.println("String: " + firstString);
+        System.out.println("Double: " + firstDouble);
+        System.out.println("Int: " + firstInt);
+
+    }
+    private static void vierteExercise(){
+        Scanner eingabe = new Scanner(System.in);
+        System.out.println("================================");
+        for (int i = 0; i <3 ; i++) {
+            String s = eingabe.next();
+            int ingo = eingabe.nextInt();
+            System.out.printf("%-15s%0,3d%n",s, ingo);
+        }
+        System.out.println("================================");
+    }
 }
