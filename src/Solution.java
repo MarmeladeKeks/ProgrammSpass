@@ -7,6 +7,7 @@ public class Solution {
     double minimalCost = Double.POSITIVE_INFINITY;
     public HashMap<Integer, Integer> Tribu = new HashMap<Integer, Integer>();
 
+
     public static void main(String[] args) {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
@@ -855,6 +856,33 @@ public class Solution {
         return min;
 
     }
+    public int[] getAverages(int[] nums, int k) {
+        int [] average = new int[nums.length];
+        long [] sumArray = new long[nums.length];
+        int x = 2 * k + 1;
+        for (int i = 0; i <nums.length ; i++) {
+            long res = 0;
+            if( i - k < 0 || i + k >= nums.length)
+                average[i] = -1;
+            else if (i - k -1 >= 0){
+                sumArray[i] = sumArray[i - 1] - nums[i - k  -1] + nums[i + k];
+                average[i] = (int)(sumArray[i] / x);
+            }
+
+            else {
+
+                for (int j = i - k; j <= i + k; j++) {
+                    res += nums[j];
+                }
+                average[i] = (int)(res / x);
+                sumArray[i] = res;
+            }
+        }
+        return average;
+
+    }
+
+
 
 
 
