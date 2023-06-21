@@ -932,8 +932,8 @@ public class Solution {
         long ans = 0;
         while (left < right) {
             int mid = (left + right) / 2;
-            long cost1 = helper(nums, cost, mid);
-            long cost2 = helper(nums, cost, mid + 1);
+            long cost1 = minCosthelper(nums, cost, mid);
+            long cost2 = minCosthelper(nums, cost, mid + 1);
             if (cost1 > cost2) {
                 left = mid + 1;
                 ans = cost2;
@@ -946,7 +946,7 @@ public class Solution {
         return ans;
     }
 
-    public long helper(int[] nums, int[] cost, int all) {
+    public long minCosthelper(int[] nums, int[] cost, int all) {
         long totalCost = 0L;
         for (int i = 0; i < nums.length; i++) {
             totalCost += (long) Math.abs(nums[i] - all) * cost[i];
