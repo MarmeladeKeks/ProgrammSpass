@@ -12,8 +12,9 @@ public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
-        System.out.println(s.minSessions(new int[]{1, 2, 3}, 3));
+        System.out.println(s.maxProfit(new int[]{1,3,2,8,4,9}, 2));
         //[3,1,3,1,1]
+        //[1,3,2,8,4,9]
     }
 
     private int roman(String s) {
@@ -952,6 +953,59 @@ public class Solution {
             totalCost += (long) Math.abs(nums[i] - all) * cost[i];
         }
         return totalCost;
+    }
+
+    //    public int maxProfit(int[] prices, int fee) {
+//        int currentMin = prices[0];
+//        int maxProfit = 0;
+//        for (int i = 0; i < prices.length ; i++) {
+//            if(prices[i] - fee > currentMin){
+//                maxProfit += (prices[i] - fee) - currentMin;
+//                currentMin = prices[i];
+//                continue;
+//            }
+//            if(prices[i] < currentMin)
+//                currentMin = prices[i];
+//
+//        }
+//        return maxProfit;
+//
+//    }
+    public int maxProfit(int[] prices, int fee) {
+        return maxProfitHelper2(prices, fee, 0, 0, prices[0]);
+    }
+
+    private int maxProfitHelper2(int[] prices, int fee, int index, int maxProfit, int currentMin) {
+
+
+        for (int i = index; i < prices.length; i++) {
+            if (prices[i] - fee > currentMin) {
+                int tmp1 = maxProfitHelper2(prices, fee, i + 1, maxProfit + (prices[i] - fee) - currentMin, prices[i]);
+                int tmp2 = maxProfitHelper2(prices, fee, i + 1, maxProfit, currentMin);
+                return Math.max(tmp1, tmp2);
+            }
+            if (prices[i] < currentMin)
+                currentMin = prices[i];
+
+        }
+        return maxProfit;
+
+    }
+
+    private int maxProfitHelper(int[] prices, int fee, int index, int currentProfit, boolean bought) {
+        if (index >= prices.length) {
+            return currentProfit;
+        }
+        if (bought) {
+            int tmp1 = maxProfitHelper(prices, fee, index + 1, currentProfit + prices[index] - fee, false);
+            int tmp2 = maxProfitHelper(prices, fee, index + 1, currentProfit, true);
+            return Math.max(tmp1, tmp2);
+        } else {
+            int tmp1 = maxProfitHelper(prices, fee, index + 1, currentProfit - prices[index], true);
+            int tmp2 = maxProfitHelper(prices, fee, index + 1, currentProfit, false);
+            return Math.max(tmp1, tmp2);
+        }
+
     }
 
 
