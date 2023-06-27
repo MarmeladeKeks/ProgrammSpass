@@ -4,6 +4,7 @@ import java.io.*;
 import java.sql.Array;
 import java.util.*;
 
+
 public class Solution {
     double minimalCost = Double.POSITIVE_INFINITY;
     public HashMap<Integer, Integer> Tribu = new HashMap<Integer, Integer>();
@@ -1005,6 +1006,36 @@ public class Solution {
             int tmp2 = maxProfitHelper(prices, fee, index + 1, currentProfit, false);
             return Math.max(tmp1, tmp2);
         }
+
+    }
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        PriorityQueue<int[]> queue = new PriorityQueue<>( ((a,b) -> a[0] - b[0]));
+        List<List<Integer>> res = new LinkedList<>();
+        Set<String> visited = new HashSet<String>();
+        queue.offer(new int[] {nums1[0] + nums2[0], 0, 0});
+        visited.add("0,0");
+        int n = nums1.length;
+        int m = nums2.length;
+        k--;
+        while (k-- >= 0 && !queue.isEmpty()){
+            int[] tmp = queue.poll();
+            int firstIndex = tmp[1];
+            int secondIndex = tmp[2];
+            res.add(List.of(nums1[firstIndex], nums2[secondIndex]));
+            if( firstIndex + 1 < n && !visited.contains(Integer.toString(firstIndex + 1) +"," + Integer.toString(secondIndex))){
+                queue.offer(new int[] {nums1[firstIndex + 1] + nums2[secondIndex], firstIndex + 1, secondIndex});
+                visited.add(Integer.toString(firstIndex + 1) +"," + Integer.toString(secondIndex));
+            }
+            if( secondIndex+ 1 < m && !visited.contains(Integer.toString(firstIndex) +"," + Integer.toString(secondIndex + 1))){
+                queue.offer(new int[] {nums1[firstIndex] + nums2[secondIndex + 1], firstIndex, secondIndex + 1});
+                visited.add(Integer.toString(firstIndex) +"," + Integer.toString(secondIndex + 1));
+            }
+
+        }
+        return res;
+
+
+
 
     }
 
