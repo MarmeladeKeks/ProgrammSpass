@@ -13,9 +13,10 @@ public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
-        System.out.println(s.maxProfit(new int[]{1,3,2,8,4,9}, 2));
+        System.out.println(s.lengthOfLongestSubstring("dvdf"));
         //[3,1,3,1,1]
         //[1,3,2,8,4,9]
+        //[7,1,5,3,6,4]
     }
 
     private int roman(String s) {
@@ -1037,6 +1038,87 @@ public class Solution {
 
 
 
+    }
+
+    public boolean isValid(String s) {
+        Stack<Character> stapel = new Stack<Character>();
+        for (int i = 0; i < s.length(); i++) {
+            Character currentC = s.charAt(i);
+            switch (currentC) {
+                case '(' -> stapel.push(currentC);
+                case '[' -> stapel.push(currentC);
+                case '{' -> stapel.push(currentC);
+                case ')' -> {
+                    if (stapel.isEmpty() || !stapel.pop().equals('(')) {
+                        return false;
+                    }
+                }
+                case ']' -> {
+                    if (stapel.isEmpty() || !stapel.pop().equals('[')) {
+                        return false;
+                    }
+                }
+                case '}' -> {
+                    if (stapel.isEmpty() || !stapel.pop().equals('{')) {
+                        return false;
+                    }
+                }
+                default -> {
+                    return false;
+                }
+            }
+        }
+        return stapel.isEmpty();
+
+    }
+    public int maxProfit2(int[] prices) {
+        int max = 0;
+        int currentMin = prices[0];
+        for (int i: prices
+             ) {
+            if(currentMin > i) {
+                currentMin = i;
+            }
+            else {
+                max = Math.max(i - currentMin, max);
+            }
+
+        }
+        return max;
+
+    }
+    public boolean containsDuplicate(int[] nums) {
+        HashMap<Integer, Integer> kevMap = new HashMap<Integer, Integer>(nums.length);
+        for (int i :
+             nums) {
+            if(kevMap.containsKey(i))
+                return true;
+            else
+                kevMap.put(i, 1);
+
+        }
+        return false;
+
+    }
+    public int lengthOfLongestSubstring(String s) {
+        HashMap<Character, Integer> kevSet = new HashMap<Character, Integer>();
+        int maxLength = 0;
+        int currentLength = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char currentC = s.charAt(i);
+            if(kevSet.containsKey(currentC)){
+                i = kevSet.get(currentC);
+                maxLength = Math.max(maxLength, currentLength);
+                currentLength = 0;
+                kevSet.clear();
+            }
+            else {
+                currentLength++;
+                kevSet.put(currentC, i);
+            }
+        }
+        maxLength = Math.max(currentLength, maxLength);
+        return maxLength;
     }
 
 
