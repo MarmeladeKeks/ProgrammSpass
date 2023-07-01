@@ -1120,6 +1120,37 @@ public class Solution {
         maxLength = Math.max(currentLength, maxLength);
         return maxLength;
     }
+    public int distributeCookies(int[] cookies, int k) {
+        if(k == cookies.length){
+            Arrays.sort(cookies);
+            return cookies[cookies.length - 1];
+        }
+        else if(k == cookies.length - 1){
+            Arrays.sort(cookies);
+            if(cookies.length >= 2){
+                return Math.max(cookies[cookies.length -1], (cookies[0] + cookies[1]));
+            }
+            else
+                return cookies[0];
+        }
+        else {
+            List<Integer> cookieList = Arrays.stream(cookies).boxed().toList();
+            int [] childs = new int[k];
+            HashSet<Integer> bitHash = new HashSet<Integer>();
+            return CookieHelper(cookieList, 0, 0, k, childs,bitHash);
+
+        }
+
+    }
+    private int CookieHelper(List<Integer> CookieList, int index, int maxCookie, int k, int[] childs, HashSet<Integer> bitHash){
+        if(index >= CookieList.size()){
+            Arrays.sort(childs);
+            return childs[childs.length];
+        }
+        return 0;
+
+
+    }
 
 
 }
