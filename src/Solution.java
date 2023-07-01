@@ -1134,20 +1134,26 @@ public class Solution {
                 return cookies[0];
         }
         else {
-            List<Integer> cookieList = Arrays.stream(cookies).boxed().toList();
             int [] childs = new int[k];
-            HashSet<Integer> bitHash = new HashSet<Integer>();
-            return CookieHelper(cookieList, 0, 0, k, childs,bitHash);
+            return CookieHelper(cookies, 0, k, childs);
 
         }
 
     }
-    private int CookieHelper(List<Integer> CookieList, int index, int maxCookie, int k, int[] childs, HashSet<Integer> bitHash){
-        if(index >= CookieList.size()){
+    private int CookieHelper(int[] CookieList, int index, int k, int[] childs){
+        if(index >= CookieList.length){
             Arrays.sort(childs);
-            return childs[childs.length];
+            return childs[childs.length - 1];
         }
-        return 0;
+        int min = (int) Double.POSITIVE_INFINITY;
+        for (int i = 0; i < k ; i++) {
+            childs[i] +=CookieList[index];
+            min = Math.min(min, CookieHelper(CookieList, index + 1, k, childs));
+            childs[i] -= CookieList[index];
+
+        }
+        return min;
+
 
 
     }
