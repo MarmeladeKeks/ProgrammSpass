@@ -1157,6 +1157,76 @@ public class Solution {
 
 
     }
+    public boolean buddyStrings(String s, String goal) {
+        if(s.length() != goal.length())
+            return false;
+        if(s.equals(goal)){
+            // If we have 2 same characters in string 's',
+            // we can swap them and still the strings will remain equal.
+            int[] frequency = new int[26];
+            for (char ch : s.toCharArray()) {
+                frequency[ch - 'a'] += 1;
+                if (frequency[ch - 'a'] == 2) {
+                    return true;
+                }
+            }
+            // Otherwise, if we swap any two characters, it will make the strings unequal.
+            return false;
+        }
+
+        char FirstFalse = 0;
+        char FirstRight = 0;
+        char SecondFalse;
+        char SecondRight;
+        int index = 0;
+        boolean first = true;
+        for (int i = 0; i < s.length() ; i++) {
+            if(s.charAt(i) != goal.charAt(i) && first){
+                FirstFalse = s.charAt(i);
+                FirstRight = goal.charAt(i);
+                first = false;
+                index = i;
+            }
+            else if(s.charAt(i) != goal.charAt(i)){
+                SecondFalse = s.charAt(i);
+                SecondRight = goal.charAt(i);
+                if(FirstRight == SecondFalse && SecondRight == FirstFalse){
+                    StringBuilder mytmp = new StringBuilder(s);
+                    mytmp.setCharAt(index, SecondFalse);
+                    mytmp.setCharAt(i, FirstFalse);
+                    return mytmp.toString().equals(goal);
+
+                }
+                else
+                    return false;
+            }
+
+        }
+        return false;
+
+    }
+    // Returns the delta Y.
+    int getYDiff(int[] a, int[] b) {
+        return a[1] - b[1];
+    }
+
+    // Returns the delta X.
+    int getXDiff(int[] a, int[] b) {
+        return a[0] - b[0];
+    }
+    public boolean checkStraightLine(int[][] coordinates) {
+        int deltaY = getYDiff(coordinates[1], coordinates[0]);
+        int deltaX = getXDiff(coordinates[1], coordinates[0]);
+
+        for (int i = 2; i < coordinates.length; i++) {
+            // Check if the slope between points 0 and i, is the same as between 0 and 1.
+            if (deltaY * getXDiff(coordinates[i], coordinates[0])
+                    != deltaX * getYDiff(coordinates[i], coordinates[0])) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 }
