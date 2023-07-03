@@ -1227,6 +1227,18 @@ public class Solution {
         }
         return true;
     }
+    public boolean isPalindrome(int x) {
+        String s = Integer.toString(x);
+        int j = s.length() - 1;
+        int upto = (int) ( Math.ceil((double) s.length() / 2));
+        for (int i = 0; i < upto ; i++) {
+            if(s.charAt(i) != s.charAt(j))
+                return false;
+            j--;
+        }
+        return true;
+
+    }
 
 
 }
