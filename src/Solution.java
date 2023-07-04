@@ -1,6 +1,7 @@
 import javax.lang.model.type.NullType;
 import java.awt.event.MouseAdapter;
 import java.io.*;
+import java.math.BigInteger;
 import java.sql.Array;
 import java.util.*;
 
@@ -1009,33 +1010,32 @@ public class Solution {
         }
 
     }
+
     public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
-        PriorityQueue<int[]> queue = new PriorityQueue<>( ((a,b) -> a[0] - b[0]));
+        PriorityQueue<int[]> queue = new PriorityQueue<>(((a, b) -> a[0] - b[0]));
         List<List<Integer>> res = new LinkedList<>();
         Set<String> visited = new HashSet<String>();
-        queue.offer(new int[] {nums1[0] + nums2[0], 0, 0});
+        queue.offer(new int[]{nums1[0] + nums2[0], 0, 0});
         visited.add("0,0");
         int n = nums1.length;
         int m = nums2.length;
         k--;
-        while (k-- >= 0 && !queue.isEmpty()){
+        while (k-- >= 0 && !queue.isEmpty()) {
             int[] tmp = queue.poll();
             int firstIndex = tmp[1];
             int secondIndex = tmp[2];
             res.add(List.of(nums1[firstIndex], nums2[secondIndex]));
-            if( firstIndex + 1 < n && !visited.contains(Integer.toString(firstIndex + 1) +"," + Integer.toString(secondIndex))){
-                queue.offer(new int[] {nums1[firstIndex + 1] + nums2[secondIndex], firstIndex + 1, secondIndex});
-                visited.add(Integer.toString(firstIndex + 1) +"," + Integer.toString(secondIndex));
+            if (firstIndex + 1 < n && !visited.contains(Integer.toString(firstIndex + 1) + "," + Integer.toString(secondIndex))) {
+                queue.offer(new int[]{nums1[firstIndex + 1] + nums2[secondIndex], firstIndex + 1, secondIndex});
+                visited.add(Integer.toString(firstIndex + 1) + "," + Integer.toString(secondIndex));
             }
-            if( secondIndex+ 1 < m && !visited.contains(Integer.toString(firstIndex) +"," + Integer.toString(secondIndex + 1))){
-                queue.offer(new int[] {nums1[firstIndex] + nums2[secondIndex + 1], firstIndex, secondIndex + 1});
-                visited.add(Integer.toString(firstIndex) +"," + Integer.toString(secondIndex + 1));
+            if (secondIndex + 1 < m && !visited.contains(Integer.toString(firstIndex) + "," + Integer.toString(secondIndex + 1))) {
+                queue.offer(new int[]{nums1[firstIndex] + nums2[secondIndex + 1], firstIndex, secondIndex + 1});
+                visited.add(Integer.toString(firstIndex) + "," + Integer.toString(secondIndex + 1));
             }
 
         }
         return res;
-
-
 
 
     }
@@ -1071,15 +1071,15 @@ public class Solution {
         return stapel.isEmpty();
 
     }
+
     public int maxProfit2(int[] prices) {
         int max = 0;
         int currentMin = prices[0];
-        for (int i: prices
-             ) {
-            if(currentMin > i) {
+        for (int i : prices
+        ) {
+            if (currentMin > i) {
                 currentMin = i;
-            }
-            else {
+            } else {
                 max = Math.max(i - currentMin, max);
             }
 
@@ -1087,11 +1087,12 @@ public class Solution {
         return max;
 
     }
+
     public boolean containsDuplicate(int[] nums) {
         HashMap<Integer, Integer> kevMap = new HashMap<Integer, Integer>(nums.length);
         for (int i :
-             nums) {
-            if(kevMap.containsKey(i))
+                nums) {
+            if (kevMap.containsKey(i))
                 return true;
             else
                 kevMap.put(i, 1);
@@ -1100,19 +1101,19 @@ public class Solution {
         return false;
 
     }
+
     public int lengthOfLongestSubstring(String s) {
         HashMap<Character, Integer> kevSet = new HashMap<Character, Integer>();
         int maxLength = 0;
         int currentLength = 0;
         for (int i = 0; i < s.length(); i++) {
             char currentC = s.charAt(i);
-            if(kevSet.containsKey(currentC)){
+            if (kevSet.containsKey(currentC)) {
                 i = kevSet.get(currentC);
                 maxLength = Math.max(maxLength, currentLength);
                 currentLength = 0;
                 kevSet.clear();
-            }
-            else {
+            } else {
                 currentLength++;
                 kevSet.put(currentC, i);
             }
@@ -1120,34 +1121,33 @@ public class Solution {
         maxLength = Math.max(currentLength, maxLength);
         return maxLength;
     }
+
     public int distributeCookies(int[] cookies, int k) {
-        if(k == cookies.length){
+        if (k == cookies.length) {
             Arrays.sort(cookies);
             return cookies[cookies.length - 1];
-        }
-        else if(k == cookies.length - 1){
+        } else if (k == cookies.length - 1) {
             Arrays.sort(cookies);
-            if(cookies.length >= 2){
-                return Math.max(cookies[cookies.length -1], (cookies[0] + cookies[1]));
-            }
-            else
+            if (cookies.length >= 2) {
+                return Math.max(cookies[cookies.length - 1], (cookies[0] + cookies[1]));
+            } else
                 return cookies[0];
-        }
-        else {
-            int [] childs = new int[k];
+        } else {
+            int[] childs = new int[k];
             return CookieHelper(cookies, 0, k, childs);
 
         }
 
     }
-    private int CookieHelper(int[] CookieList, int index, int k, int[] childs){
-        if(index >= CookieList.length){
+
+    private int CookieHelper(int[] CookieList, int index, int k, int[] childs) {
+        if (index >= CookieList.length) {
             Arrays.sort(childs);
             return childs[childs.length - 1];
         }
         int min = (int) Double.POSITIVE_INFINITY;
-        for (int i = 0; i < k ; i++) {
-            childs[i] +=CookieList[index];
+        for (int i = 0; i < k; i++) {
+            childs[i] += CookieList[index];
             min = Math.min(min, CookieHelper(CookieList, index + 1, k, childs));
             childs[i] -= CookieList[index];
 
@@ -1155,12 +1155,12 @@ public class Solution {
         return min;
 
 
-
     }
+
     public boolean buddyStrings(String s, String goal) {
-        if(s.length() != goal.length())
+        if (s.length() != goal.length())
             return false;
-        if(s.equals(goal)){
+        if (s.equals(goal)) {
             // If we have 2 same characters in string 's',
             // we can swap them and still the strings will remain equal.
             int[] frequency = new int[26];
@@ -1180,24 +1180,22 @@ public class Solution {
         char SecondRight;
         int index = 0;
         boolean first = true;
-        for (int i = 0; i < s.length() ; i++) {
-            if(s.charAt(i) != goal.charAt(i) && first){
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != goal.charAt(i) && first) {
                 FirstFalse = s.charAt(i);
                 FirstRight = goal.charAt(i);
                 first = false;
                 index = i;
-            }
-            else if(s.charAt(i) != goal.charAt(i)){
+            } else if (s.charAt(i) != goal.charAt(i)) {
                 SecondFalse = s.charAt(i);
                 SecondRight = goal.charAt(i);
-                if(FirstRight == SecondFalse && SecondRight == FirstFalse){
+                if (FirstRight == SecondFalse && SecondRight == FirstFalse) {
                     StringBuilder mytmp = new StringBuilder(s);
                     mytmp.setCharAt(index, SecondFalse);
                     mytmp.setCharAt(i, FirstFalse);
                     return mytmp.toString().equals(goal);
 
-                }
-                else
+                } else
                     return false;
             }
 
@@ -1205,6 +1203,7 @@ public class Solution {
         return false;
 
     }
+
     // Returns the delta Y.
     int getYDiff(int[] a, int[] b) {
         return a[1] - b[1];
@@ -1214,6 +1213,7 @@ public class Solution {
     int getXDiff(int[] a, int[] b) {
         return a[0] - b[0];
     }
+
     public boolean checkStraightLine(int[][] coordinates) {
         int deltaY = getYDiff(coordinates[1], coordinates[0]);
         int deltaX = getXDiff(coordinates[1], coordinates[0]);
@@ -1227,28 +1227,29 @@ public class Solution {
         }
         return true;
     }
+
     public boolean isPalindrome(int x) {
         String s = Integer.toString(x);
         int j = s.length() - 1;
-        int upto = (int) ( Math.ceil((double) s.length() / 2));
-        for (int i = 0; i < upto ; i++) {
-            if(s.charAt(i) != s.charAt(j))
+        int upto = (int) (Math.ceil((double) s.length() / 2));
+        for (int i = 0; i < upto; i++) {
+            if (s.charAt(i) != s.charAt(j))
                 return false;
             j--;
         }
         return true;
 
     }
+
     public int singleNumber(int[] nums) {
         HashMap<Integer, Integer> numMap = new HashMap<>();
         HashSet<Integer> single = new HashSet<>();
-        for (int i: nums
-             ) {
+        for (int i : nums
+        ) {
             numMap.merge(i, 1, (oldvalue, newvalue) -> oldvalue + 1);
-            if(numMap.get(i) == 1){
+            if (numMap.get(i) == 1) {
                 single.add(i);
-            }
-            else if(numMap.get(i) == 3){
+            } else if (numMap.get(i) == 3) {
                 single.remove(i);
             }
 
@@ -1256,17 +1257,18 @@ public class Solution {
         return (int) single.toArray()[0];
 
     }
+
     public boolean isAnagram(String s, String t) {
-        if(s.length() !=t.length())
+        if (s.length() != t.length())
             return false;
         HashMap<Character, Integer> sHash = new HashMap<>();
         HashMap<Character, Integer> tHash = new HashMap<>();
         for (int i = 0; i < s.length(); i++) {
-            sHash.merge(s.charAt(i), 1, (oldvalue, newvalue)-> oldvalue + 1);
-            tHash.merge(t.charAt(i), 1, (oldvalue, newvalue)-> oldvalue + 1);
+            sHash.merge(s.charAt(i), 1, (oldvalue, newvalue) -> oldvalue + 1);
+            tHash.merge(t.charAt(i), 1, (oldvalue, newvalue) -> oldvalue + 1);
         }
         for (Map.Entry<Character, Integer> entry : sHash.entrySet()) {
-            if(!tHash.containsKey(entry.getKey()) || !tHash.get(entry.getKey()).equals(sHash.get(entry.getKey())) ) //bruh
+            if (!tHash.containsKey(entry.getKey()) || !tHash.get(entry.getKey()).equals(sHash.get(entry.getKey()))) //bruh
                 return false;
 
         }
@@ -1274,6 +1276,100 @@ public class Solution {
 
     }
 
+    public class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode() {
+        }
+
+        ListNode(int val) {
+            this.val = val;
+        }
+
+        ListNode(int val, ListNode next) {
+            this.val = val;
+            this.next = next;
+        }
+    }
+
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        StringBuilder kev = new StringBuilder();
+        StringBuilder kevl2 = new StringBuilder();
+        ListNode currentNode = l1;
+        while (currentNode != null) {
+            kev.append(currentNode.val);
+            currentNode = currentNode.next;
+        }
+
+        currentNode = l2;
+        while (currentNode != null) {
+            kevl2.append(currentNode.val);
+            currentNode = currentNode.next;
+
+        }
+        String s1 = kev.toString();
+        String s2 = kevl2.toString();
+        StringBuilder sb = new StringBuilder();
+        int merke = 0;
+        if(s1.length() >= s2.length()){
+            for (int i = 0; i < s1.length(); i++) {
+                int tmp = 0;
+                if(i<s2.length())
+                    tmp = Character.getNumericValue(s2.charAt(i));
+                int value = Character.getNumericValue(s1.charAt(i));
+                if( merke + value +tmp >= 10){
+                    sb.append((merke + value +tmp) % 10);
+                    merke = 1;
+                }
+                else{
+                    sb.append((merke + value +tmp) % 10);
+                    merke = 0;
+                }
+
+            }
+        }
+        else{
+            for (int i = 0; i < s2.length(); i++) {
+                int tmp = 0;
+                if(i<s1.length())
+                    tmp = Character.getNumericValue(s1.charAt(i));
+                int value = Character.getNumericValue(s2.charAt(i));
+                if( merke + value +tmp >= 10){
+                    sb.append((merke + value +tmp) % 10);
+                    merke = 1;
+                }
+                else{
+                    sb.append((merke + value +tmp) % 10);
+                    merke = 0;
+                }
+
+            }
+
+        }
+        if(merke == 1)
+            sb.append(1);
+        System.out.println(sb.toString());
+        char[] shutUp = sb.toString().toCharArray();
+        ListNode ResNode = new ListNode();
+        ListNode tmp = ResNode;
+        for (int i = 0; i < shutUp.length; i++) {
+            tmp.val = Character.getNumericValue(shutUp[i]); //Character.getNumericValue(c)
+            if (i < shutUp.length - 1) {
+                tmp.next = new ListNode();
+                tmp = tmp.next;
+            }
+        }
+        return ResNode;
+
+        //        BigInteger value1 = new BigInteger(kev.reverse().toString());
+//        BigInteger value2 = new BigInteger(kevl2.reverse().toString());
+//        value2 = value2.add(value1);
+//        String myValue = value2.toString();
+//        System.out.println(myValue);
+//        StringBuilder sb = new StringBuilder(myValue);
+
+    }
 
 
 }
