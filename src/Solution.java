@@ -1239,6 +1239,41 @@ public class Solution {
         return true;
 
     }
+    public int singleNumber(int[] nums) {
+        HashMap<Integer, Integer> numMap = new HashMap<>();
+        HashSet<Integer> single = new HashSet<>();
+        for (int i: nums
+             ) {
+            numMap.merge(i, 1, (oldvalue, newvalue) -> oldvalue + 1);
+            if(numMap.get(i) == 1){
+                single.add(i);
+            }
+            else if(numMap.get(i) == 3){
+                single.remove(i);
+            }
+
+        }
+        return (int) single.toArray()[0];
+
+    }
+    public boolean isAnagram(String s, String t) {
+        if(s.length() !=t.length())
+            return false;
+        HashMap<Character, Integer> sHash = new HashMap<>();
+        HashMap<Character, Integer> tHash = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            sHash.merge(s.charAt(i), 1, (oldvalue, newvalue)-> oldvalue + 1);
+            tHash.merge(t.charAt(i), 1, (oldvalue, newvalue)-> oldvalue + 1);
+        }
+        for (Map.Entry<Character, Integer> entry : sHash.entrySet()) {
+            if(!tHash.containsKey(entry.getKey()) || !tHash.get(entry.getKey()).equals(sHash.get(entry.getKey())) ) //bruh
+                return false;
+
+        }
+        return true;
+
+    }
+
 
 
 }
