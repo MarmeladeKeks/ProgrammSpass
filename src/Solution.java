@@ -14,10 +14,11 @@ public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
-        System.out.println(s.lengthOfLongestSubstring("dvdf"));
+        System.out.println(s.minSubArrayLen(7, new int[]{2, 3, 1, 2, 4, 3}));
         //[3,1,3,1,1]
         //[1,3,2,8,4,9]
         //[7,1,5,3,6,4]
+        //[0,1,1,1,0,1,1,0,1]
     }
 
     private int roman(String s) {
@@ -1312,42 +1313,39 @@ public class Solution {
         String s2 = kevl2.toString();
         StringBuilder sb = new StringBuilder();
         int merke = 0;
-        if(s1.length() >= s2.length()){
+        if (s1.length() >= s2.length()) {
             for (int i = 0; i < s1.length(); i++) {
                 int tmp = 0;
-                if(i<s2.length())
+                if (i < s2.length())
                     tmp = Character.getNumericValue(s2.charAt(i));
                 int value = Character.getNumericValue(s1.charAt(i));
-                if( merke + value +tmp >= 10){
-                    sb.append((merke + value +tmp) % 10);
+                if (merke + value + tmp >= 10) {
+                    sb.append((merke + value + tmp) % 10);
                     merke = 1;
-                }
-                else{
-                    sb.append((merke + value +tmp) % 10);
+                } else {
+                    sb.append((merke + value + tmp) % 10);
                     merke = 0;
                 }
 
             }
-        }
-        else{
+        } else {
             for (int i = 0; i < s2.length(); i++) {
                 int tmp = 0;
-                if(i<s1.length())
+                if (i < s1.length())
                     tmp = Character.getNumericValue(s1.charAt(i));
                 int value = Character.getNumericValue(s2.charAt(i));
-                if( merke + value +tmp >= 10){
-                    sb.append((merke + value +tmp) % 10);
+                if (merke + value + tmp >= 10) {
+                    sb.append((merke + value + tmp) % 10);
                     merke = 1;
-                }
-                else{
-                    sb.append((merke + value +tmp) % 10);
+                } else {
+                    sb.append((merke + value + tmp) % 10);
                     merke = 0;
                 }
 
             }
 
         }
-        if(merke == 1)
+        if (merke == 1)
             sb.append(1);
         System.out.println(sb.toString());
         char[] shutUp = sb.toString().toCharArray();
@@ -1368,6 +1366,69 @@ public class Solution {
 //        String myValue = value2.toString();
 //        System.out.println(myValue);
 //        StringBuilder sb = new StringBuilder(myValue);
+
+    }
+
+    public int longestSubarray(int[] nums) {
+        int maxLength = 0;
+        int startPoint = 0;
+        int EndPoint = 0;
+        int nextIndex = 0;
+        boolean neverZero = true;
+        boolean containsZero = false;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == 1) {
+                EndPoint++;
+            } else if (nums[i] == 0 && !containsZero) {
+                neverZero = false;
+                nextIndex = i;
+                containsZero = true;
+                continue;
+            } else { // ist 0 und enthält schon eine Null
+                i = nextIndex;
+                maxLength = Math.max(maxLength, EndPoint - startPoint);
+                startPoint = nextIndex + 1;
+                EndPoint = startPoint;
+                containsZero = false;
+
+            }
+
+        }
+        return (neverZero) ? Math.max(maxLength, EndPoint - startPoint) - 1 : Math.max(maxLength, EndPoint - startPoint);
+
+    }
+
+    //    public int minSubArrayLen(int target, int[] nums) {
+//        int minLength = nums.length;
+//        for (int i = 0; i < nums.length; i++) {
+//            int currentSum = nums[i];
+//            int index = i + 1;
+//            while(currentSum < target && index < nums.length ){
+//                currentSum += nums[index];
+//                index++;
+//            }
+//            if(currentSum >= target){
+//                minLength = Math.min(minLength, (index - 1) - i);
+//            }
+//
+//        }
+//
+//    }
+    public int minSubArrayLen(int target, int[] nums) {
+        int minLength = nums.length;
+        int startpoint = 0;
+        int currentSum = 0;
+        boolean neverAchieved = true;
+        for (int i = 0; i < nums.length; i++) {
+            currentSum += nums[i];
+            while (currentSum >= target) {
+                minLength = Math.min(minLength, (i - startpoint) + 1);
+                neverAchieved = false;
+                currentSum -= nums[startpoint];
+                startpoint++;
+            }
+        }
+        return (neverAchieved) ? 0 : minLength;
 
     }
 
