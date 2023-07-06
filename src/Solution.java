@@ -1414,7 +1414,7 @@ public class Solution {
 //        }
 //
 //    }
-    public int minSubArrayLen(int target, int[] nums) {
+    public int minSubArrayLen(int target, int[] nums) { //works!!!
         int minLength = nums.length;
         int startpoint = 0;
         int currentSum = 0;
@@ -1429,6 +1429,20 @@ public class Solution {
             }
         }
         return (neverAchieved) ? 0 : minLength;
+    }
+    public int removeDuplicates(int[] nums) {
+        int inputIndex = 0;
+        int numberUnique = 0;
+        int heighestNumber = nums[0] - 1;
+        for (int i = 0; i < nums.length ; i++) {
+            if(nums[i] > heighestNumber ){
+                nums[inputIndex] = nums[i];
+                inputIndex++;
+                numberUnique++;
+                heighestNumber = nums[i];
+            }
+        }
+        return numberUnique;
 
     }
 
