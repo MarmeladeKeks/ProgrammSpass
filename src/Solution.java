@@ -14,7 +14,7 @@ public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
-        System.out.println(s.minSubArrayLen(7, new int[]{2, 3, 1, 2, 4, 3}));
+        System.out.println(s.threeSum(new int[]{-1,0,1,2,-1,-4}) );
         //[3,1,3,1,1]
         //[1,3,2,8,4,9]
         //[7,1,5,3,6,4]
@@ -1443,6 +1443,76 @@ public class Solution {
             }
         }
         return numberUnique;
+
+    }
+    public int maxConsecutiveAnswers(String answerKey, int k) {
+        int TCounter = 0;
+        int FCounter = 0;
+        int maxLength = 0;
+        int startIndex = 0;
+        for (int i = 0; i < answerKey.length(); i++) {
+            if (answerKey.charAt(i) == 'T') {
+                TCounter++;
+            }
+            else
+                FCounter++;
+            int minNumber = Math.min(TCounter, FCounter);
+            while(minNumber  > k){
+                if(answerKey.charAt(startIndex) == 'T')
+                    TCounter--;
+                else
+                    FCounter--;
+                startIndex++;
+                minNumber = Math.min(TCounter, FCounter);
+            }
+            maxLength = Math.max(maxLength, (i - startIndex) + 1);
+        }
+        return maxLength;
+
+    }
+    public List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
+        List<List<Integer>> resList = new ArrayList<>();
+        for (int i = 0; i < nums.length; i++) {
+            int value = nums[i];
+            if(i > 0 && value == nums[i - 1])
+                continue;
+            for (int j = i + 1; j < nums.length ; j++) {
+                if(j > i+ 1 && nums[j] == nums[j - 1])
+                    continue;
+                int tmp = value + nums[j];
+                if(findInArray(j + 1, nums, - tmp)){
+                    List<Integer> tmpList = new ArrayList<>();
+                    tmpList.add(value);
+                    tmpList.add(nums[j]);
+                    tmpList.add(-tmp);
+                    //if(!resList.contains(tmpList))
+                        resList.add(tmpList);
+
+                }
+
+            }
+        }
+        return resList;
+
+    }
+    private boolean findInArray(int startpoint, int[] nums, int target ){
+        int endpoint = nums.length - 1;
+        int mid = ( (endpoint + startpoint) / 2);
+        while(startpoint <= endpoint){
+            if(nums[mid] == target){
+                return true;
+            }
+            else if(target > nums[mid]){
+                startpoint = mid + 1;
+                mid = ( (endpoint + startpoint) / 2);
+            }
+            else{
+                endpoint = mid - 1;
+                mid = ( (endpoint + startpoint) / 2);
+            }
+        }
+        return false;
 
     }
 
