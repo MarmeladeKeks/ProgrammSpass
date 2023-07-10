@@ -14,11 +14,13 @@ public class Solution {
     public static void main(String[] args) {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
-        System.out.println(s.threeSum(new int[]{-1,0,1,2,-1,-4}) );
+        //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
+        System.out.println(s.mySqrt(2147395599));
         //[3,1,3,1,1]
         //[1,3,2,8,4,9]
         //[7,1,5,3,6,4]
         //[0,1,1,1,0,1,1,0,1]
+
     }
 
     private int roman(String s) {
@@ -1430,12 +1432,13 @@ public class Solution {
         }
         return (neverAchieved) ? 0 : minLength;
     }
+
     public int removeDuplicates(int[] nums) {
         int inputIndex = 0;
         int numberUnique = 0;
         int heighestNumber = nums[0] - 1;
-        for (int i = 0; i < nums.length ; i++) {
-            if(nums[i] > heighestNumber ){
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > heighestNumber) {
                 nums[inputIndex] = nums[i];
                 inputIndex++;
                 numberUnique++;
@@ -1445,6 +1448,7 @@ public class Solution {
         return numberUnique;
 
     }
+
     public int maxConsecutiveAnswers(String answerKey, int k) {
         int TCounter = 0;
         int FCounter = 0;
@@ -1453,12 +1457,11 @@ public class Solution {
         for (int i = 0; i < answerKey.length(); i++) {
             if (answerKey.charAt(i) == 'T') {
                 TCounter++;
-            }
-            else
+            } else
                 FCounter++;
             int minNumber = Math.min(TCounter, FCounter);
-            while(minNumber  > k){
-                if(answerKey.charAt(startIndex) == 'T')
+            while (minNumber > k) {
+                if (answerKey.charAt(startIndex) == 'T')
                     TCounter--;
                 else
                     FCounter--;
@@ -1470,24 +1473,25 @@ public class Solution {
         return maxLength;
 
     }
+
     public List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
         List<List<Integer>> resList = new ArrayList<>();
         for (int i = 0; i < nums.length; i++) {
             int value = nums[i];
-            if(i > 0 && value == nums[i - 1])
+            if (i > 0 && value == nums[i - 1])
                 continue;
-            for (int j = i + 1; j < nums.length ; j++) {
-                if(j > i+ 1 && nums[j] == nums[j - 1])
+            for (int j = i + 1; j < nums.length; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1])
                     continue;
                 int tmp = value + nums[j];
-                if(findInArray(j + 1, nums, - tmp)){
+                if (findInArray(j + 1, nums, -tmp)) {
                     List<Integer> tmpList = new ArrayList<>();
                     tmpList.add(value);
                     tmpList.add(nums[j]);
                     tmpList.add(-tmp);
                     //if(!resList.contains(tmpList))
-                        resList.add(tmpList);
+                    resList.add(tmpList);
 
                 }
 
@@ -1496,24 +1500,115 @@ public class Solution {
         return resList;
 
     }
-    private boolean findInArray(int startpoint, int[] nums, int target ){
+
+    private boolean findInArray(int startpoint, int[] nums, int target) {
         int endpoint = nums.length - 1;
-        int mid = ( (endpoint + startpoint) / 2);
-        while(startpoint <= endpoint){
-            if(nums[mid] == target){
+        int mid = ((endpoint + startpoint) / 2);
+        while (startpoint <= endpoint) {
+            if (nums[mid] == target) {
                 return true;
-            }
-            else if(target > nums[mid]){
+            } else if (target > nums[mid]) {
                 startpoint = mid + 1;
-                mid = ( (endpoint + startpoint) / 2);
-            }
-            else{
+                mid = ((endpoint + startpoint) / 2);
+            } else {
                 endpoint = mid - 1;
-                mid = ( (endpoint + startpoint) / 2);
+                mid = ((endpoint + startpoint) / 2);
             }
         }
         return false;
 
+    }
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     * int val;
+     * TreeNode left;
+     * TreeNode right;
+     * TreeNode() {}
+     * TreeNode(int val) { this.val = val; }
+     * TreeNode(int val, TreeNode left, TreeNode right) {
+     * this.val = val;
+     * this.left = left;
+     * this.right = right;
+     * }
+     * }
+     */
+    int minDepthLength;
+
+    public int minDepth(TreeNode root) {
+        minDepthLength = (int) Double.POSITIVE_INFINITY;
+        if (root == null)
+            return 0;
+        else
+            return minDepthHelper(root, 0);
+
+    }
+
+    private int minDepthHelper(TreeNode root, int currentMinDepth) {
+        currentMinDepth++;
+        if (currentMinDepth >= minDepthLength) //optimization
+            return currentMinDepth;
+        if (root.left == null && root.right == null) {
+            //Base Case
+            minDepthLength = Math.min(currentMinDepth, minDepthLength);
+            return minDepthLength;
+        }
+        if (root.left != null)
+            minDepthHelper(root.left, currentMinDepth);
+        if (root.right != null)
+            minDepthHelper(root.right, currentMinDepth);
+        return minDepthLength;
+    }
+
+    public String countAndSay(int n) {
+        if( n == 1){
+            return "1";
+        }
+        String s = countAndSay(n - 1);
+        char digit = (char) Math.abs(Character.getNumericValue(s.charAt(0)) - 1);  //mega Brain move
+        System.out.println(digit);
+        int count_Digit = 0;
+        boolean firstTime = true;
+        StringBuilder sb = new StringBuilder();
+        for (char c: s.toCharArray()
+             ) {
+            if(c == digit){
+                count_Digit++;
+            } else if (firstTime) {
+                digit = c;
+                count_Digit = 1;
+                firstTime = false;
+            }
+            else{
+                sb.append(count_Digit);
+                sb.append(digit);
+                digit = c;
+                count_Digit = 1;
+            }
+
+        }
+        sb.append(count_Digit);
+        sb.append(digit);
+        return sb.toString();
+    }
+    public int mySqrt(int x) { //maybe Binary Search.
+        long start = 0;
+        long end = x;
+        long mid = (start + end) / 2;
+        while(start <= end){
+            if(mid *  mid == x) // Base Case
+                return (int) mid;
+            else if (x > mid * mid) {
+                start = mid + 1;
+                mid = (start + end) / 2;
+            }
+            else{
+                end = mid - 1;
+                mid = (start + end) / 2;
+            }
+        }
+        return (int) mid;
     }
 
 
