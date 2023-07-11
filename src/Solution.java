@@ -1610,6 +1610,68 @@ public class Solution {
         }
         return (int) mid;
     }
+    List<Integer> distanceKList = new ArrayList<>();
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        distanceKList.clear();
+        distanceKHelper(root, target, k, 0, false);
+        return distanceKList;
+
+    }
+    private int distanceKHelper(TreeNode root, TreeNode target, int k, int currentK, boolean downwards){
+        if(downwards){
+            if(root == null)
+                return -1;
+            if(currentK ==k){
+                distanceKList.add(root.val);
+                return -1;
+            }
+            if(currentK < k){
+                distanceKHelper(root.left, target, k, currentK + 1, true);
+                distanceKHelper(root.right, target, k, currentK + 1, true);
+                return -1;
+
+            }
+            else{
+                return -1;
+            }
+        }
+        else{
+            if(root == null)
+                return 0;
+            if(root.val == target.val){
+                if(currentK == k){
+                    distanceKList.add(root.val);
+                }
+                distanceKHelper(root.left, target, k, 1, true);
+                distanceKHelper(root.right, target, k, 1, true);
+                return 1;
+            }
+            int left = distanceKHelper(root.left, target, k, currentK, false);
+            int right = distanceKHelper(root.right, target, k, currentK, false);
+            if(left> 0){
+                if(left == k){
+                    distanceKList.add(root.val);
+                    return -1;
+                }
+                distanceKHelper(root.right, target, k, left + 1, true);
+                return left + 1;
+            }
+            else if(right > 0){
+                if(right == k){
+                    distanceKList.add(root.val);
+                    return -1;
+                }
+                distanceKHelper(root.left, target, k, right + 1, true);
+                return right + 1;
+            }
+            else{
+                return 0;
+            }
+
+
+        }
+
+    }
 
 
 }
