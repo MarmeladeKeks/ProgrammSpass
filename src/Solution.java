@@ -4,6 +4,8 @@ import java.io.*;
 import java.math.BigInteger;
 import java.sql.Array;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class Solution {
@@ -15,7 +17,7 @@ public class Solution {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
-        System.out.println(s.mySqrt(2147395599));
+        System.out.println(s.canFinish(3, new int[][]{ {0,2},{1,2}, {2, 0}}));
         //[3,1,3,1,1]
         //[1,3,2,8,4,9]
         //[7,1,5,3,6,4]
@@ -1562,7 +1564,7 @@ public class Solution {
     }
 
     public String countAndSay(int n) {
-        if( n == 1){
+        if (n == 1) {
             return "1";
         }
         String s = countAndSay(n - 1);
@@ -1571,16 +1573,15 @@ public class Solution {
         int count_Digit = 0;
         boolean firstTime = true;
         StringBuilder sb = new StringBuilder();
-        for (char c: s.toCharArray()
-             ) {
-            if(c == digit){
+        for (char c : s.toCharArray()
+        ) {
+            if (c == digit) {
                 count_Digit++;
             } else if (firstTime) {
                 digit = c;
                 count_Digit = 1;
                 firstTime = false;
-            }
-            else{
+            } else {
                 sb.append(count_Digit);
                 sb.append(digit);
                 digit = c;
@@ -1592,54 +1593,55 @@ public class Solution {
         sb.append(digit);
         return sb.toString();
     }
+
     public int mySqrt(int x) { //maybe Binary Search.
         long start = 0;
         long end = x;
         long mid = (start + end) / 2;
-        while(start <= end){
-            if(mid *  mid == x) // Base Case
+        while (start <= end) {
+            if (mid * mid == x) // Base Case
                 return (int) mid;
             else if (x > mid * mid) {
                 start = mid + 1;
                 mid = (start + end) / 2;
-            }
-            else{
+            } else {
                 end = mid - 1;
                 mid = (start + end) / 2;
             }
         }
         return (int) mid;
     }
+
     List<Integer> distanceKList = new ArrayList<>();
+
     public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
         distanceKList.clear();
         distanceKHelper(root, target, k, 0, false);
         return distanceKList;
 
     }
-    private int distanceKHelper(TreeNode root, TreeNode target, int k, int currentK, boolean downwards){
-        if(downwards){
-            if(root == null)
+
+    private int distanceKHelper(TreeNode root, TreeNode target, int k, int currentK, boolean downwards) {
+        if (downwards) {
+            if (root == null)
                 return -1;
-            if(currentK ==k){
+            if (currentK == k) {
                 distanceKList.add(root.val);
                 return -1;
             }
-            if(currentK < k){
+            if (currentK < k) {
                 distanceKHelper(root.left, target, k, currentK + 1, true);
                 distanceKHelper(root.right, target, k, currentK + 1, true);
                 return -1;
 
-            }
-            else{
+            } else {
                 return -1;
             }
-        }
-        else{
-            if(root == null)
+        } else {
+            if (root == null)
                 return 0;
-            if(root.val == target.val){
-                if(currentK == k){
+            if (root.val == target.val) {
+                if (currentK == k) {
                     distanceKList.add(root.val);
                 }
                 distanceKHelper(root.left, target, k, 1, true);
@@ -1648,28 +1650,106 @@ public class Solution {
             }
             int left = distanceKHelper(root.left, target, k, currentK, false);
             int right = distanceKHelper(root.right, target, k, currentK, false);
-            if(left> 0){
-                if(left == k){
+            if (left > 0) {
+                if (left == k) {
                     distanceKList.add(root.val);
                     return -1;
                 }
                 distanceKHelper(root.right, target, k, left + 1, true);
                 return left + 1;
-            }
-            else if(right > 0){
-                if(right == k){
+            } else if (right > 0) {
+                if (right == k) {
                     distanceKList.add(root.val);
                     return -1;
                 }
                 distanceKHelper(root.left, target, k, right + 1, true);
                 return right + 1;
-            }
-            else{
+            } else {
                 return 0;
             }
 
+        }
+
+    }
+
+    //    public boolean canFinish(int numCourses, int[][] prerequisites) {
+//        HashMap<Integer, List<Integer>> BedingungsListe = new HashMap<>(prerequisites.length);
+//        HashMap<Integer, List<Integer>> FreigabeListe = new HashMap<>(prerequisites.length);
+//        for (int [] myArray: prerequisites
+//             ) {
+//            BedingungsListe.merge(myArray[1], new ArrayList<>(List.of(myArray[0])),(newvalue, oldvalue) -> {oldvalue.add(myArray[0]); return oldvalue;});
+//            FreigabeListe.merge(myArray[0], new ArrayList<>(List.of(myArray[1])),(newvalue, oldvalue) -> {oldvalue.add(myArray[1]); return oldvalue;});
+//        }
+//        for (Map.Entry<Integer, List<Integer>> set :
+//                BedingungsListe.entrySet()) {
+//            // Printing all elements of a Map
+////            System.out.println(set.getKey() + " = "
+////                    + set.getValue());
+//            int remove = set.getKey();
+//            if(set.getValue().isEmpty()){
+//                BedingungsListe.remove(set.getKey());
+//                //maybe add Something here
+//            }
+//            int currentSize = set.getValue().size();
+//            List<Integer> currentList = set.getValue();
+//            for (Integer i: currentList
+//                 ) {
+//                Stack<Integer> currentStack = new Stack<>();
+//                currentStack.add(i);
+//                while(!currentStack.isEmpty()){
+//                    int removeThis = currentStack.peek();
+//
+//
+//
+//                }
+//
+//            }
+//        }
+    boolean[] visited;
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        HashMap<Integer, List<Integer>> graph = new HashMap<>(prerequisites.length);
+        for (int [] myArray: prerequisites
+             ) {
+            graph.merge(myArray[1], new ArrayList<>(List.of(myArray[0])),(l1, l2) -> Stream.concat(l1.stream(), Stream.of(myArray[0])).collect(Collectors.toList()));
+        }
+        visited = new boolean[numCourses];
+        for (int i = 0; i < numCourses ; i++) {
+            boolean Flag = false;
+            if(visited[i] || graph.get(i) == null){
+                continue;
+            }
+            else{
+                boolean [] b = new boolean[numCourses];
+                Flag = canFinishDfs(graph, numCourses,b, i );
+            }
+            if(Flag)
+                return false;
 
         }
+        return true;
+
+
+    }
+    private boolean canFinishDfs(HashMap<Integer, List<Integer>> graph, int numCourses, boolean[] dfsVisited, int number){
+        List<Integer> neighbours = graph.get(number);
+        visited[number] = true;
+        dfsVisited[number] = true;
+        if(neighbours == null)
+            return false;
+        for (Integer i: neighbours
+             ) {
+            boolean Flag = false;
+            if(dfsVisited[i]){
+                return true;
+            } else if (!visited[i]) {
+                dfsVisited[i] = true;
+                Flag = canFinishDfs(graph, numCourses, dfsVisited, i);
+                dfsVisited[i] = false;
+            }
+            if(Flag)
+                return true;
+        }
+        return false;
 
     }
 
