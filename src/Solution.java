@@ -17,7 +17,7 @@ public class Solution {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
-        System.out.println(s.canFinish(3, new int[][]{ {0,2},{1,2}, {2, 0}}));
+        System.out.println(s.longestSubsequence(new int[] {4,12,10,0,-2,7,-8,9,-9,-12,-12,8,8}, 0));
         //[3,1,3,1,1]
         //[1,3,2,8,4,9]
         //[7,1,5,3,6,4]
@@ -1752,6 +1752,28 @@ public class Solution {
         return false;
 
     }
+    public int longestSubsequence(int[] arr, int difference) {
+        HashMap<Integer, Integer> myMap = new HashMap<>(arr.length);
+        int maxLength = 1;
+        for (int i = 0; i < arr.length ; i++) {
+            int currentValue = arr[i];
+            boolean firstTime = false;
+            if(!myMap.containsKey(currentValue)){
+                myMap.put(currentValue,1);
+                firstTime = true;
+            }
+            if(firstTime && difference == 0)
+                continue;
+            if(myMap.containsKey(currentValue - difference)){
+                Integer tmp = myMap.get(currentValue  - difference);
+                myMap.put(currentValue, tmp + 1);
+                maxLength = Math.max(tmp + 1 , maxLength);
+            }
+
+        }
+        return maxLength;
+    }
+
 
 
 }
