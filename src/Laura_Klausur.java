@@ -85,6 +85,7 @@ public class Laura_Klausur {
         System.out.println("ksys " + Arrays.deepToString(alag));
         System.out.println("(globalr) s0 " + Arrays.toString(r));
         System.out.println(" rlag " + Arrays.toString(rlag));
+        //xD
 
     }
 
