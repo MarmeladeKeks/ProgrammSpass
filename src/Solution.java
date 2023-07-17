@@ -17,7 +17,7 @@ public class Solution {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
-        System.out.println(s.longestSubsequence(new int[] {4,12,10,0,-2,7,-8,9,-9,-12,-12,8,8}, 0));
+        System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //[3,1,3,1,1]
         //[1,3,2,8,4,9]
         //[7,1,5,3,6,4]
@@ -1706,23 +1706,23 @@ public class Solution {
 //            }
 //        }
     boolean[] visited;
+
     public boolean canFinish(int numCourses, int[][] prerequisites) {
         HashMap<Integer, List<Integer>> graph = new HashMap<>(prerequisites.length);
-        for (int [] myArray: prerequisites
-             ) {
-            graph.merge(myArray[1], new ArrayList<>(List.of(myArray[0])),(l1, l2) -> Stream.concat(l1.stream(), Stream.of(myArray[0])).collect(Collectors.toList()));
+        for (int[] myArray : prerequisites
+        ) {
+            graph.merge(myArray[1], new ArrayList<>(List.of(myArray[0])), (l1, l2) -> Stream.concat(l1.stream(), Stream.of(myArray[0])).collect(Collectors.toList()));
         }
         visited = new boolean[numCourses];
-        for (int i = 0; i < numCourses ; i++) {
+        for (int i = 0; i < numCourses; i++) {
             boolean Flag = false;
-            if(visited[i] || graph.get(i) == null){
+            if (visited[i] || graph.get(i) == null) {
                 continue;
+            } else {
+                boolean[] b = new boolean[numCourses];
+                Flag = canFinishDfs(graph, numCourses, b, i);
             }
-            else{
-                boolean [] b = new boolean[numCourses];
-                Flag = canFinishDfs(graph, numCourses,b, i );
-            }
-            if(Flag)
+            if (Flag)
                 return false;
 
         }
@@ -1730,50 +1730,106 @@ public class Solution {
 
 
     }
-    private boolean canFinishDfs(HashMap<Integer, List<Integer>> graph, int numCourses, boolean[] dfsVisited, int number){
+
+    private boolean canFinishDfs(HashMap<Integer, List<Integer>> graph, int numCourses, boolean[] dfsVisited, int number) {
         List<Integer> neighbours = graph.get(number);
         visited[number] = true;
         dfsVisited[number] = true;
-        if(neighbours == null)
+        if (neighbours == null)
             return false;
-        for (Integer i: neighbours
-             ) {
+        for (Integer i : neighbours
+        ) {
             boolean Flag = false;
-            if(dfsVisited[i]){
+            if (dfsVisited[i]) {
                 return true;
             } else if (!visited[i]) {
                 dfsVisited[i] = true;
                 Flag = canFinishDfs(graph, numCourses, dfsVisited, i);
                 dfsVisited[i] = false;
             }
-            if(Flag)
+            if (Flag)
                 return true;
         }
         return false;
 
     }
+
     public int longestSubsequence(int[] arr, int difference) {
         HashMap<Integer, Integer> myMap = new HashMap<>(arr.length);
         int maxLength = 1;
-        for (int i = 0; i < arr.length ; i++) {
+        for (int i = 0; i < arr.length; i++) {
             int currentValue = arr[i];
             boolean firstTime = false;
-            if(!myMap.containsKey(currentValue)){
-                myMap.put(currentValue,1);
+            if (!myMap.containsKey(currentValue)) {
+                myMap.put(currentValue, 1);
                 firstTime = true;
             }
-            if(firstTime && difference == 0)
+            if (firstTime && difference == 0)
                 continue;
-            if(myMap.containsKey(currentValue - difference)){
-                Integer tmp = myMap.get(currentValue  - difference);
+            if (myMap.containsKey(currentValue - difference)) {
+                Integer tmp = myMap.get(currentValue - difference);
                 myMap.put(currentValue, tmp + 1);
-                maxLength = Math.max(tmp + 1 , maxLength);
+                maxLength = Math.max(tmp + 1, maxLength);
             }
 
         }
         return maxLength;
     }
 
+    public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
+        ListNode currentNode = l1;
+        StringBuilder sb1 = new StringBuilder();
+        while (currentNode != null) {
+            sb1.append(currentNode.val);
+            currentNode = currentNode.next;
+        }
+        currentNode = l2;
+        StringBuilder sb2 = new StringBuilder();
+        while (currentNode != null) {
+            sb2.append(currentNode.val);
+            currentNode = currentNode.next;
+        }
+        String longer;
+        String shorter;
+        if (sb1.length() > sb2.length()) {
+            longer = sb1.toString();
+            shorter = sb2.toString();
+        } else {
+            longer = sb2.toString();
+            shorter = sb1.toString();
+        }
+        int merke = 0;
+        StringBuilder resBuilder = new StringBuilder();
+        for (int i = 0; i < longer.length(); i++) {
+            int shorterNumber = 0;
+            if (i < shorter.length())
+                shorterNumber = Character.getNumericValue(shorter.charAt(shorter.length() - 1 - i));
+            int tmp = Character.getNumericValue(longer.charAt(longer.length() - 1 - i)) + shorterNumber + merke;
+            if (tmp >= 10) {
+                merke = 1;
+            } else {
+                merke = 0;
+            }
+            tmp = tmp % 10;
+            resBuilder.append(tmp);
+        }
+        if(merke == 1)
+            resBuilder.append(1);
+        String resultString = resBuilder.reverse().toString();
+        System.out.println(resultString);
+        final ListNode returnPointer = new ListNode();
+        ListNode resList = returnPointer;
+
+        for (int i = 0; i < resultString.length(); i++) {
+            resList.val = Character.getNumericValue(resultString.charAt(i));
+            if(i < resultString.length() - 1){
+                resList.next = new ListNode();
+                resList = resList.next;
+            }
+        }
+        return returnPointer;
+
+    }
 
 
 }
