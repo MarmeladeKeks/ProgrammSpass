@@ -4,6 +4,10 @@ import java.io.*;
 import java.math.BigInteger;
 import java.sql.Array;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1830,6 +1834,58 @@ public class Solution {
         return returnPointer;
 
     }
+    class LRUCache {
+        HashMap<Integer, Integer> globalCache;
+        LinkedBlockingQueue<Integer> lru;
+
+        int capacity;
+        int current_Capacity = 0;
+
+
+        public LRUCache(int capacity) {
+            globalCache = new HashMap<>(capacity);
+            this.capacity = capacity;
+            lru = new LinkedBlockingQueue<>(capacity);
+            current_Capacity = 0;
+        }
+
+        public int get(int key) {
+            Integer tmp = globalCache.get(key);
+            if(lru.remove(key)) {
+                lru.offer(key);
+            }
+            return (tmp == null) ? -1 : tmp;
+        }
+
+        public void put(int key, int value) {
+            if(globalCache.containsKey(key)){
+                globalCache.put(key, value);
+                lru.remove(key);
+                lru.offer(key);
+            }
+            else{
+                if(lru.offer(key)){
+                    globalCache.put(key, value);
+                }
+                else{
+                    Integer tmp = lru.remove();
+                    Integer test  = globalCache.remove(tmp);
+                    if(test == null){
+                        throw new RuntimeException("that shouldnt be possible wtf");
+                    }
+                    globalCache.put(key, value);
+                    lru.offer(key);
+                }
+            }
+        }
+    }
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
 
 
 }
