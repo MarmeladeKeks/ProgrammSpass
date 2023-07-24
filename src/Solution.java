@@ -1879,6 +1879,16 @@ public class Solution {
             }
         }
     }
+    public double myPow(double x, int n) {
+        double myX = x;
+        if(n < 0)
+            myX = 1/x;
+        float res = 1;
+        for (int i = 1; i <= Math.abs(n) ; i++) {
+            res *= myX;
+        }
+        return res;
+    }
 
 /**
  * Your LRUCache object will be instantiated and called as such:
