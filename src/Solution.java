@@ -21,7 +21,8 @@ public class Solution {
         Solution s = new Solution();
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
-        System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
+        //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
+        System.out.println(s.longestPalindrome("aaaaa"));
         //[3,1,3,1,1]
         //[1,3,2,8,4,9]
         //[7,1,5,3,6,4]
@@ -1817,7 +1818,7 @@ public class Solution {
             tmp = tmp % 10;
             resBuilder.append(tmp);
         }
-        if(merke == 1)
+        if (merke == 1)
             resBuilder.append(1);
         String resultString = resBuilder.reverse().toString();
         System.out.println(resultString);
@@ -1826,7 +1827,7 @@ public class Solution {
 
         for (int i = 0; i < resultString.length(); i++) {
             resList.val = Character.getNumericValue(resultString.charAt(i));
-            if(i < resultString.length() - 1){
+            if (i < resultString.length() - 1) {
                 resList.next = new ListNode();
                 resList = resList.next;
             }
@@ -1834,6 +1835,7 @@ public class Solution {
         return returnPointer;
 
     }
+
     class LRUCache {
         HashMap<Integer, Integer> globalCache;
         LinkedBlockingQueue<Integer> lru;
@@ -1851,26 +1853,24 @@ public class Solution {
 
         public int get(int key) {
             Integer tmp = globalCache.get(key);
-            if(lru.remove(key)) {
+            if (lru.remove(key)) {
                 lru.offer(key);
             }
             return (tmp == null) ? -1 : tmp;
         }
 
         public void put(int key, int value) {
-            if(globalCache.containsKey(key)){
+            if (globalCache.containsKey(key)) {
                 globalCache.put(key, value);
                 lru.remove(key);
                 lru.offer(key);
-            }
-            else{
-                if(lru.offer(key)){
+            } else {
+                if (lru.offer(key)) {
                     globalCache.put(key, value);
-                }
-                else{
+                } else {
                     Integer tmp = lru.remove();
-                    Integer test  = globalCache.remove(tmp);
-                    if(test == null){
+                    Integer test = globalCache.remove(tmp);
+                    if (test == null) {
                         throw new RuntimeException("that shouldnt be possible wtf");
                     }
                     globalCache.put(key, value);
@@ -1879,23 +1879,190 @@ public class Solution {
             }
         }
     }
+
     public double myPow(double x, int n) {
         double myX = x;
-        if(n < 0)
-            myX = 1/x;
-        float res = 1;
-        for (int i = 1; i <= Math.abs(n) ; i++) {
-            res *= myX;
+        long myn = n;
+
+        if (n < 0) {
+            myX = 1.0 / x;
+            myn = -1l * myn;
+        }
+        return myPowHelper(myX, myn);
+    }
+
+    private double myPowHelper(double x, long n) {
+        if (n == 0)
+            return 1.0;
+        if (n == 1)
+            return x;
+        if (n % 2 == 0) {
+            return myPowHelper(x * x, n / 2);
+        } else {
+            return x * myPowHelper(x * x, (n - 1) / 2);
+        }
+    }
+
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        if (nums1.length > nums2.length) {
+            return findMedianSortedArrays(nums2, nums1);
+        }
+
+        int m = nums1.length, n = nums2.length;
+        int left = 0, right = m;
+
+        while (left <= right) {
+            int partitionA = (left + right) / 2;
+            int partitionB = (m + n + 1) / 2 - partitionA;
+
+            int maxLeftA = (partitionA == 0) ? Integer.MIN_VALUE : nums1[partitionA - 1];
+            int minRightA = (partitionA == m) ? Integer.MAX_VALUE : nums1[partitionA];
+            int maxLeftB = (partitionB == 0) ? Integer.MIN_VALUE : nums2[partitionB - 1];
+            int minRightB = (partitionB == n) ? Integer.MAX_VALUE : nums2[partitionB];
+
+            if (maxLeftA <= minRightB && maxLeftB <= minRightA) {
+                if ((m + n) % 2 == 0) {
+                    return (Math.max(maxLeftA, maxLeftB) + Math.min(minRightA, minRightB)) / 2.0;
+                } else {
+                    return Math.max(maxLeftA, maxLeftB);
+                }
+            } else if (maxLeftA > minRightB) {
+                right = partitionA - 1;
+            } else {
+                left = partitionA + 1;
+            }
+        }
+        return 0.0;
+    }
+
+    //    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+//        int[] shorter = nums1;
+//        int[] longer = nums2;
+//        if(nums1.length > nums2.length){
+//            shorter = nums2;
+//            longer = nums1;
+//        }
+//        int total = nums1.length + nums2.length;
+//        int myLength = (total + 1) / 2;
+//        int left = 0;
+//        int end = shorter.length;
+//        int mid = (left + end) / 2;
+//        int otherHalf = myLength - mid;
+//        int shorter0 = (int) Double.NEGATIVE_INFINITY;
+//        int shorter1 = (int) Double.POSITIVE_INFINITY;
+//        int longer0 = (int) Double.NEGATIVE_INFINITY;
+//        int longer1 = (int) Double.POSITIVE_INFINITY;
+//        if(mid < shorter.length)
+//            shorter0 = shorter[mid];
+//        if(mid + 1 < shorter.length)
+//            shorter1 = shorter[mid + 1];
+//        if(otherHalf < longer.length)
+//            longer0 = longer[otherHalf];
+//        if(otherHalf + 1 < longer.length)
+//            longer1 = longer[otherHalf +1];
+//        while(shorter0 > longer1 || longer0 > shorter1){
+//            if(shorter0 > longer1){
+//                end = mid - 1;
+//            }
+//            else{
+//                left = mid + 1;
+//            }
+//            mid = (left + end) / 2;
+//            otherHalf = myLength - mid - 1;
+//            shorter0 = (int) Double.NEGATIVE_INFINITY;
+//            shorter1 = (int) Double.POSITIVE_INFINITY;
+//            longer0 = (int) Double.NEGATIVE_INFINITY;
+//            longer1 = (int) Double.POSITIVE_INFINITY;
+//            if(mid < shorter.length)
+//                shorter0 = shorter[mid];
+//            if(mid + 1 < shorter.length)
+//                shorter1 = shorter[mid + 1];
+//            if(otherHalf < longer.length)
+//                longer0 = longer[otherHalf];
+//            if(otherHalf + 1 < longer.length)
+//                longer1 = longer[otherHalf +1];
+//            if(left> end)
+//                break;
+//        }
+//        if(total % 2 == 0){
+//            return (Math.max(shorter0, longer0) + Math.min(shorter1, longer1)) / 2.0;
+//        }
+//        else{
+//            return Math.max(shorter0, longer0);
+//        }
+//
+//
+//    }
+    public String longestPalindrome(String s) {
+        int maxLength = 0;
+        String res ="";
+        boolean [] [] palindrom = new  boolean[s.length()][s.length()];
+        for (int i = 0; i < s.length() ; i++) {
+            if(i == 0){
+                res = s.substring(0, 1);
+            }
+            palindrom[i][i] = true;
+            maxLength = Math.max(maxLength, 1);
+            if( i < s.length() - 1){
+                palindrom[i][i + 1] = (s.charAt(i) == s.charAt( i + 1));
+                if(palindrom[i][i + 1]) {
+                    res = s.substring(i, i + 2);
+                    maxLength = 2;
+                }
+            }
+        }
+        int j = 2;
+        for (int i = 0; i < s.length() - 1 ; i++) {
+            for (int k = 0; k +j < s.length() ; k++) {
+                if(s.charAt(k) == s.charAt(k + j)){
+                    if(palindrom[k + 1] [k + j - 1]){
+                        palindrom[k][k + j] = true;
+                        if(k + j - k + 1 > maxLength){
+                            maxLength = k + j - k + 1;
+                            res = s.substring(k, k + j + 1);
+                        }
+
+                    }
+                    else{
+                        palindrom[k][k + j] = false;
+
+                    }
+
+                }
+                else{
+                    palindrom[k][k + j] = false;
+
+                }
+
+            }
+            j++;
         }
         return res;
     }
+    public int peakIndexInMountainArray(int[] arr) {
+        int left = 0;
+        int right = arr.length;
+        int mid = (left + right) / 2;
+        while (left <= right){
+            int minus = Integer.MAX_VALUE; //possible mistake
+            int plus = Integer.MAX_VALUE;
+            if( mid - 1 >= 0)
+                minus = arr[mid - 1];
+            if( mid + 1 < arr.length)
+                plus = arr[mid + 1];
+            if(arr[mid] > minus && arr[mid] > plus)
+                return mid;
+            if(plus > arr[mid]){
+                left = mid + 1;
+            }
+            else{
+                right = mid - 1;
+            }
+            mid = (left + right) / 2;
+        }
+        return -1; //no Peak Element or Mistake
 
-/**
- * Your LRUCache object will be instantiated and called as such:
- * LRUCache obj = new LRUCache(capacity);
- * int param_1 = obj.get(key);
- * obj.put(key,value);
- */
+    }
 
 
 }
