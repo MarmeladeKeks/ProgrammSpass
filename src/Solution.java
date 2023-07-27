@@ -22,7 +22,7 @@ public class Solution {
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
-        System.out.println(s.longestPalindrome("aaaaa"));
+        System.out.println(s.minSpeedOnTime(new int [] {1,3,2}, 1.9));
         //[3,1,3,1,1]
         //[1,3,2,8,4,9]
         //[7,1,5,3,6,4]
@@ -2062,6 +2062,71 @@ public class Solution {
         }
         return -1; //no Peak Element or Mistake
 
+    }
+    public long maxRunTime(int n, int[] batteries) {
+        long left = 0;
+        long right = 0;
+        for (int b: batteries
+             ) {
+            right += b;
+
+        }
+        long mid = (left + right + 1) / 2;;
+        while(left < right){
+            if(checkTime(n, batteries, mid)){
+                left = mid + 1;
+            }
+            else{
+                right = mid - 1;
+            }
+            mid = (left + right + 1) / 2;
+        }
+        return mid;
+
+    }
+    private boolean checkTime(int n, int[] batteries, long time){
+        long sum = 0;
+        for (int x: batteries
+             ) {
+            sum+= Math.min(x, time);
+        }
+        return (sum >= time * n);
+    }
+    public int minSpeedOnTime(int[] dist, double hour) {
+        if(hour < dist.length - 1)
+            return -1;
+        long left = 1;
+        long right = (int) Math.pow(10, 7);
+        long mid = mid = (left + right + 1) / 2;;
+        while(left < right){
+
+            if(checkMinSpeed(dist, hour, mid)){
+                right = mid - 1;
+            }
+            else{
+                left = mid + 1;
+            }
+            mid = (left + right + 1) / 2;
+
+        }
+        return (mid <= 10000000) ? (int) mid : -1;
+
+
+    }
+    private boolean checkMinSpeed(int[] dist, double hour, long speed){
+        double curHour = 0;
+        for (int i = 0; i < dist.length; i++) {
+            int d = dist[i];
+            if(i < dist.length - 1)
+                curHour += Math.ceil((double) d / speed);
+            else
+                curHour += (double) d / speed;
+            if (curHour > hour)
+                return false;
+
+
+        }
+        return true;
     }
 
 
