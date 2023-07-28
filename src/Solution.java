@@ -2134,7 +2134,7 @@ public class Solution {
         return PredictTheWinnerHelper(0, nums.length - 1, 0, nums.length, 0, 0);
 
     }
-    private boolean PredictTheWinnerHelper(int left, int right, int count, int nums_length, int A, int B){
+    private boolean PredictTheWinnerHelper(int left, int right, int count, int nums_length, int A, int B){ //can be faster by memorization with array indexed by [left] [right]
         if(count >= nums_length - 1){
             if( count % 2 == 0 ){
                 A += global_nums[left];
@@ -2157,6 +2157,58 @@ public class Solution {
                 return false;
             return PredictTheWinnerHelper(left, right - 1, count + 1, nums_length, A, B + global_nums[right]);
         }
+    }
+    public ListNode removeNthFromEnd(ListNode head, int n) { //dumb solution, but it works
+        List<ListNode> stackList = new LinkedList<>();
+        ListNode curElement = head;
+        while (curElement != null){
+            stackList.add(curElement);
+            curElement = curElement.next;
+        }
+        ListNode toremove = stackList.get(stackList.size() - (n));
+        ListNode underElement = toremove.next; //can be null
+        ListNode aboveElement = null;
+        if( stackList.size() - (n + 1) >= 0)
+            aboveElement = stackList.get(stackList.size() - (n + 1));
+        System.out.println(toremove.val + "" + underElement.val + "" + aboveElement.val);
+
+        if(aboveElement != null){
+            aboveElement.next = underElement;
+            //stackList.remove(stackList.size() - (n - 1)); //no need
+            return stackList.get(0);
+        }
+        else{
+            return toremove.next;
+        }
+
+
+    }
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode startL1 = list1;
+        ListNode startL2 = list2;
+        ListNode rememberList = new ListNode();
+        ListNode mergedList = rememberList;
+        while(startL1 != null && startL2 != null){
+            if( startL1.val <= startL2.val){
+                mergedList.next = startL1;
+                startL1 = startL1.next;
+                mergedList = mergedList.next;
+            }
+            else{
+                mergedList.next = startL2;
+                startL2 = startL2.next;
+                mergedList = mergedList.next;
+            }
+        }
+        if( startL1 == null){
+            mergedList.next = startL2;
+        }
+        else{
+            mergedList.next = startL1;
+        }
+        return rememberList.next;
+
+
     }
 
 
