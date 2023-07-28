@@ -22,7 +22,7 @@ public class Solution {
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
-        System.out.println(s.minSpeedOnTime(new int [] {1,3,2}, 1.9));
+        System.out.println(s.PredictTheWinner(new int [] {1,5,2}));
         //[3,1,3,1,1]
         //[1,3,2,8,4,9]
         //[7,1,5,3,6,4]
@@ -2097,7 +2097,7 @@ public class Solution {
             return -1;
         long left = 1;
         long right = (int) Math.pow(10, 7);
-        long mid = mid = (left + right + 1) / 2;;
+        long mid = (left + right + 1) / 2;
         while(left < right){
 
             if(checkMinSpeed(dist, hour, mid)){
@@ -2127,6 +2127,36 @@ public class Solution {
 
         }
         return true;
+    }
+    int[] global_nums;
+    public boolean PredictTheWinner(int[] nums) {
+        global_nums = nums;
+        return PredictTheWinnerHelper(0, nums.length - 1, 0, nums.length, 0, 0);
+
+    }
+    private boolean PredictTheWinnerHelper(int left, int right, int count, int nums_length, int A, int B){
+        if(count >= nums_length - 1){
+            if( count % 2 == 0 ){
+                A += global_nums[left];
+            }
+            else{
+                B += global_nums[left];
+            }
+            return A >= B;
+
+        }
+        if(count % 2 == 0 ){
+            boolean tmp1 = PredictTheWinnerHelper(left + 1, right, count + 1, nums_length, A + global_nums[left], B);
+            if(tmp1)
+                return true;
+            return PredictTheWinnerHelper(left, right - 1, count + 1, nums_length, A + global_nums[right], B);
+        }
+        else{
+            boolean tmp1 = PredictTheWinnerHelper(left + 1, right, count + 1, nums_length, A, B + global_nums[left]);
+            if(!tmp1)
+                return false;
+            return PredictTheWinnerHelper(left, right - 1, count + 1, nums_length, A, B + global_nums[right]);
+        }
     }
 
 
