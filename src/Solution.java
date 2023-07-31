@@ -22,7 +22,8 @@ public class Solution {
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
-        System.out.println(s.PredictTheWinner(new int [] {1,5,2}));
+        //System.out.println(s.PredictTheWinner(new int [] {1,5,2}));
+        s.minimumDeleteSum("delete", "leet");
 //        try {
 //            System.in.read();
 //        } catch (IOException e) {
@@ -2215,6 +2216,55 @@ public class Solution {
 
 
     }
+    int[][] minDelSum;
+    int useCounter;
+    public int minimumDeleteSum(String s1, String s2) {
+        minDelSum = new int[s1.length()][s2.length()];
+        useCounter = 0;
+        int res = minimumDeleteSumHelper(s1, s2, s1.length() - 1, s2.length() - 1);
+        System.out.println("Used " + useCounter);
+        return res;
+
+    }
+    private int minimumDeleteSumHelper(String s1, String s2, int i, int j){
+        if(i < 0 && j < 0)
+            return 0;
+        if(i < 0){
+            return getAsciValue(s2, j);
+        }
+        if( j < 0)
+            return getAsciValue(s1, i);
+        // sind nicht null
+        if(minDelSum[i][j] == 0){ //noch nicht berechnet
+            if( s1.charAt(i) == s2.charAt(j)){
+                int tmp = minimumDeleteSumHelper(s1, s2, i - 1, j - 1);
+                minDelSum[i][j] = tmp;
+                return tmp;
+            }
+            else{
+                int tmp1 = s1.charAt(i) + minimumDeleteSumHelper(s1, s2, i - 1, j);
+                int tmp2 = s2.charAt(j) + minimumDeleteSumHelper(s1, s2, i , j - 1);
+                int min = Math.min(tmp2, tmp1);
+                minDelSum[i][j] = min;
+                return min;
+            }
+        }
+        else{
+            useCounter++;
+            return minDelSum[i][j];
+        }
+
+    }
+    private int getAsciValue(String s1, int i){
+        if(i >= s1.length())
+            throw new IllegalArgumentException("Digger i´ist größer als die Länge des Strings du Heini");
+        int sum= 0;
+        for (int j = 0; j <= i ; j++) {
+            sum += s1.charAt(j);
+        }
+        return sum;
+    }
+
 
 
 }
