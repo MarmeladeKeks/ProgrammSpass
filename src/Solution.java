@@ -22,8 +22,8 @@ public class Solution {
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
-        //System.out.println(s.PredictTheWinner(new int [] {1,5,2}));
-        s.minimumDeleteSum("delete", "leet");
+        System.out.println(Arrays.toString(s.countBits(5)));
+
 //        try {
 //            System.in.read();
 //        } catch (IOException e) {
@@ -2263,6 +2263,31 @@ public class Solution {
             sum += s1.charAt(j);
         }
         return sum;
+    }
+    public int[] countBits(int n) {
+        int[] res = new int[n + 1];
+        int pointer = 2;
+        int counter = 0;
+
+        for (int i = 0; i <= n ; i++) {
+            if(i == 0)
+                res[i] = 0;
+            else if(i == 1 || i == 2)
+                res[i] = 1;
+            else if(i == 3)
+                res[i] = 2;
+            else{
+                res[i] = res[pointer] + counter;
+                counter++;
+                if(counter >= 2) {
+                    pointer++;
+                    counter = 0;
+                }
+            }
+
+        }
+        return res;
+
     }
 
 
