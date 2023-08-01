@@ -4,10 +4,7 @@ import java.io.*;
 import java.math.BigInteger;
 import java.sql.Array;
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,7 +19,7 @@ public class Solution {
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
-        System.out.println(Arrays.toString(s.countBits(5)));
+        s.merge2(new int[] {1,2,3,0,0,0}, 3, new int[]{2,5,6}, 3);
 
 //        try {
 //            System.in.read();
@@ -2288,6 +2285,80 @@ public class Solution {
         }
         return res;
 
+    }
+    List<List<Integer>> globalCombineList;
+    public List<List<Integer>> combine(int n, int k) {
+        globalCombineList = new LinkedList<>();
+        combineHelper(n, k, 1, new LinkedList<>(), 1);
+        return globalCombineList;
+
+    }
+    private void combineHelper(int n, int k, int currentIndex, List<Integer> ListBuilder, int startPoint){
+        if( currentIndex == k){
+            for (int i = startPoint; i <= n ; i++) {
+                ListBuilder.add(i);
+                globalCombineList.add(new ArrayList<>(ListBuilder));
+                ListBuilder.remove(ListBuilder.size() - 1);
+            }
+        }
+        else{
+            for (int i = startPoint; i <= n; i++) {
+                ListBuilder.add(i);
+                combineHelper(n , k, currentIndex + 1, ListBuilder, i + 1);
+                ListBuilder.remove(ListBuilder.size() - 1);
+            }
+        }
+    }
+    public void merge(int[] nums1, int m, int[] nums2, int n) { // bruh
+        Queue<Integer> memory = new ConcurrentLinkedQueue<>();
+        int nums2pointer = 0;
+        for (int i = 0; i < nums1.length ; i++) {
+            if (memory.isEmpty() && i >= m) {
+                nums1[i] = nums2[nums2pointer];
+                nums2pointer++;
+
+            }
+            else{
+                if( i < m )
+                    memory.add(nums1[i]);
+                int n1 = memory.peek();
+                int n2 = Integer.MAX_VALUE;
+                if( nums2pointer < n)
+                    n2 = nums2[nums2pointer];
+                if(n1 <= n2){
+                    nums1[i] = n1;
+                    memory.poll();
+                }
+                else{
+                    nums1[i] = n2;
+                    nums2pointer++;
+                }
+            }
+        }
+        System.out.println(Arrays.toString(nums1));
+    }
+    public void merge2(int[] nums1, int m, int[] nums2, int n) {
+        int nums1_index = 0;
+        int nums2_index = 0;
+        int[] res = new int[nums1.length];
+        for (int i = 0; i < nums1.length ; i++) {
+            int n1 = Integer.MAX_VALUE;
+            if(nums1_index < m)
+                n1 = nums1[nums1_index];
+            int n2 = Integer.MAX_VALUE;
+            if(nums2_index < n)
+                n2 = nums2[nums2_index];
+            if(n1 <= n2){
+                res[i] = n1;
+                nums1_index++;
+            }
+            else{
+                res[i] = n2;
+                nums2_index++;
+            }
+        }
+        nums1 = res;
+        System.out.println(Arrays.toString(nums1));
     }
 
 
