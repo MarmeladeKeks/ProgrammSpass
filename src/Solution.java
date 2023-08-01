@@ -19,7 +19,7 @@ public class Solution {
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
-        s.merge2(new int[] {1,2,3,0,0,0}, 3, new int[]{2,5,6}, 3);
+        s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
 
 //        try {
 //            System.in.read();
@@ -1998,41 +1998,39 @@ public class Solution {
 //    }
     public String longestPalindrome(String s) {
         int maxLength = 0;
-        String res ="";
-        boolean [] [] palindrom = new  boolean[s.length()][s.length()];
-        for (int i = 0; i < s.length() ; i++) {
-            if(i == 0){
+        String res = "";
+        boolean[][] palindrom = new boolean[s.length()][s.length()];
+        for (int i = 0; i < s.length(); i++) {
+            if (i == 0) {
                 res = s.substring(0, 1);
             }
             palindrom[i][i] = true;
             maxLength = Math.max(maxLength, 1);
-            if( i < s.length() - 1){
-                palindrom[i][i + 1] = (s.charAt(i) == s.charAt( i + 1));
-                if(palindrom[i][i + 1]) {
+            if (i < s.length() - 1) {
+                palindrom[i][i + 1] = (s.charAt(i) == s.charAt(i + 1));
+                if (palindrom[i][i + 1]) {
                     res = s.substring(i, i + 2);
                     maxLength = 2;
                 }
             }
         }
         int j = 2;
-        for (int i = 0; i < s.length() - 1 ; i++) {
-            for (int k = 0; k +j < s.length() ; k++) {
-                if(s.charAt(k) == s.charAt(k + j)){
-                    if(palindrom[k + 1] [k + j - 1]){
+        for (int i = 0; i < s.length() - 1; i++) {
+            for (int k = 0; k + j < s.length(); k++) {
+                if (s.charAt(k) == s.charAt(k + j)) {
+                    if (palindrom[k + 1][k + j - 1]) {
                         palindrom[k][k + j] = true;
-                        if(k + j - k + 1 > maxLength){
+                        if (k + j - k + 1 > maxLength) {
                             maxLength = k + j - k + 1;
                             res = s.substring(k, k + j + 1);
                         }
 
-                    }
-                    else{
+                    } else {
                         palindrom[k][k + j] = false;
 
                     }
 
-                }
-                else{
+                } else {
                     palindrom[k][k + j] = false;
 
                 }
@@ -2042,23 +2040,23 @@ public class Solution {
         }
         return res;
     }
+
     public int peakIndexInMountainArray(int[] arr) {
         int left = 0;
         int right = arr.length;
         int mid = (left + right) / 2;
-        while (left <= right){
+        while (left <= right) {
             int minus = Integer.MAX_VALUE; //possible mistake
             int plus = Integer.MAX_VALUE;
-            if( mid - 1 >= 0)
+            if (mid - 1 >= 0)
                 minus = arr[mid - 1];
-            if( mid + 1 < arr.length)
+            if (mid + 1 < arr.length)
                 plus = arr[mid + 1];
-            if(arr[mid] > minus && arr[mid] > plus)
+            if (arr[mid] > minus && arr[mid] > plus)
                 return mid;
-            if(plus > arr[mid]){
+            if (plus > arr[mid]) {
                 left = mid + 1;
-            }
-            else{
+            } else {
                 right = mid - 1;
             }
             mid = (left + right) / 2;
@@ -2066,20 +2064,21 @@ public class Solution {
         return -1; //no Peak Element or Mistake
 
     }
+
     public long maxRunTime(int n, int[] batteries) {
         long left = 0;
         long right = 0;
-        for (int b: batteries
-             ) {
+        for (int b : batteries
+        ) {
             right += b;
 
         }
-        long mid = (left + right + 1) / 2;;
-        while(left < right){
-            if(checkTime(n, batteries, mid)){
+        long mid = (left + right + 1) / 2;
+        ;
+        while (left < right) {
+            if (checkTime(n, batteries, mid)) {
                 left = mid + 1;
-            }
-            else{
+            } else {
                 right = mid - 1;
             }
             mid = (left + right + 1) / 2;
@@ -2087,26 +2086,27 @@ public class Solution {
         return mid;
 
     }
-    private boolean checkTime(int n, int[] batteries, long time){
+
+    private boolean checkTime(int n, int[] batteries, long time) {
         long sum = 0;
-        for (int x: batteries
-             ) {
-            sum+= Math.min(x, time);
+        for (int x : batteries
+        ) {
+            sum += Math.min(x, time);
         }
         return (sum >= time * n);
     }
+
     public int minSpeedOnTime(int[] dist, double hour) {
-        if(hour < dist.length - 1)
+        if (hour < dist.length - 1)
             return -1;
         long left = 1;
         long right = (int) Math.pow(10, 7);
         long mid = (left + right + 1) / 2;
-        while(left < right){
+        while (left < right) {
 
-            if(checkMinSpeed(dist, hour, mid)){
+            if (checkMinSpeed(dist, hour, mid)) {
                 right = mid - 1;
-            }
-            else{
+            } else {
                 left = mid + 1;
             }
             mid = (left + right + 1) / 2;
@@ -2116,11 +2116,12 @@ public class Solution {
 
 
     }
-    private boolean checkMinSpeed(int[] dist, double hour, long speed){
+
+    private boolean checkMinSpeed(int[] dist, double hour, long speed) {
         double curHour = 0;
         for (int i = 0; i < dist.length; i++) {
             int d = dist[i];
-            if(i < dist.length - 1)
+            if (i < dist.length - 1)
                 curHour += Math.ceil((double) d / speed);
             else
                 curHour += (double) d / speed;
@@ -2131,90 +2132,92 @@ public class Solution {
         }
         return true;
     }
+
     int[] global_nums;
+
     public boolean PredictTheWinner(int[] nums) {
         global_nums = nums;
         return PredictTheWinnerHelper(0, nums.length - 1, 0, nums.length, 0, 0);
 
     }
-    private boolean PredictTheWinnerHelper(int left, int right, int count, int nums_length, int A, int B){ //can be faster by memorization with array indexed by [left] [right]
-        if(count >= nums_length - 1){
-            if( count % 2 == 0 ){
+
+    private boolean PredictTheWinnerHelper(int left, int right, int count, int nums_length, int A, int B) { //can be faster by memorization with array indexed by [left] [right]
+        if (count >= nums_length - 1) {
+            if (count % 2 == 0) {
                 A += global_nums[left];
-            }
-            else{
+            } else {
                 B += global_nums[left];
             }
             return A >= B;
 
         }
-        if(count % 2 == 0 ){
+        if (count % 2 == 0) {
             boolean tmp1 = PredictTheWinnerHelper(left + 1, right, count + 1, nums_length, A + global_nums[left], B);
-            if(tmp1)
+            if (tmp1)
                 return true;
             return PredictTheWinnerHelper(left, right - 1, count + 1, nums_length, A + global_nums[right], B);
-        }
-        else{
+        } else {
             boolean tmp1 = PredictTheWinnerHelper(left + 1, right, count + 1, nums_length, A, B + global_nums[left]);
-            if(!tmp1)
+            if (!tmp1)
                 return false;
             return PredictTheWinnerHelper(left, right - 1, count + 1, nums_length, A, B + global_nums[right]);
         }
     }
+
     public ListNode removeNthFromEnd(ListNode head, int n) { //dumb solution, but it works
         List<ListNode> stackList = new LinkedList<>();
         ListNode curElement = head;
-        while (curElement != null){
+        while (curElement != null) {
             stackList.add(curElement);
             curElement = curElement.next;
         }
         ListNode toremove = stackList.get(stackList.size() - (n));
         ListNode underElement = toremove.next; //can be null
         ListNode aboveElement = null;
-        if( stackList.size() - (n + 1) >= 0)
+        if (stackList.size() - (n + 1) >= 0)
             aboveElement = stackList.get(stackList.size() - (n + 1));
         System.out.println(toremove.val + "" + underElement.val + "" + aboveElement.val);
 
-        if(aboveElement != null){
+        if (aboveElement != null) {
             aboveElement.next = underElement;
             //stackList.remove(stackList.size() - (n - 1)); //no need
             return stackList.get(0);
-        }
-        else{
+        } else {
             return toremove.next;
         }
 
 
     }
+
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         ListNode startL1 = list1;
         ListNode startL2 = list2;
         ListNode rememberList = new ListNode();
         ListNode mergedList = rememberList;
-        while(startL1 != null && startL2 != null){
-            if( startL1.val <= startL2.val){
+        while (startL1 != null && startL2 != null) {
+            if (startL1.val <= startL2.val) {
                 mergedList.next = startL1;
                 startL1 = startL1.next;
                 mergedList = mergedList.next;
-            }
-            else{
+            } else {
                 mergedList.next = startL2;
                 startL2 = startL2.next;
                 mergedList = mergedList.next;
             }
         }
-        if( startL1 == null){
+        if (startL1 == null) {
             mergedList.next = startL2;
-        }
-        else{
+        } else {
             mergedList.next = startL1;
         }
         return rememberList.next; //bla bla
 
 
     }
+
     int[][] minDelSum;
     int useCounter;
+
     public int minimumDeleteSum(String s1, String s2) {
         minDelSum = new int[s1.length()][s2.length()];
         useCounter = 0;
@@ -2223,60 +2226,61 @@ public class Solution {
         return res;
 
     }
-    private int minimumDeleteSumHelper(String s1, String s2, int i, int j){
-        if(i < 0 && j < 0)
+
+    private int minimumDeleteSumHelper(String s1, String s2, int i, int j) {
+        if (i < 0 && j < 0)
             return 0;
-        if(i < 0){
+        if (i < 0) {
             return getAsciValue(s2, j);
         }
-        if( j < 0)
+        if (j < 0)
             return getAsciValue(s1, i);
         // sind nicht null
-        if(minDelSum[i][j] == 0){ //noch nicht berechnet
-            if( s1.charAt(i) == s2.charAt(j)){
+        if (minDelSum[i][j] == 0) { //noch nicht berechnet
+            if (s1.charAt(i) == s2.charAt(j)) {
                 int tmp = minimumDeleteSumHelper(s1, s2, i - 1, j - 1);
                 minDelSum[i][j] = tmp;
                 return tmp;
-            }
-            else{
+            } else {
                 int tmp1 = s1.charAt(i) + minimumDeleteSumHelper(s1, s2, i - 1, j);
-                int tmp2 = s2.charAt(j) + minimumDeleteSumHelper(s1, s2, i , j - 1);
+                int tmp2 = s2.charAt(j) + minimumDeleteSumHelper(s1, s2, i, j - 1);
                 int min = Math.min(tmp2, tmp1);
                 minDelSum[i][j] = min;
                 return min;
             }
-        }
-        else{
+        } else {
             useCounter++;
             return minDelSum[i][j];
         }
 
     }
-    private int getAsciValue(String s1, int i){
-        if(i >= s1.length())
+
+    private int getAsciValue(String s1, int i) {
+        if (i >= s1.length())
             throw new IllegalArgumentException("Digger i´ist größer als die Länge des Strings du Heini");
-        int sum= 0;
-        for (int j = 0; j <= i ; j++) {
+        int sum = 0;
+        for (int j = 0; j <= i; j++) {
             sum += s1.charAt(j);
         }
         return sum;
     }
+
     public int[] countBits(int n) {
         int[] res = new int[n + 1];
         int pointer = 2;
         int counter = 0;
 
-        for (int i = 0; i <= n ; i++) {
-            if(i == 0)
+        for (int i = 0; i <= n; i++) {
+            if (i == 0)
                 res[i] = 0;
-            else if(i == 1 || i == 2)
+            else if (i == 1 || i == 2)
                 res[i] = 1;
-            else if(i == 3)
+            else if (i == 3)
                 res[i] = 2;
-            else{
+            else {
                 res[i] = res[pointer] + counter;
                 counter++;
-                if(counter >= 2) {
+                if (counter >= 2) {
                     pointer++;
                     counter = 0;
                 }
@@ -2286,50 +2290,51 @@ public class Solution {
         return res;
 
     }
+
     List<List<Integer>> globalCombineList;
+
     public List<List<Integer>> combine(int n, int k) {
         globalCombineList = new LinkedList<>();
         combineHelper(n, k, 1, new LinkedList<>(), 1);
         return globalCombineList;
 
     }
-    private void combineHelper(int n, int k, int currentIndex, List<Integer> ListBuilder, int startPoint){
-        if( currentIndex == k){
-            for (int i = startPoint; i <= n ; i++) {
+
+    private void combineHelper(int n, int k, int currentIndex, List<Integer> ListBuilder, int startPoint) {
+        if (currentIndex == k) {
+            for (int i = startPoint; i <= n; i++) {
                 ListBuilder.add(i);
                 globalCombineList.add(new ArrayList<>(ListBuilder));
                 ListBuilder.remove(ListBuilder.size() - 1);
             }
-        }
-        else{
+        } else {
             for (int i = startPoint; i <= n; i++) {
                 ListBuilder.add(i);
-                combineHelper(n , k, currentIndex + 1, ListBuilder, i + 1);
+                combineHelper(n, k, currentIndex + 1, ListBuilder, i + 1);
                 ListBuilder.remove(ListBuilder.size() - 1);
             }
         }
     }
+
     public void merge(int[] nums1, int m, int[] nums2, int n) { // bruh
         Queue<Integer> memory = new ConcurrentLinkedQueue<>();
         int nums2pointer = 0;
-        for (int i = 0; i < nums1.length ; i++) {
+        for (int i = 0; i < nums1.length; i++) {
             if (memory.isEmpty() && i >= m) {
                 nums1[i] = nums2[nums2pointer];
                 nums2pointer++;
 
-            }
-            else{
-                if( i < m )
+            } else {
+                if (i < m)
                     memory.add(nums1[i]);
                 int n1 = memory.peek();
                 int n2 = Integer.MAX_VALUE;
-                if( nums2pointer < n)
+                if (nums2pointer < n)
                     n2 = nums2[nums2pointer];
-                if(n1 <= n2){
+                if (n1 <= n2) {
                     nums1[i] = n1;
                     memory.poll();
-                }
-                else{
+                } else {
                     nums1[i] = n2;
                     nums2pointer++;
                 }
@@ -2337,22 +2342,22 @@ public class Solution {
         }
         System.out.println(Arrays.toString(nums1));
     }
+
     public void merge2(int[] nums1, int m, int[] nums2, int n) {
         int nums1_index = 0;
         int nums2_index = 0;
         int[] res = new int[nums1.length];
-        for (int i = 0; i < nums1.length ; i++) {
+        for (int i = 0; i < nums1.length; i++) {
             int n1 = Integer.MAX_VALUE;
-            if(nums1_index < m)
+            if (nums1_index < m)
                 n1 = nums1[nums1_index];
             int n2 = Integer.MAX_VALUE;
-            if(nums2_index < n)
+            if (nums2_index < n)
                 n2 = nums2[nums2_index];
-            if(n1 <= n2){
+            if (n1 <= n2) {
                 res[i] = n1;
                 nums1_index++;
-            }
-            else{
+            } else {
                 res[i] = n2;
                 nums2_index++;
             }
@@ -2360,7 +2365,40 @@ public class Solution {
         nums1 = res;
         System.out.println(Arrays.toString(nums1));
     }
-
+    public String convert(String s, int numRows) {
+        int index_counter = 0;
+        int row_counter = 0;
+        int moduluVal = numRows - 1;
+        if(moduluVal == 0)
+            return s;
+        List<List<Character>> resList= new ArrayList<>();
+        for (int i = 0; i < numRows ; i++) {
+            resList.add(new ArrayList<>());
+        }
+        while(index_counter < s.length()){
+            if(row_counter % moduluVal == 0){
+                for (int i = 0; i < numRows; i++) {
+                    if(index_counter >= s.length())
+                        break;
+                    resList.get(i).add(s.charAt(index_counter));
+                    index_counter++;
+                }
+            }
+            else{
+                int index = (numRows - 1) - row_counter;
+                resList.get(index).add(s.charAt(index_counter));
+                index_counter++;
+            }
+            row_counter = (row_counter + 1) % moduluVal;
+        }
+        StringBuilder sb = new StringBuilder();
+        for (List<Character> characters : resList) {
+            for (Character character : characters) {
+                sb.append(character);
+            }
+        }
+        return sb.toString();
+    }
 
 
 }
