@@ -2224,7 +2224,6 @@ public class Solution {
         int res = minimumDeleteSumHelper(s1, s2, s1.length() - 1, s2.length() - 1);
         System.out.println("Used " + useCounter);
         return res;
-
     }
 
     private int minimumDeleteSumHelper(String s1, String s2, int i, int j) {
@@ -2398,6 +2397,41 @@ public class Solution {
             }
         }
         return sb.toString();
+    }
+    List<List<Integer>> globalPermuteList;
+    public List<List<Integer>> permute(int[] nums) {
+        globalPermuteList = new LinkedList<>();
+        List<Integer> list = new LinkedList<>(Arrays.stream(nums).boxed().toList());
+        permuteHelper(list, new LinkedList<>(), 0, nums.length);
+        return globalPermuteList;
+
+
+    }
+    private void permuteHelper(List<Integer> nums, List<Integer> resList, int index, int length){
+        if(index >= length - 1){
+            resList.add(nums.get(0));
+            globalPermuteList.add(new LinkedList<>(resList));
+            resList.remove((resList.size() - 1));
+        }
+        else{
+            for (int i = 0; i < nums.size() ; i++) {
+                Integer tmp = nums.get(i);
+                resList.add(tmp);
+                nums.remove(i);
+                permuteHelper(nums, resList, index + 1, length);
+                nums.add(i, tmp);
+                resList.remove(resList.size() - 1);
+            }
+        }
+    }
+    public int singleNumber2(int[] nums) {
+        int myBinary = 0;
+        for (int x : nums
+             ) {
+            myBinary = myBinary ^ x;
+        }
+        return myBinary;
+
     }
 
 
