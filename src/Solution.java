@@ -19,7 +19,8 @@ public class Solution {
         //System.out.println( Arrays.toString(s.flipAndInvertImage(new int [][]  {{1,1,0},{1,0,1},{0,0,0}}  ) [0]));
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
-        s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
+        //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
+        System.out.println(s.myAtoi("00000-42a1234"));
 
 //        try {
 //            System.in.read();
@@ -2364,26 +2365,26 @@ public class Solution {
         nums1 = res;
         System.out.println(Arrays.toString(nums1));
     }
+
     public String convert(String s, int numRows) {
         int index_counter = 0;
         int row_counter = 0;
         int moduluVal = numRows - 1;
-        if(moduluVal == 0)
+        if (moduluVal == 0)
             return s;
-        List<List<Character>> resList= new ArrayList<>();
-        for (int i = 0; i < numRows ; i++) {
+        List<List<Character>> resList = new ArrayList<>();
+        for (int i = 0; i < numRows; i++) {
             resList.add(new ArrayList<>());
         }
-        while(index_counter < s.length()){
-            if(row_counter % moduluVal == 0){
+        while (index_counter < s.length()) {
+            if (row_counter % moduluVal == 0) {
                 for (int i = 0; i < numRows; i++) {
-                    if(index_counter >= s.length())
+                    if (index_counter >= s.length())
                         break;
                     resList.get(i).add(s.charAt(index_counter));
                     index_counter++;
                 }
-            }
-            else{
+            } else {
                 int index = (numRows - 1) - row_counter;
                 resList.get(index).add(s.charAt(index_counter));
                 index_counter++;
@@ -2398,7 +2399,9 @@ public class Solution {
         }
         return sb.toString();
     }
+
     List<List<Integer>> globalPermuteList;
+
     public List<List<Integer>> permute(int[] nums) {
         globalPermuteList = new LinkedList<>();
         List<Integer> list = new LinkedList<>(Arrays.stream(nums).boxed().toList());
@@ -2407,14 +2410,14 @@ public class Solution {
 
 
     }
-    private void permuteHelper(List<Integer> nums, List<Integer> resList, int index, int length){
-        if(index >= length - 1){
+
+    private void permuteHelper(List<Integer> nums, List<Integer> resList, int index, int length) {
+        if (index >= length - 1) {
             resList.add(nums.get(0));
             globalPermuteList.add(new LinkedList<>(resList));
             resList.remove((resList.size() - 1));
-        }
-        else{
-            for (int i = 0; i < nums.size() ; i++) {
+        } else {
+            for (int i = 0; i < nums.size(); i++) {
                 Integer tmp = nums.get(i);
                 resList.add(tmp);
                 nums.remove(i);
@@ -2424,13 +2427,105 @@ public class Solution {
             }
         }
     }
+
     public int singleNumber2(int[] nums) {
         int myBinary = 0;
         for (int x : nums
-             ) {
+        ) {
             myBinary = myBinary ^ x;
         }
         return myBinary;
+
+    }
+
+    String[] keyboard = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    List<String> globalLetterComb;
+
+    public List<String> letterCombinations(String digits) {
+        globalLetterComb = new LinkedList<>();
+        if (digits.length() == 0) {
+            return globalLetterComb;
+        }
+        letterCombinationsHelper(digits, 0, "");
+        return globalLetterComb;
+
+    }
+
+    private void letterCombinationsHelper(String digits, int index, String currentString) {
+        int lookUp = Character.getNumericValue(digits.charAt(index));
+        if (index >= digits.length() - 1) {
+            for (int i = 0; i < keyboard[lookUp].length(); i++) {
+                globalLetterComb.add(currentString + keyboard[lookUp].charAt(i));
+            }
+        } else {
+            for (int i = 0; i < keyboard[lookUp].length(); i++) {
+                letterCombinationsHelper(digits, index + 1, currentString + keyboard[lookUp].charAt(i));
+            }
+        }
+
+    }
+
+    public int reverse(int x) {
+        int n = Math.abs(x); // Get the absolute value of x
+        int sum = 0;
+
+        while (n > 0) {
+            int r = n % 10;
+            n = n / 10;
+
+            // Check for integer overflow before updating the sum
+            if (sum > (Integer.MAX_VALUE - r) / 10) {
+                return 0;
+            }
+
+            sum = sum * 10 + r;
+        }
+
+        // Restore the sign of the result based on the original number x
+        return x < 0 ? -sum : sum;
+
+    }
+
+    public int myAtoi(String s) {
+        char[] sArray = s.toCharArray();
+        int index = 0;
+        long sum = 0;
+        if(s.length() == 0)
+            return 0;
+        while (sArray[index] == ' ') {
+            index++;
+            if (index >= sArray.length)
+                return 0;
+        }
+        boolean positive = true;
+        long moduluVal = Integer.MAX_VALUE;
+        if (sArray[index] == '+' || sArray[index] == '-') {
+            if (sArray[index] == '-') {
+                positive = false;
+                moduluVal++;
+            }
+            index++;
+        }
+        boolean firstZeros = false;
+        while (index < sArray.length && Character.isDigit(sArray[index])) {
+            if (!firstZeros) {
+                if (sArray[index] == '0') {
+                    index++;
+                    continue;
+                }
+                firstZeros = true;
+                sum = ((sum * 10) + Character.getNumericValue(sArray[index]));
+                if(sum >= moduluVal)
+                    return (positive) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            }
+            else{
+                sum = ((sum * 10) + Character.getNumericValue(sArray[index])) % moduluVal;
+                if(sum >= moduluVal)
+                    return (positive) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            }
+            index++;
+        }
+        return (positive) ? (int) sum : (int) (sum * -1);
 
     }
 
