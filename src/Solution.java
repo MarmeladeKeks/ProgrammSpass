@@ -2535,21 +2535,21 @@ public class Solution {
 
     }
     private boolean wordBreakHelper(String s, List<String> wordDict, int index){
-        if(index >= s.length())
+        if(index >= s.length()) //base case
             return true;
-        if(alreadyVisited.contains(index))
+        if(alreadyVisited.contains(index)) //use already computed shit
             return false;
         for (String currentS : wordDict) {
-            int currentL = currentS.length();
-            if(index + currentL > s.length())
+            int currentL = currentS.length(); //length of word
+            if(index + currentL > s.length()) //if index out of range
                 continue;
             if(s.substring(index, index + currentL).equals(currentS)){
                 boolean retVal = wordBreakHelper(s, wordDict, index + currentL);
-                if(retVal)
+                if(retVal) //can be breaked in Dict Words
                     return true;
             }
         }
-        alreadyVisited.add(index);
+        alreadyVisited.add(index); //we computed that right now, and it didn't work with that index xdd
         return false;
     }
 
