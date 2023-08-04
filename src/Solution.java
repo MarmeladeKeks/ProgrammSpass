@@ -2528,6 +2528,33 @@ public class Solution {
         return (positive) ? (int) sum : (int) (sum * -1);
 
     }
+    HashSet<String> globalWordBreaK;
+    HashSet<Integer> alreadyVisited;
+    public boolean wordBreak(String s, List<String> wordDict) {
+        globalWordBreaK = new HashSet<>(wordDict.size());
+        alreadyVisited = new HashSet<>();
+        globalWordBreaK.addAll(wordDict);
+        return wordBreakHelper(s, 0);
+
+    }
+    private boolean wordBreakHelper(String s, int index){
+        if(index >= s.length())
+            return true;
+        if(alreadyVisited.contains(index))
+            return false;
+        String currentS = "";
+        for (int i = index; i < s.length(); i++) {
+            currentS += s.charAt(i);
+            if(globalWordBreaK.contains(currentS)){
+                boolean retVal = wordBreakHelper(s, i + 1);
+                if(retVal)
+                    return true;
+            }
+        }
+        alreadyVisited.add(index);
+        return false;
+    }
+
 
 
 }
