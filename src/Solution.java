@@ -2528,25 +2528,23 @@ public class Solution {
         return (positive) ? (int) sum : (int) (sum * -1);
 
     }
-    HashSet<String> globalWordBreaK;
     HashSet<Integer> alreadyVisited;
     public boolean wordBreak(String s, List<String> wordDict) {
-        globalWordBreaK = new HashSet<>(wordDict.size());
         alreadyVisited = new HashSet<>();
-        globalWordBreaK.addAll(wordDict);
-        return wordBreakHelper(s, 0);
+        return wordBreakHelper(s, wordDict, 0);
 
     }
-    private boolean wordBreakHelper(String s, int index){
+    private boolean wordBreakHelper(String s, List<String> wordDict, int index){
         if(index >= s.length())
             return true;
         if(alreadyVisited.contains(index))
             return false;
-        String currentS = "";
-        for (int i = index; i < s.length(); i++) {
-            currentS += s.charAt(i);
-            if(globalWordBreaK.contains(currentS)){
-                boolean retVal = wordBreakHelper(s, i + 1);
+        for (String currentS : wordDict) {
+            int currentL = currentS.length();
+            if(index + currentL > s.length())
+                continue;
+            if(s.substring(index, index + currentL).equals(currentS)){
+                boolean retVal = wordBreakHelper(s, wordDict, index + currentL);
                 if(retVal)
                     return true;
             }
