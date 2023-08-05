@@ -7,6 +7,8 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javafx.*;
+import javafx.util.Pair;
 
 
 public class Solution {
@@ -2490,7 +2492,7 @@ public class Solution {
         char[] sArray = s.toCharArray();
         int index = 0;
         long sum = 0;
-        if(s.length() == 0)
+        if (s.length() == 0)
             return 0;
         while (sArray[index] == ' ') {
             index++;
@@ -2515,12 +2517,11 @@ public class Solution {
                 }
                 firstZeros = true;
                 sum = ((sum * 10) + Character.getNumericValue(sArray[index]));
-                if(sum >= moduluVal)
+                if (sum >= moduluVal)
                     return (positive) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
-            }
-            else{
+            } else {
                 sum = ((sum * 10) + Character.getNumericValue(sArray[index])) % moduluVal;
-                if(sum >= moduluVal)
+                if (sum >= moduluVal)
                     return (positive) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
             }
             index++;
@@ -2528,24 +2529,27 @@ public class Solution {
         return (positive) ? (int) sum : (int) (sum * -1);
 
     }
+
     HashSet<Integer> alreadyVisited;
+
     public boolean wordBreak(String s, List<String> wordDict) {
         alreadyVisited = new HashSet<>();
         return wordBreakHelper(s, wordDict, 0);
 
     }
-    private boolean wordBreakHelper(String s, List<String> wordDict, int index){
-        if(index >= s.length()) //base case
+
+    private boolean wordBreakHelper(String s, List<String> wordDict, int index) {
+        if (index >= s.length()) //base case
             return true;
-        if(alreadyVisited.contains(index)) //use already computed shit
+        if (alreadyVisited.contains(index)) //use already computed shit
             return false;
         for (String currentS : wordDict) {
             int currentL = currentS.length(); //length of word
-            if(index + currentL > s.length()) //if index out of range
+            if (index + currentL > s.length()) //if index out of range
                 continue;
-            if(s.substring(index, index + currentL).equals(currentS)){
+            if (s.substring(index, index + currentL).equals(currentS)) {
                 boolean retVal = wordBreakHelper(s, wordDict, index + currentL);
-                if(retVal) //can be breaked in Dict Words
+                if (retVal) //can be broken in Dict Words
                     return true;
             }
         }
@@ -2553,7 +2557,81 @@ public class Solution {
         return false;
     }
 
+    List<TreeNode> globalTrees;
 
+    public List<TreeNode> generateTrees(int n) {
+        globalTrees = new ArrayList<>();
+        return null;
+
+    }
+
+    private void generateTreesHelper(TreeNode current, int rightVal, int leftVal, boolean inList) {
+        int currentVal = current.val;
+        List<TreeNode> leftList = new LinkedList<>();
+        for (int i = currentVal - 1; i > leftVal; i--) {
+            TreeNode left = new TreeNode(i);
+            generateTreesHelper(left, currentVal, leftVal, false);
+            leftList.add(left);
+        }
+        List<TreeNode> rightList = new LinkedList<>();
+        for (int j = currentVal + 1; j < rightVal; j++) { //includes base case (hopefully xD)
+            TreeNode right = new TreeNode(j);
+            generateTreesHelper(right, rightVal, currentVal, false);
+            rightList.add(right);
+        }
+        int left_index = 0;
+        do {
+            current.left = null;
+            if (!leftList.isEmpty()) {
+                current.left = leftList.get(left_index);
+            }
+            int right_index = 0;
+            do {
+                current.right = null;
+                if (!rightList.isEmpty()) {
+                    current.right = rightList.get(right_index);
+                }
+                right_index++;
+            }
+            while (right_index < rightList.size());
+            left_index++;
+        }
+        while (left_index < leftList.size());
+
+
+    }
+
+    public List<TreeNode> allPossibleBST(int start, int end,
+                                         Map<Pair<Integer, Integer>, List<TreeNode>> memo) {
+        List<TreeNode> res = new ArrayList<>();
+        if (start > end) { //das ist real shit
+            res.add(null);
+            return res;
+        }
+        if (memo.containsKey(new Pair<>(start, end))) {
+            return memo.get(new Pair<>(start, end));
+        }
+        // Iterate through all values from start to end to construct left and right subtree recursively.
+        for (int i = start; i <= end; ++i) {
+            List<TreeNode> leftSubTrees = allPossibleBST(start, i - 1, memo);
+            List<TreeNode> rightSubTrees = allPossibleBST(i + 1, end, memo);
+
+            // Loop through all left and right subtrees and connect them to ith root.
+            for (TreeNode left : leftSubTrees) {
+                for (TreeNode right : rightSubTrees) {
+                    TreeNode root = new TreeNode(i, left, right);
+                    res.add(root);
+                }
+            }
+        }
+        memo.put(new Pair<>(start, end), res);
+        return res;
+    }
+
+    public List<TreeNode> generateTrees2(int n) {
+        Map<Pair<Integer, Integer>, List<TreeNode>> memo = new HashMap<>();
+        return allPossibleBST(1, n, memo);
+    }
 
 }
 
