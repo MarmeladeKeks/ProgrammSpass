@@ -7,8 +7,8 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javafx.*;
 import javafx.util.Pair;
+
 
 
 public class Solution {
@@ -22,7 +22,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.myAtoi("00000-42a1234"));
+        System.out.println(s.isPalindrome("A man, a plan, a canal: Panama"));
 
 //        try {
 //            System.in.read();
@@ -2631,6 +2631,58 @@ public class Solution {
     public List<TreeNode> generateTrees2(int n) {
         Map<Pair<Integer, Integer>, List<TreeNode>> memo = new HashMap<>();
         return allPossibleBST(1, n, memo);
+    }
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int start = 0;
+        int end = matrix.length - 1;
+        int mid = (start + end) / 2;
+        boolean found = false;
+        while(start <= end){
+            if(target >= matrix[mid][0] && target <= matrix[mid][matrix[mid].length - 1]){
+                found = true;
+                break;
+            }
+            if(target < matrix[(int) mid][0]){
+                end = mid - 1;
+            }
+            else{
+                start = mid + 1;
+            }
+            mid = (start + end) / 2;
+        }
+        if(!found)
+            return false;
+        int index = mid;
+        start = 0;
+        end = matrix[index].length - 1;
+        mid = (start + end) / 2;
+        while(start <= end){
+            if(target == matrix[index][mid]){
+                return true;
+            }
+            if(target < matrix[index][mid]){
+                end = mid - 1;
+            }
+            else{
+                start = mid + 1;
+            }
+            mid = (start + end) / 2;
+        }
+        return false;
+    }
+    public boolean isPalindrome(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length() ; i++) {
+            if(Character.isAlphabetic(s.charAt(i)) || Character.isDigit(s.charAt(i))){
+                sb.append(Character.toLowerCase(s.charAt(i)));
+            }
+        }
+        int mid = sb.length() / 2;
+        for (int i = 0; i < mid ; i++) {
+            if(sb.charAt(i) != sb.charAt(sb.length() - 1 - i))
+                return false;
+        }
+        return true;
     }
 
 }
