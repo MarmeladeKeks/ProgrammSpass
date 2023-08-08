@@ -22,7 +22,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.isPalindrome("A man, a plan, a canal: Panama"));
+        System.out.println(s.search(new int[] {3,1}, 1));
 
 //        try {
 //            System.in.read();
@@ -2684,6 +2684,57 @@ public class Solution {
         }
         return true;
     }
+    public int search(int[] nums, int target) {
+        int start = 0;
+        int end = nums.length - 1;
+        int mid = (start + end) / 2;
+        while (start <= end) {
+            if(nums[mid] == target) //base case
+                return mid;
+            if(nums[start] > nums[end]) {
+                if (target < nums[start]) {// we want to be on the right side
+                    if(nums[mid] < target){ // i am on the right side
+                        start = mid + 1;
+                    }
+                    else{ // idk where i am.
+                        if (nums[start] <= nums[mid]) {  // i am on the left side (dont want to be there)
+                           start = mid + 1;
+                        }
+                        else{
+                            end = mid - 1;
+                        }
+                    }
+                }
+                else{ // we want to be on the left side
+                    if(nums[mid] < target){ //idk where i am
+                        if (nums[start] <= nums[mid]) {  // i am on the left side (want to be there)
+                            start = mid + 1;
+                        }
+                        else{ // i am on the right side
+                            end = mid - 1;
+                        }
+                    }
+                    else{ // i am on the right side
+                        end = mid - 1;
+                    }
+
+                }
+            }
+            else{ //normales binary search
+                if(nums[mid] > target){
+                    end = mid - 1;
+                }
+                else{
+                    start = mid + 1;
+                }
+
+            }
+            mid = (start + end) / 2;
+        }
+        return -1;
+    }
+
+
 
 }
 
