@@ -1,8 +1,3 @@
-import javax.lang.model.type.NullType;
-import java.awt.event.MouseAdapter;
-import java.io.*;
-import java.math.BigInteger;
-import java.sql.Array;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -22,7 +17,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.search(new int[] {3,1}, 1));
+        System.out.println(s.change(500, new int[] {1,2,5}));
 
 //        try {
 //            System.in.read();
@@ -2780,6 +2775,84 @@ public class Solution {
     // returns true if element exists in first array, false if it exists in second
     private boolean existsInFirst(int[] arr, int start, int element) {
         return arr[start] <= element;
+    }
+    int globalCount;
+    int[] globalCoins;
+    HashSet<List<Integer>> dpMapChange;
+    public int change(int amount, int[] coins) {
+        globalCount = 0;
+        dpMapChange = new HashSet<>();
+        globalCoins = coins;
+        List<Integer> CaroBigL = new ArrayList<>(coins.length);
+        for (int i = 0; i < coins.length; i++) {
+            CaroBigL.add(i, 0);
+        }
+        changeHelper(amount, 0, CaroBigL);
+        return globalCount;
+
+    }
+    private void changeHelper(int amount, int curAmount, List<Integer> curConfig){
+        if(dpMapChange.contains(curConfig)){ //if already computed
+            return;
+        }
+        if(curAmount == amount){
+            globalCount++;//base case
+            dpMapChange.add(new ArrayList<>(curConfig));
+            return;
+        }
+        if(curAmount > amount) //abbruch
+            return;
+        for (int i = 0; i < globalCoins.length; i++) {
+            curAmount += globalCoins[i];
+            curConfig.set(i, curConfig.get(i) + 1); //increment it
+            changeHelper(amount, curAmount,curConfig); //dont do parallel shit
+            curAmount -= globalCoins[i]; //reset
+            curConfig.set(i, curConfig.get(i) - 1); //reset
+        }
+        dpMapChange.add(new ArrayList<>(curConfig)); //i computed it right???
+    }
+    public int[] sort(int nums[]){
+        return sortHelper(nums, 0, nums.length - 1);
+
+    }
+    private int[] sortHelper(int[] nums, int begin, int end){
+        if(begin == end){
+            return new int[] {nums[begin]};
+        }
+        int mid = ((begin + end) / 2);
+        int[] tmp1 = sortHelper(nums, begin, mid);
+        int[] tmp2 = sortHelper(nums, mid + 1, end);
+        return merge3(tmp1, tmp2);
+    }
+    public int[] merge3(int[] n, int[] m){
+        int[] res = new int[n.length + m.length];
+        int npointer = 0;
+        int mpointer = 0;
+        for (int i = 0; i < res.length ; i++) {
+            int n_val = Integer.MIN_VALUE;
+            int m_val = Integer.MIN_VALUE;
+            if(npointer < n.length)
+                n_val = n[npointer];
+            if(mpointer < m.length)
+                m_val = m[mpointer];
+            if(n_val > m_val){
+                res[i] = n_val;
+                npointer++;
+            }
+            else{
+                res[i] = m_val;
+                mpointer++;
+            }
+        }
+        return res;
+    }
+    public int findKthLargest(int[] nums, int k) {
+        int[] tmp = sort(nums);
+        if(k - 1 < tmp.length)
+            return tmp[k - 1];
+        else {
+            throw new IllegalArgumentException("k is bigger then the length of the array wtf");
+        }
     }
 
 
