@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.util.Pair;
 
+import static java.util.Map.entry;
 
 
 public class Solution {
@@ -17,7 +18,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.change(500, new int[] {1,2,5}));
+        System.out.println(s.intToRoman(58));
 
 //        try {
 //            System.in.read();
@@ -2870,6 +2871,72 @@ public class Solution {
             }
         }
         return (int) max;
+
+    }
+    public ListNode partition(ListNode head, int x) { //really dumb solution bruh
+        Queue<ListNode> smaller = new ConcurrentLinkedQueue<>();
+        Queue<ListNode> greater = new ConcurrentLinkedQueue<>();
+        ListNode it = head;
+        while (it != null){
+            if(it.val < x)
+                smaller.add(it);
+            else
+                greater.add(it);
+            it = it.next;
+        }
+        ListNode res = smaller.peek();
+        ListNode s = smaller.poll();
+        ListNode before = null;
+        while(s != null){
+            s.next = smaller.peek();
+            before = s;
+            s = smaller.poll();
+        }
+        if(res == null){
+            res = greater.peek();
+        }
+        s = greater.poll();
+        if(before != null){
+            before.next = s;
+        }
+        while(s != null){
+            s.next = greater.peek();
+            s = greater.poll();
+        }
+        return res;
+    }
+    private static TreeMap<Integer, String> createMap() {
+        TreeMap<Integer,String> myMap = new TreeMap<Integer,String>(Comparator.reverseOrder());
+        myMap.put(1000, "M");
+        myMap.put(900, "CM");
+        myMap.put(500, "D");
+        myMap.put(400, "CD");
+        myMap.put(100, "C");
+        myMap.put(90, "XC");
+        myMap.put(50, "L");
+        myMap.put(40, "XL");
+        myMap.put(10, "X");
+        myMap.put(9, "IX");
+        myMap.put(5, "V");
+        myMap.put(4, "IV");
+        myMap.put(1, "I");
+        return myMap;
+    }
+    TreeMap<Integer, String> roman = createMap();
+    public String intToRoman(int num) {
+        StringBuilder sb = new StringBuilder();
+        if(num == 0){
+            return "";
+        }
+        for (Integer key : roman.keySet()) {
+            if(num - key >= 0){
+                sb.append(roman.get(key));
+                String t = intToRoman(num - key);
+                sb.append(t);
+                return sb.toString();
+            }
+        }
+        throw new RuntimeException("Negative Number or some shit idk");
 
     }
 
