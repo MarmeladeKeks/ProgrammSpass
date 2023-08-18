@@ -18,7 +18,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.intToRoman(58));
+        System.out.println(s.maximalNetworkRank(4, new int[][] {{0,1},{0,3},{1,2},{1,3}}));
 
 //        try {
 //            System.in.read();
@@ -2939,6 +2939,34 @@ public class Solution {
         throw new RuntimeException("Negative Number or some shit idk");
 
     }
+    public int maximalNetworkRank(int n, int[][] roads) {
+        int[] RoadMap = new int[n + 1];
+        int [][] allRoads = new int[n + 1] [n + 1];
+        for (int[] i: roads
+             ) {
+            if(allRoads[i[0]] [i[1]] == 0) {
+                RoadMap[i[0]] += 1;
+                RoadMap[i[1]] += 1;
+                allRoads[i[0]] [i[1]] = 1;
+                allRoads[i[1]] [i[0]] = 1;
+            }
+        }
+        int max = 0;
+        for (int i = 0; i < RoadMap.length ; i++) {
+            for (int j = i + 1; j < RoadMap.length; j++) {
+                if(RoadMap[i] + RoadMap[j] > max){
+                    int abzug = 0;
+                    if(allRoads[i][j] != 0)
+                        abzug = -1;
+                    max = Math.max(max,RoadMap[i] + RoadMap[j] + abzug );
+                }
+            }
+        }
+        return max;
+
+
+    }
+
 
 
 
