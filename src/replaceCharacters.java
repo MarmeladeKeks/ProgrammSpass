@@ -1,6 +1,6 @@
 public class replaceCharacters {
      public static void main(String[] args) {
-         System.out.println(replaceKlammern("[[0,1],[0,3],[1,2],[1,3]]"));
+         System.out.println(replaceKlammern("[[1,0,1,1,0,0,1,0,0,1],[0,1,1,0,1,0,1,0,1,1],[0,0,1,0,1,0,0,1,0,0],[1,0,1,0,1,1,1,1,1,1],[0,1,0,1,1,0,0,0,0,1],[0,0,1,0,1,1,1,0,1,0],[0,1,0,1,0,1,0,0,1,1],[1,0,0,0,1,1,1,1,0,1],[1,1,1,1,1,1,1,0,1,0],[1,1,1,1,0,1,0,0,1,1]]"));
 
     }
     public static String replaceKlammern(String s){

@@ -18,7 +18,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.maximalNetworkRank(4, new int[][] {{0,1},{0,3},{1,2},{1,3}}));
+        System.out.println(Arrays.deepToString(s.updateMatrix(new int[][]{{1, 0, 1, 1, 0, 0, 1, 0, 0, 1}, {0, 1, 1, 0, 1, 0, 1, 0, 1, 1}, {0, 0, 1, 0, 1, 0, 0, 1, 0, 0}, {1, 0, 1, 0, 1, 1, 1, 1, 1, 1}, {0, 1, 0, 1, 1, 0, 0, 0, 0, 1}, {0, 0, 1, 0, 1, 1, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 0, 1, 1}, {1, 0, 0, 0, 1, 1, 1, 1, 0, 1}, {1, 1, 1, 1, 1, 1, 1, 0, 1, 0}, {1, 1, 1, 1, 0, 1, 0, 0, 1, 1}})));
 
 //        try {
 //            System.in.read();
@@ -2966,11 +2966,88 @@ public class Solution {
 
 
     }
+    public int[][] updateMatrix2(int[][] mat) {
+        int miau = 0;
+        int[][] dp =new int[mat.length][mat[0].length];
+        for (int i = 0; i <mat.length ; i++) {
+            Arrays.fill(dp[i], -1);
+        }
+        for(int i = 0; i <mat.length ; i++) {
+            for (int j = 0; j < mat[0].length ; j++) {
+                if(mat[i][j] == 0) {
+                    dp[i][j] = 0;
+                }
+                else{
+                    dp[i][j] = findNearestZero(new HashSet<>(), dp, 0, i, j, mat, Integer.MAX_VALUE); // weil es ja das ins dp einträgt riiight?
+                }
 
+            }
 
+        }
+        return dp;
 
+    }
+    private int findNearestZero(HashSet<Pair<Integer, Integer>> visited, int[][] dp, int currentDistance, int i, int j, int[][] mat, int valueToBeat){
+        if(mat[i][j] == 0)
+            return currentDistance;
+        if(currentDistance > valueToBeat)
+            return currentDistance;
+        if(dp[i][j] != -1) //already computed
+            return dp[i][j] + currentDistance;
+        //we need to compute some shit
+        visited.add(new Pair<>(i, j));
+        int up = Integer.MAX_VALUE;
+        int down = Integer.MAX_VALUE;
+        int left = Integer.MAX_VALUE;
+        int right = Integer.MAX_VALUE;
+        if(i - 1 >= 0 && !visited.contains(new Pair<>(i - 1, j)))
+            up = findNearestZero(visited, dp, currentDistance + 1, i - 1, j, mat, up);
+        if(i + 1 < mat.length && !visited.contains(new Pair<>(i + 1, j)))
+            down = findNearestZero(visited, dp, currentDistance + 1, i + 1, j, mat, up);
+        int min1 = Math.min(up,down);
+        if(j - 1 >= 0 && !visited.contains(new Pair<>(i , j - 1)))
+            left = findNearestZero(visited, dp, currentDistance + 1, i, j - 1, mat, min1);
+        min1 = Math.min(left, min1);
+        if(j + 1 < mat[0].length && !visited.contains(new Pair<>(i , j + 1)))
+            right = findNearestZero(visited, dp, currentDistance + 1, i, j + 1, mat, min1);
 
+        min1 = Math.min(right,min1);
+        visited.remove(new Pair<>(i, j));
+        dp[i][j] = min1 - currentDistance; //des wird hoffentlich übernommen right?
+        return min1;
+    }
+    public int[][] updateMatrix(int[][] A) {
+        int n = A.length;
+        int m = A[0].length;
+        if(A[0][0]!=0) A[0][0] = m+n;
+        //Travel top down
+        for(int j = 1;j<m;j++){
+            if(A[0][j]!=0) A[0][j] = A[0][j-1]+1;
+        }
+        for(int i = 1;i<n;i++){
+            if(A[i][0]!=0) A[i][0] = A[i-1][0]+1;
+        }
+        for(int i = 1;i<n;i++){
+            for(int j = 1;j<m;j++){
+                if(A[i][j]!=0) A[i][j] = Math.min(A[i-1][j],A[i][j-1])+1;
+            }
+        }
+        //Travel up
+        for(int j = m-2;j>=0;j--){
+            if(A[n-1][j]!=0)  A[n-1][j] = Math.min(A[n-1][j], A[n-1][j+1]+1);
+        }
+        for(int i = n-2;i>=0;i--){
+            if(A[i][m-1]!=0) A[i][m-1] = Math.min(A[i][m-1],A[i+1][m-1]+1);
+        }
+        for(int i = n-2;i>=0;i--){
+            for(int j = m-2;j>=0;j--){
+                if(A[i][j]!=0) A[i][j] = Math.min(A[i][j], Math.min(A[i+1][j], A[i][j+1])+1);
+            }
+        }
+        return A;
+    }
 }
+
 
 
 
