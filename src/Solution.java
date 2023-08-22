@@ -18,7 +18,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(Arrays.deepToString(s.updateMatrix(new int[][]{{1, 0, 1, 1, 0, 0, 1, 0, 0, 1}, {0, 1, 1, 0, 1, 0, 1, 0, 1, 1}, {0, 0, 1, 0, 1, 0, 0, 1, 0, 0}, {1, 0, 1, 0, 1, 1, 1, 1, 1, 1}, {0, 1, 0, 1, 1, 0, 0, 0, 0, 1}, {0, 0, 1, 0, 1, 1, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 0, 1, 1}, {1, 0, 0, 0, 1, 1, 1, 1, 0, 1}, {1, 1, 1, 1, 1, 1, 1, 0, 1, 0}, {1, 1, 1, 1, 0, 1, 0, 0, 1, 1}})));
+        System.out.println(s.canPartition(new int[] {1,5,11,5}));
 
 //        try {
 //            System.in.read();
@@ -3045,6 +3045,57 @@ public class Solution {
             }
         }
         return A;
+    }
+    public boolean repeatedSubstringPattern(String s) {
+        StringBuilder sb = new StringBuilder();
+        int index = 0;
+        int oldindex = 0;
+        for (int i = 0; i <s.length() ; i++) {
+            if(sb.isEmpty() || sb.charAt(index) != s.charAt(i) ){
+                sb.append(s.charAt(oldindex));
+                oldindex++;
+                i= oldindex - 1;
+                index = 0;
+            }
+            else{
+                index = (index + 1) % sb.length();
+            }
+        }
+        return (index == 0 && sb.length() < s.length());
+
+    }
+    public boolean canPartition(int[] nums) {
+        long half =  (Arrays.stream(nums).sum());
+        if(half % 2 != 0)
+            return false;
+        half /= 2;
+        HashSet<Long> mySet = new HashSet<>(nums.length * nums.length);
+
+        for (int i = 0; i < nums.length ; i++) {
+            int tmp = nums[i];
+            Set<Long> aux = mySet.stream().map(v -> v + tmp).collect(Collectors.toSet());
+            mySet.addAll(aux);
+            mySet.add((long) tmp);
+            if(mySet.contains(half)){
+                return true;
+            }
+            long finalHalf = half;
+            mySet.removeIf(v -> (v > finalHalf));
+        }
+        return false;
+    }
+    public String convertToTitle(int columnNumber) {
+        StringBuilder sb = new StringBuilder();
+        final int valueA = 'A';
+        int num = columnNumber;
+        while (num > 0){
+            num--;
+            int rest = num % 26;
+            num /= 26;
+            sb.append((char) (rest + valueA));
+        }
+        return sb.reverse().toString();
+
     }
 }
 
