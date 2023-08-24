@@ -18,7 +18,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.canPartition(new int[] {1,5,11,5}));
+        System.out.println(s.strStr("sadbutsad","sad"));
 
 //        try {
 //            System.in.read();
@@ -3097,6 +3097,36 @@ public class Solution {
         return sb.reverse().toString();
 
     }
+    public int removeElement(int[] nums, int val) {
+        int removePointer = 0;
+        for (int i: nums
+             ) {
+            if(i != val){
+                nums[removePointer] = i;
+                removePointer++;
+            }
+        }
+        return removePointer;
+    }
+    public int strStr(String haystack, String needle) { // na ja stupid
+        StringBuilder sb = new StringBuilder(needle.length());
+        if(needle.length() > haystack.length()){
+            return -1;
+        }
+        for (int i = 0; i <needle.length() ; i++) {
+            sb.append(haystack.charAt(i));
+        }
+        if(sb.toString().equals(needle))
+            return 0;
+        for (int i = needle.length(); i < haystack.length() ; i++) {
+            sb.deleteCharAt(0);
+            sb.append(haystack.charAt(i));
+            if(sb.toString().equals(needle))
+                return i - (needle.length() - 1);
+        }
+        return -1;
+    }
+
 }
 
 
