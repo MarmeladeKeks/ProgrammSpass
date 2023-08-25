@@ -3126,6 +3126,63 @@ public class Solution {
         }
         return -1;
     }
+    public boolean isInterleave(String s1, String s2, String s3) {
+        int dp[][] = new int[s3.length()][s3.length()];
+        if(s1.isEmpty())
+            return s2.equals(s3);
+        else if (s2.isEmpty()) {
+            return s1.equals(s3);
+        }
+        if(s3.length() != s1.length() + s2.length())
+            return false;
+        return isInterleaveHelper(dp, s1, s2, s3, 0, 0);
+
+    }
+    private boolean isInterleaveHelper(int[][] dp, String s1, String s2, String s3, int index1, int index2){
+        if(index1 + index2 == s3.length() - 1) { //base case
+            if(index1 < s1.length()){
+                return s1.charAt(index1) == s3.charAt(index1 + index2) && index1 + index2 == s3.length();
+            }
+            else{
+                return s2.charAt(index2) == s3.charAt(index1 + index2) && index1 + index2 == s3.length();
+            }
+        }
+        if(dp[index1][index2] != 0) //already computed that shit :-D
+            return false;
+        if(index1 + index2 >= s3.length()) //cant be equal now xdd :P
+            return false;
+        //base case shit done
+        if(index1 >= s1.length()){
+            return s2.substring(index2).equals(s3.substring(index1 + index2));
+        }
+        if(index2 >= s2.length()){
+            return s1.substring(index1).equals(s3.substring(index1 + index2));
+        }
+
+        if(s1.charAt(index1) != s3.charAt(index1 + index2) && s2.charAt(index2) != s3.charAt(index1 + index2)){
+            dp[index1][index2] = 1;
+            return false;
+        }
+        else if(s1.charAt(index1) == s3.charAt(index1 + index2) && s2.charAt(index2) != s3.charAt(index1 + index2)){ //you can just use s1 this time
+            boolean tmp = isInterleaveHelper(dp, s1, s2, s3, index1 + 1, index2);
+            dp[index1 + 1][index2] = 1;
+            return tmp;
+        }
+        else if(s1.charAt(index1) != s3.charAt(index1 + index2) && s2.charAt(index2) == s3.charAt(index1 + index2)){ //you can just use s2 this time
+            boolean tmp = isInterleaveHelper(dp, s1, s2, s3, index1, index2 + 1);
+            dp[index1][index2 + 1] = 1;
+            return tmp;
+        }
+        else{ //both are possible
+            boolean tmp1 = isInterleaveHelper(dp, s1, s2, s3, index1 + 1, index2);
+            dp[index1 + 1][index2] = 1;
+            if(tmp1)
+                return true;
+            boolean tmp = isInterleaveHelper(dp, s1, s2, s3, index1, index2 + 1);
+            dp[index1][index2 + 1] = 1;
+            return tmp;
+        }
+    }
 
 }
 
