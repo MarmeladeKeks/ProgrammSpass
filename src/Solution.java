@@ -3183,6 +3183,92 @@ public class Solution {
             return tmp;
         }
     }
+    class MyStack {
+        LinkedBlockingQueue<Integer> meow;
+
+
+        public MyStack() {
+            meow = new LinkedBlockingQueue<Integer>();
+        }
+
+        public void push(int x) {
+            meow.offer(x);
+        }
+
+        public int pop() {
+            if(this.empty())
+                return -1;
+            for (int i = 0; i <meow.size() - 1 ; i++) {
+                meow.offer(meow.poll());
+            }
+            return meow.poll(); //will never null point
+        }
+
+        public int top() {
+            if(this.empty())
+                return -1;
+            for (int i = 0; i <meow.size() - 1 ; i++) {
+                meow.offer(meow.poll());
+            }
+            Integer res = meow.peek();
+            meow.offer(meow.poll());
+            return res;//will never null point
+
+        }
+
+        public boolean empty() {
+            return meow.isEmpty();
+        }
+    }
+    class MyQueue {
+        Stack<Integer> input;
+        Stack<Integer> output;
+
+        public MyQueue() {
+            input = new Stack<>();
+            output = new Stack<>();
+        }
+
+        public void push(int x) {
+            input.push(x);
+        }
+
+        public int pop() {
+            if(output.empty()){
+                int size = input.size();
+                for (int i = 0; i < size; i++) {
+                    output.push(input.pop());
+                }
+            }
+            return output.pop();
+        }
+
+        public int peek() {
+            if(output.empty()){
+                int size = input.size();
+                for (int i = 0; i < size; i++) {
+                    output.push(input.pop());
+                }
+            }
+            return output.peek();
+
+        }
+
+        public boolean empty() {
+            return input.empty() && output.empty();
+        }
+    }
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack obj = new MyStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * boolean param_4 = obj.empty();
+ */
+
+
 
 }
 
