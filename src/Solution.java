@@ -2,6 +2,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import javafx.util.Pair;
 
 import static java.util.Map.entry;
@@ -18,7 +19,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.strStr("sadbutsad","sad"));
+        System.out.println(s.bestClosingTime("YYNY"));
 
 //        try {
 //            System.in.read();
@@ -2628,99 +2629,93 @@ public class Solution {
         Map<Pair<Integer, Integer>, List<TreeNode>> memo = new HashMap<>();
         return allPossibleBST(1, n, memo);
     }
+
     public boolean searchMatrix(int[][] matrix, int target) {
         int start = 0;
         int end = matrix.length - 1;
         int mid = (start + end) / 2;
         boolean found = false;
-        while(start <= end){
-            if(target >= matrix[mid][0] && target <= matrix[mid][matrix[mid].length - 1]){
+        while (start <= end) {
+            if (target >= matrix[mid][0] && target <= matrix[mid][matrix[mid].length - 1]) {
                 found = true;
                 break;
             }
-            if(target < matrix[(int) mid][0]){
+            if (target < matrix[(int) mid][0]) {
                 end = mid - 1;
-            }
-            else{
+            } else {
                 start = mid + 1;
             }
             mid = (start + end) / 2;
         }
-        if(!found)
+        if (!found)
             return false;
         int index = mid;
         start = 0;
         end = matrix[index].length - 1;
         mid = (start + end) / 2;
-        while(start <= end){
-            if(target == matrix[index][mid]){
+        while (start <= end) {
+            if (target == matrix[index][mid]) {
                 return true;
             }
-            if(target < matrix[index][mid]){
+            if (target < matrix[index][mid]) {
                 end = mid - 1;
-            }
-            else{
+            } else {
                 start = mid + 1;
             }
             mid = (start + end) / 2;
         }
         return false;
     }
+
     public boolean isPalindrome(String s) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < s.length() ; i++) {
-            if(Character.isAlphabetic(s.charAt(i)) || Character.isDigit(s.charAt(i))){
+        for (int i = 0; i < s.length(); i++) {
+            if (Character.isAlphabetic(s.charAt(i)) || Character.isDigit(s.charAt(i))) {
                 sb.append(Character.toLowerCase(s.charAt(i)));
             }
         }
         int mid = sb.length() / 2;
-        for (int i = 0; i < mid ; i++) {
-            if(sb.charAt(i) != sb.charAt(sb.length() - 1 - i))
+        for (int i = 0; i < mid; i++) {
+            if (sb.charAt(i) != sb.charAt(sb.length() - 1 - i))
                 return false;
         }
         return true;
     }
+
     public int search(int[] nums, int target) {
         int start = 0;
         int end = nums.length - 1;
         int mid = (start + end) / 2;
         while (start <= end) {
-            if(nums[mid] == target) //base case
+            if (nums[mid] == target) //base case
                 return mid;
-            if(nums[start] > nums[end]) {
+            if (nums[start] > nums[end]) {
                 if (target < nums[start]) {// we want to be on the right side
-                    if(nums[mid] < target){ // i am on the right side
+                    if (nums[mid] < target) { // i am on the right side
                         start = mid + 1;
-                    }
-                    else{ // idk where i am.
+                    } else { // idk where i am.
                         if (nums[start] <= nums[mid]) {  // i am on the left side (dont want to be there)
-                           start = mid + 1;
-                        }
-                        else{
+                            start = mid + 1;
+                        } else {
                             end = mid - 1;
                         }
                     }
-                }
-                else{ // we want to be on the left side
-                    if(nums[mid] < target){ //idk where i am
+                } else { // we want to be on the left side
+                    if (nums[mid] < target) { //idk where i am
                         if (nums[start] <= nums[mid]) {  // i am on the left side (want to be there)
                             start = mid + 1;
-                        }
-                        else{ // i am on the right side
+                        } else { // i am on the right side
                             end = mid - 1;
                         }
-                    }
-                    else{ // i am on the right side
+                    } else { // i am on the right side
                         end = mid - 1;
                     }
 
                 }
-            }
-            else{ //normales binary search
-                if(nums[mid] > target){
+            } else { //normales binary search
+                if (nums[mid] > target) {
                     end = mid - 1;
-                }
-                else{
+                } else {
                     start = mid + 1;
                 }
 
@@ -2729,6 +2724,7 @@ public class Solution {
         }
         return -1;
     }
+
     public boolean search2(int[] nums, int target) {
         int n = nums.length;
         if (n == 0) return false;
@@ -2777,9 +2773,11 @@ public class Solution {
     private boolean existsInFirst(int[] arr, int start, int element) {
         return arr[start] <= element;
     }
+
     int globalCount;
     int[] globalCoins;
     HashSet<List<Integer>> dpMapChange;
+
     public int change(int amount, int[] coins) {
         globalCount = 0;
         dpMapChange = new HashSet<>();
@@ -2792,93 +2790,98 @@ public class Solution {
         return globalCount;
 
     }
-    private void changeHelper(int amount, int curAmount, List<Integer> curConfig){
-        if(dpMapChange.contains(curConfig)){ //if already computed
+
+    private void changeHelper(int amount, int curAmount, List<Integer> curConfig) {
+        if (dpMapChange.contains(curConfig)) { //if already computed
             return;
         }
-        if(curAmount == amount){
+        if (curAmount == amount) {
             globalCount++;//base case
             dpMapChange.add(new ArrayList<>(curConfig));
             return;
         }
-        if(curAmount > amount) //abbruch
+        if (curAmount > amount) //abbruch
             return;
         for (int i = 0; i < globalCoins.length; i++) {
             curAmount += globalCoins[i];
             curConfig.set(i, curConfig.get(i) + 1); //increment it
-            changeHelper(amount, curAmount,curConfig); //dont do parallel shit
+            changeHelper(amount, curAmount, curConfig); //dont do parallel shit
             curAmount -= globalCoins[i]; //reset
             curConfig.set(i, curConfig.get(i) - 1); //reset
         }
         dpMapChange.add(new ArrayList<>(curConfig)); //i computed it right???
     }
-    public int[] sort(int nums[]){
+
+    public int[] sort(int nums[]) {
         return sortHelper(nums, 0, nums.length - 1);
 
     }
-    private int[] sortHelper(int[] nums, int begin, int end){
-        if(begin == end){
-            return new int[] {nums[begin]};
+
+    private int[] sortHelper(int[] nums, int begin, int end) {
+        if (begin == end) {
+            return new int[]{nums[begin]};
         }
         int mid = ((begin + end) / 2);
         int[] tmp1 = sortHelper(nums, begin, mid);
         int[] tmp2 = sortHelper(nums, mid + 1, end);
         return merge3(tmp1, tmp2);
     }
-    public int[] merge3(int[] n, int[] m){
+
+    public int[] merge3(int[] n, int[] m) {
         int[] res = new int[n.length + m.length];
         int npointer = 0;
         int mpointer = 0;
-        for (int i = 0; i < res.length ; i++) {
+        for (int i = 0; i < res.length; i++) {
             int n_val = Integer.MIN_VALUE;
             int m_val = Integer.MIN_VALUE;
-            if(npointer < n.length)
+            if (npointer < n.length)
                 n_val = n[npointer];
-            if(mpointer < m.length)
+            if (mpointer < m.length)
                 m_val = m[mpointer];
-            if(n_val > m_val){
+            if (n_val > m_val) {
                 res[i] = n_val;
                 npointer++;
-            }
-            else{
+            } else {
                 res[i] = m_val;
                 mpointer++;
             }
         }
         return res;
     }
+
     public int findKthLargest(int[] nums, int k) {
         int[] tmp = sort(nums);
-        if(k - 1 < tmp.length)
+        if (k - 1 < tmp.length)
             return tmp[k - 1];
         else {
             throw new IllegalArgumentException("k is bigger then the length of the array wtf");
         }
     }
+
     public int maxArea(int[] height) {
         long max = 0;
         int left = 0;
         int right = height.length - 1;
-        while(left < right){
+        while (left < right) {
             int x = right - left;
             int y = Math.min(height[left], height[right]);
-            max = Math.max(max, ( ((long) x * y) ));
-            if(height[left] < height[right]){
+            max = Math.max(max, (((long) x * y)));
+            if (height[left] < height[right]) {
                 left++;
-            }
-            else{
+            } else {
                 right--;
             }
         }
         return (int) max;
 
     }
+
     public ListNode partition(ListNode head, int x) { //really dumb solution bruh
         Queue<ListNode> smaller = new ConcurrentLinkedQueue<>();
         Queue<ListNode> greater = new ConcurrentLinkedQueue<>();
         ListNode it = head;
-        while (it != null){
-            if(it.val < x)
+        while (it != null) {
+            if (it.val < x)
                 smaller.add(it);
             else
                 greater.add(it);
@@ -2887,26 +2890,27 @@ public class Solution {
         ListNode res = smaller.peek();
         ListNode s = smaller.poll();
         ListNode before = null;
-        while(s != null){
+        while (s != null) {
             s.next = smaller.peek();
             before = s;
             s = smaller.poll();
         }
-        if(res == null){
+        if (res == null) {
             res = greater.peek();
         }
         s = greater.poll();
-        if(before != null){
+        if (before != null) {
             before.next = s;
         }
-        while(s != null){
+        while (s != null) {
             s.next = greater.peek();
             s = greater.poll();
         }
         return res;
     }
+
     private static TreeMap<Integer, String> createMap() {
-        TreeMap<Integer,String> myMap = new TreeMap<Integer,String>(Comparator.reverseOrder());
+        TreeMap<Integer, String> myMap = new TreeMap<Integer, String>(Comparator.reverseOrder());
         myMap.put(1000, "M");
         myMap.put(900, "CM");
         myMap.put(500, "D");
@@ -2922,14 +2926,16 @@ public class Solution {
         myMap.put(1, "I");
         return myMap;
     }
+
     TreeMap<Integer, String> roman = createMap();
+
     public String intToRoman(int num) {
         StringBuilder sb = new StringBuilder();
-        if(num == 0){
+        if (num == 0) {
             return "";
         }
         for (Integer key : roman.keySet()) {
-            if(num - key >= 0){
+            if (num - key >= 0) {
                 sb.append(roman.get(key));
                 String t = intToRoman(num - key);
                 sb.append(t);
@@ -2939,26 +2945,27 @@ public class Solution {
         throw new RuntimeException("Negative Number or some shit idk");
 
     }
+
     public int maximalNetworkRank(int n, int[][] roads) {
         int[] RoadMap = new int[n + 1];
-        int [][] allRoads = new int[n + 1] [n + 1];
-        for (int[] i: roads
-             ) {
-            if(allRoads[i[0]] [i[1]] == 0) {
+        int[][] allRoads = new int[n + 1][n + 1];
+        for (int[] i : roads
+        ) {
+            if (allRoads[i[0]][i[1]] == 0) {
                 RoadMap[i[0]] += 1;
                 RoadMap[i[1]] += 1;
-                allRoads[i[0]] [i[1]] = 1;
-                allRoads[i[1]] [i[0]] = 1;
+                allRoads[i[0]][i[1]] = 1;
+                allRoads[i[1]][i[0]] = 1;
             }
         }
         int max = 0;
-        for (int i = 0; i < RoadMap.length ; i++) {
+        for (int i = 0; i < RoadMap.length; i++) {
             for (int j = i + 1; j < RoadMap.length; j++) {
-                if(RoadMap[i] + RoadMap[j] > max){
+                if (RoadMap[i] + RoadMap[j] > max) {
                     int abzug = 0;
-                    if(allRoads[i][j] != 0)
+                    if (allRoads[i][j] != 0)
                         abzug = -1;
-                    max = Math.max(max,RoadMap[i] + RoadMap[j] + abzug );
+                    max = Math.max(max, RoadMap[i] + RoadMap[j] + abzug);
                 }
             }
         }
@@ -2966,18 +2973,18 @@ public class Solution {
 
 
     }
+
     public int[][] updateMatrix2(int[][] mat) {
         int miau = 0;
-        int[][] dp =new int[mat.length][mat[0].length];
-        for (int i = 0; i <mat.length ; i++) {
+        int[][] dp = new int[mat.length][mat[0].length];
+        for (int i = 0; i < mat.length; i++) {
             Arrays.fill(dp[i], -1);
         }
-        for(int i = 0; i <mat.length ; i++) {
-            for (int j = 0; j < mat[0].length ; j++) {
-                if(mat[i][j] == 0) {
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[0].length; j++) {
+                if (mat[i][j] == 0) {
                     dp[i][j] = 0;
-                }
-                else{
+                } else {
                     dp[i][j] = findNearestZero(new HashSet<>(), dp, 0, i, j, mat, Integer.MAX_VALUE); // weil es ja das ins dp einträgt riiight?
                 }
 
@@ -2987,12 +2994,13 @@ public class Solution {
         return dp;
 
     }
-    private int findNearestZero(HashSet<Pair<Integer, Integer>> visited, int[][] dp, int currentDistance, int i, int j, int[][] mat, int valueToBeat){
-        if(mat[i][j] == 0)
+
+    private int findNearestZero(HashSet<Pair<Integer, Integer>> visited, int[][] dp, int currentDistance, int i, int j, int[][] mat, int valueToBeat) {
+        if (mat[i][j] == 0)
             return currentDistance;
-        if(currentDistance > valueToBeat)
+        if (currentDistance > valueToBeat)
             return currentDistance;
-        if(dp[i][j] != -1) //already computed
+        if (dp[i][j] != -1) //already computed
             return dp[i][j] + currentDistance;
         //we need to compute some shit
         visited.add(new Pair<>(i, j));
@@ -3000,83 +3008,85 @@ public class Solution {
         int down = Integer.MAX_VALUE;
         int left = Integer.MAX_VALUE;
         int right = Integer.MAX_VALUE;
-        if(i - 1 >= 0 && !visited.contains(new Pair<>(i - 1, j)))
+        if (i - 1 >= 0 && !visited.contains(new Pair<>(i - 1, j)))
             up = findNearestZero(visited, dp, currentDistance + 1, i - 1, j, mat, up);
-        if(i + 1 < mat.length && !visited.contains(new Pair<>(i + 1, j)))
+        if (i + 1 < mat.length && !visited.contains(new Pair<>(i + 1, j)))
             down = findNearestZero(visited, dp, currentDistance + 1, i + 1, j, mat, up);
-        int min1 = Math.min(up,down);
-        if(j - 1 >= 0 && !visited.contains(new Pair<>(i , j - 1)))
+        int min1 = Math.min(up, down);
+        if (j - 1 >= 0 && !visited.contains(new Pair<>(i, j - 1)))
             left = findNearestZero(visited, dp, currentDistance + 1, i, j - 1, mat, min1);
         min1 = Math.min(left, min1);
-        if(j + 1 < mat[0].length && !visited.contains(new Pair<>(i , j + 1)))
+        if (j + 1 < mat[0].length && !visited.contains(new Pair<>(i, j + 1)))
             right = findNearestZero(visited, dp, currentDistance + 1, i, j + 1, mat, min1);
 
-        min1 = Math.min(right,min1);
+        min1 = Math.min(right, min1);
         visited.remove(new Pair<>(i, j));
         dp[i][j] = min1 - currentDistance; //des wird hoffentlich übernommen right?
         return min1;
     }
+
     public int[][] updateMatrix(int[][] A) {
         int n = A.length;
         int m = A[0].length;
-        if(A[0][0]!=0) A[0][0] = m+n;
+        if (A[0][0] != 0) A[0][0] = m + n;
         //Travel top down
-        for(int j = 1;j<m;j++){
-            if(A[0][j]!=0) A[0][j] = A[0][j-1]+1;
+        for (int j = 1; j < m; j++) {
+            if (A[0][j] != 0) A[0][j] = A[0][j - 1] + 1;
         }
-        for(int i = 1;i<n;i++){
-            if(A[i][0]!=0) A[i][0] = A[i-1][0]+1;
+        for (int i = 1; i < n; i++) {
+            if (A[i][0] != 0) A[i][0] = A[i - 1][0] + 1;
         }
-        for(int i = 1;i<n;i++){
-            for(int j = 1;j<m;j++){
-                if(A[i][j]!=0) A[i][j] = Math.min(A[i-1][j],A[i][j-1])+1;
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (A[i][j] != 0) A[i][j] = Math.min(A[i - 1][j], A[i][j - 1]) + 1;
             }
         }
         //Travel up
-        for(int j = m-2;j>=0;j--){
-            if(A[n-1][j]!=0)  A[n-1][j] = Math.min(A[n-1][j], A[n-1][j+1]+1);
+        for (int j = m - 2; j >= 0; j--) {
+            if (A[n - 1][j] != 0) A[n - 1][j] = Math.min(A[n - 1][j], A[n - 1][j + 1] + 1);
         }
-        for(int i = n-2;i>=0;i--){
-            if(A[i][m-1]!=0) A[i][m-1] = Math.min(A[i][m-1],A[i+1][m-1]+1);
+        for (int i = n - 2; i >= 0; i--) {
+            if (A[i][m - 1] != 0) A[i][m - 1] = Math.min(A[i][m - 1], A[i + 1][m - 1] + 1);
         }
-        for(int i = n-2;i>=0;i--){
-            for(int j = m-2;j>=0;j--){
-                if(A[i][j]!=0) A[i][j] = Math.min(A[i][j], Math.min(A[i+1][j], A[i][j+1])+1);
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = m - 2; j >= 0; j--) {
+                if (A[i][j] != 0) A[i][j] = Math.min(A[i][j], Math.min(A[i + 1][j], A[i][j + 1]) + 1);
             }
         }
         return A;
     }
+
     public boolean repeatedSubstringPattern(String s) {
         StringBuilder sb = new StringBuilder();
         int index = 0;
         int oldindex = 0;
-        for (int i = 0; i <s.length() ; i++) {
-            if(sb.isEmpty() || sb.charAt(index) != s.charAt(i) ){
+        for (int i = 0; i < s.length(); i++) {
+            if (sb.isEmpty() || sb.charAt(index) != s.charAt(i)) {
                 sb.append(s.charAt(oldindex));
                 oldindex++;
-                i= oldindex - 1;
+                i = oldindex - 1;
                 index = 0;
-            }
-            else{
+            } else {
                 index = (index + 1) % sb.length();
             }
         }
         return (index == 0 && sb.length() < s.length());
 
     }
+
     public boolean canPartition(int[] nums) {
-        long half =  (Arrays.stream(nums).sum());
-        if(half % 2 != 0)
+        long half = (Arrays.stream(nums).sum());
+        if (half % 2 != 0)
             return false;
         half /= 2;
         HashSet<Long> mySet = new HashSet<>(nums.length * nums.length);
 
-        for (int i = 0; i < nums.length ; i++) {
+        for (int i = 0; i < nums.length; i++) {
             int tmp = nums[i];
             Set<Long> aux = mySet.stream().map(v -> v + tmp).collect(Collectors.toSet());
             mySet.addAll(aux);
             mySet.add((long) tmp);
-            if(mySet.contains(half)){
+            if (mySet.contains(half)) {
                 return true;
             }
             long finalHalf = half;
@@ -3084,11 +3094,12 @@ public class Solution {
         }
         return false;
     }
+
     public String convertToTitle(int columnNumber) {
         StringBuilder sb = new StringBuilder();
         final int valueA = 'A';
         int num = columnNumber;
-        while (num > 0){
+        while (num > 0) {
             num--;
             int rest = num % 26;
             num /= 26;
@@ -3097,92 +3108,93 @@ public class Solution {
         return sb.reverse().toString();
 
     }
+
     public int removeElement(int[] nums, int val) {
         int removePointer = 0;
-        for (int i: nums
-             ) {
-            if(i != val){
+        for (int i : nums
+        ) {
+            if (i != val) {
                 nums[removePointer] = i;
                 removePointer++;
             }
         }
         return removePointer;
     }
+
     public int strStr(String haystack, String needle) { // na ja stupid
         StringBuilder sb = new StringBuilder(needle.length());
-        if(needle.length() > haystack.length()){
+        if (needle.length() > haystack.length()) {
             return -1;
         }
-        for (int i = 0; i <needle.length() ; i++) {
+        for (int i = 0; i < needle.length(); i++) {
             sb.append(haystack.charAt(i));
         }
-        if(sb.toString().equals(needle))
+        if (sb.toString().equals(needle))
             return 0;
-        for (int i = needle.length(); i < haystack.length() ; i++) {
+        for (int i = needle.length(); i < haystack.length(); i++) {
             sb.deleteCharAt(0);
             sb.append(haystack.charAt(i));
-            if(sb.toString().equals(needle))
+            if (sb.toString().equals(needle))
                 return i - (needle.length() - 1);
         }
         return -1;
     }
+
     public boolean isInterleave(String s1, String s2, String s3) {
         int dp[][] = new int[s3.length()][s3.length()];
-        if(s1.isEmpty())
+        if (s1.isEmpty())
             return s2.equals(s3);
         else if (s2.isEmpty()) {
             return s1.equals(s3);
         }
-        if(s3.length() != s1.length() + s2.length())
+        if (s3.length() != s1.length() + s2.length())
             return false;
         return isInterleaveHelper(dp, s1, s2, s3, 0, 0);
 
     }
-    private boolean isInterleaveHelper(int[][] dp, String s1, String s2, String s3, int index1, int index2){
-        if(index1 + index2 == s3.length() - 1) { //base case
-            if(index1 < s1.length()){
+
+    private boolean isInterleaveHelper(int[][] dp, String s1, String s2, String s3, int index1, int index2) {
+        if (index1 + index2 == s3.length() - 1) { //base case
+            if (index1 < s1.length()) {
                 return s1.charAt(index1) == s3.charAt(index1 + index2) && index1 + index2 == s3.length();
-            }
-            else{
+            } else {
                 return s2.charAt(index2) == s3.charAt(index1 + index2) && index1 + index2 == s3.length();
             }
         }
-        if(dp[index1][index2] != 0) //already computed that shit :-D
+        if (dp[index1][index2] != 0) //already computed that shit :-D
             return false;
-        if(index1 + index2 >= s3.length()) //cant be equal now xdd :P
+        if (index1 + index2 >= s3.length()) //cant be equal now xdd :P
             return false;
         //base case shit done
-        if(index1 >= s1.length()){
+        if (index1 >= s1.length()) {
             return s2.substring(index2).equals(s3.substring(index1 + index2));
         }
-        if(index2 >= s2.length()){
+        if (index2 >= s2.length()) {
             return s1.substring(index1).equals(s3.substring(index1 + index2));
         }
 
-        if(s1.charAt(index1) != s3.charAt(index1 + index2) && s2.charAt(index2) != s3.charAt(index1 + index2)){
+        if (s1.charAt(index1) != s3.charAt(index1 + index2) && s2.charAt(index2) != s3.charAt(index1 + index2)) {
             dp[index1][index2] = 1;
             return false;
-        }
-        else if(s1.charAt(index1) == s3.charAt(index1 + index2) && s2.charAt(index2) != s3.charAt(index1 + index2)){ //you can just use s1 this time
+        } else if (s1.charAt(index1) == s3.charAt(index1 + index2) && s2.charAt(index2) != s3.charAt(index1 + index2)) { //you can just use s1 this time
             boolean tmp = isInterleaveHelper(dp, s1, s2, s3, index1 + 1, index2);
             dp[index1 + 1][index2] = 1;
             return tmp;
-        }
-        else if(s1.charAt(index1) != s3.charAt(index1 + index2) && s2.charAt(index2) == s3.charAt(index1 + index2)){ //you can just use s2 this time
+        } else if (s1.charAt(index1) != s3.charAt(index1 + index2) && s2.charAt(index2) == s3.charAt(index1 + index2)) { //you can just use s2 this time
             boolean tmp = isInterleaveHelper(dp, s1, s2, s3, index1, index2 + 1);
             dp[index1][index2 + 1] = 1;
             return tmp;
-        }
-        else{ //both are possible
+        } else { //both are possible
             boolean tmp1 = isInterleaveHelper(dp, s1, s2, s3, index1 + 1, index2);
             dp[index1 + 1][index2] = 1;
-            if(tmp1)
+            if (tmp1)
                 return true;
             boolean tmp = isInterleaveHelper(dp, s1, s2, s3, index1, index2 + 1);
             dp[index1][index2 + 1] = 1;
             return tmp;
         }
     }
+
     class MyStack {
         LinkedBlockingQueue<Integer> meow;
 
@@ -3196,18 +3208,18 @@ public class Solution {
         }
 
         public int pop() {
-            if(this.empty())
+            if (this.empty())
                 return -1;
-            for (int i = 0; i <meow.size() - 1 ; i++) {
+            for (int i = 0; i < meow.size() - 1; i++) {
                 meow.offer(meow.poll());
             }
             return meow.poll(); //will never null point
         }
 
         public int top() {
-            if(this.empty())
+            if (this.empty())
                 return -1;
-            for (int i = 0; i <meow.size() - 1 ; i++) {
+            for (int i = 0; i < meow.size() - 1; i++) {
                 meow.offer(meow.poll());
             }
             Integer res = meow.peek();
@@ -3220,6 +3232,7 @@ public class Solution {
             return meow.isEmpty();
         }
     }
+
     class MyQueue {
         Stack<Integer> input;
         Stack<Integer> output;
@@ -3234,7 +3247,7 @@ public class Solution {
         }
 
         public int pop() {
-            if(output.empty()){
+            if (output.empty()) {
                 int size = input.size();
                 for (int i = 0; i < size; i++) {
                     output.push(input.pop());
@@ -3244,7 +3257,7 @@ public class Solution {
         }
 
         public int peek() {
-            if(output.empty()){
+            if (output.empty()) {
                 int size = input.size();
                 for (int i = 0; i < size; i++) {
                     output.push(input.pop());
@@ -3259,16 +3272,82 @@ public class Solution {
         }
     }
 
-/**
- * Your MyStack object will be instantiated and called as such:
- * MyStack obj = new MyStack();
- * obj.push(x);
- * int param_2 = obj.pop();
- * int param_3 = obj.top();
- * boolean param_4 = obj.empty();
- */
+    /**
+     * Your MyStack object will be instantiated and called as such:
+     * MyStack obj = new MyStack();
+     * obj.push(x);
+     * int param_2 = obj.pop();
+     * int param_3 = obj.top();
+     * boolean param_4 = obj.empty();
+     */
 
+    public int bestClosingTime(String customers) {
+        int Ycount = 0;
+        int Ncount = 0;
+        for (char c: customers.toCharArray()
+             ) {
+            if (c == 'Y') {
+                Ycount++;
+            }
+        }
+        int minPenalty = Ycount;
+        int hour = 0;
+        for (int i = 0; i < customers.length() ; i++) {
+            char c = customers.charAt(i);
+            if(c == 'Y'){
+                if(minPenalty > Ycount + Ncount){
+                    hour = i;
+                    minPenalty = Ycount + Ncount;
+                }
+                Ycount--;
+            } else if (c == 'N') {
+                if(minPenalty > Ycount + Ncount){
+                    hour = i;
+                    minPenalty = Ycount + Ncount;
+                }
+                Ncount++;
+            }
+        }
+        if(minPenalty > Ycount + Ncount){
+            hour = customers.length();
+            minPenalty = Ycount + Ncount;
+        }
 
+        return hour;
+    }
+    public int threeSumClosest(int[] nums, int target) {
+
+        // Sort the elements
+        Arrays.sort(nums);
+        int resultSum = nums[0] + nums[1] + nums[2];
+        int minDifference = Integer.MAX_VALUE;
+
+        // Now fix the first element and find the other two elements
+        for (int i = 0; i < nums.length - 2; i++) {
+            // Find other two elements using Two Sum approach
+            int left = i + 1;
+            int right = nums.length - 1;
+
+            while (left < right) {
+                int sum = nums[i] + nums[left] + nums[right];
+
+                if (sum == target)
+                    return target;
+                if (sum < target)
+                    left++;
+                else
+                    right--;
+
+                int diffToTarget = Math.abs(sum - target);
+                if (diffToTarget < minDifference) {
+                    // update the result sum
+                    resultSum = sum;
+                    minDifference = diffToTarget;
+                }
+            }
+        }
+        return resultSum;
+    }
 
 }
 
