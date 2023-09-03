@@ -19,7 +19,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.bestClosingTime("YYNY"));
+        System.out.println(s.uniquePaths(3, 7));
 
 //        try {
 //            System.in.read();
@@ -3347,6 +3347,23 @@ public class Solution {
             }
         }
         return resultSum;
+    }
+    public int uniquePaths(int m, int n) {
+        int[][] dp = new int[m][n];
+        return uniquePathHelper(m, n , dp, 0 , 0);
+
+    }
+    private int uniquePathHelper(int m, int n, int[][] dp, int currentm, int currentn){
+        if(currentm == m - 1 || currentn == n - 1){
+            return 1;
+        }
+        if(dp[currentm][currentn] != 0)
+            return dp[currentm][currentn];
+        //base case done?
+        int tmp = uniquePathHelper(m, n, dp, currentm + 1, currentn);
+        tmp += uniquePathHelper(m, n, dp, currentm, currentn + 1);
+        dp[currentm][currentn] = tmp;
+        return tmp;
     }
 
 }
