@@ -3,6 +3,7 @@ import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javafx.collections.transformation.SortedList;
 import javafx.util.Pair;
 
 import static java.util.Map.entry;
@@ -19,7 +20,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.uniquePaths(3, 7));
+        System.out.println(s.find132pattern(new int[]{-1,3,2,0}));
 
 //        try {
 //            System.in.read();
@@ -3365,6 +3366,152 @@ public class Solution {
         dp[currentm][currentn] = tmp;
         return tmp;
     }
+    public int[] sortArrayByParity(int[] nums) {
+        int evenPointer = 0;
+        int oddPointer = nums.length - 1;
+        while(evenPointer < oddPointer){
+            if(nums[evenPointer] % 2 == 0){ //do nothing bro its fine :)
+                evenPointer++;
+            }
+            else{ //odd where it doesnt belong
+                oddPointer = insertOddEven(nums, evenPointer, oddPointer);
+                evenPointer++;
+            }
+        }
+        return nums;
+    }
+    private int insertOddEven(int[] nums, int evenPointer, int oddPointer){
+        if(evenPointer >= oddPointer) //list already done so
+            return oddPointer;
+        /*if(nums[evenPointer] % 2 == 0) //function call not needed (just to make it safe)
+            return oddPointer;*/
+        if(nums[oddPointer] % 2 == 0){
+            int tmp = nums[evenPointer];
+            nums[evenPointer] = nums[oddPointer];
+            nums[oddPointer] = tmp;
+            return oddPointer - 1;
+        }
+        else{ //nums[oddPointer] = odd --> repeat it for oddPointer - 1
+            return insertOddEven(nums, evenPointer, oddPointer - 1);
+        }
+    }
+    public int[] sortEvenOdd(int[] nums) {
+        LinkedList<Integer> evenNumbers = new LinkedList<>();
+        LinkedList<Integer> oddNumbers = new LinkedList<>();
+        for (int i : nums
+             ) {
+            if(i % 2 == 0)
+                evenNumbers.add(i);
+            else
+                oddNumbers.add(i);
+        }
+        Collections.sort(evenNumbers);
+        for (int i = 0; i < nums.length; i++) {
+            if(true)
+                return null;
+
+        }
+        return null;
+
+
+
+    }
+    public boolean find132pattern(int[] nums) {
+        TreeMap<Integer, List<Integer>> pattern = new TreeMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int current = nums[i];
+            Map<Integer,List<Integer>> lower = pattern.headMap(current);
+            Map<Integer,List<Integer>> higher = pattern.tailMap(current + 1);
+            if(!(lower.isEmpty() || higher.isEmpty())){
+                int min = Integer.MAX_VALUE;
+                for(List<Integer> myList : lower.values()){
+                    min = Math.min(min, Collections.min(myList)); //if list is sorted take first
+                }
+                int max = Integer.MIN_VALUE;
+                for(List<Integer> myList : higher.values()){
+                    max = Math.max(max, Collections.max(myList)); //if sorted take last
+                }
+                if(min < max)
+                    return true;
+            }
+            if(pattern.containsKey(current)){ //could sort this list , but dont think its worth
+                pattern.get(current).add(i);
+            }
+            else{
+                List<Integer> tmpList = new ArrayList<>();
+                tmpList.add(i);
+                pattern.put(current, tmpList);
+
+            }
+        }
+        return false;
+
+    }
+    class MyHashMap {
+        ArrayList<LinkedList<Integer>> myMap;
+
+        public MyHashMap() {
+            myMap = new ArrayList<>(1000);
+            // 1000 because of question restrictions;
+            for (int i = 0; i < 1000 ; i++) {
+                myMap.add(new LinkedList<Integer>());
+            }
+
+        }
+
+        public void put(int key, int value) {
+            int index = key % 1000;
+            int indexInList = getIndex(key);
+            if(indexInList == -1) { //key wasn't already present
+                myMap.get(index).add(key);
+                myMap.get(index).add(value);
+            }
+            else{ //key already present --> update key
+                myMap.get(index).remove(indexInList);
+                myMap.get(index).add(indexInList, value); //hopefully updated
+            }
+
+        }
+
+        public int get(int key) {
+            int index = key % 1000;
+            int indexInList = getIndex(key);
+            if(indexInList == -1)
+                return -1;
+            return myMap.get(index).get(indexInList);
+        }
+        private int getIndex(int key){
+            int index = key % 1000;
+            LinkedList<Integer> tmp = myMap.get(index);
+            if(tmp.isEmpty())
+                return -1;
+            for (int i = 0; i < tmp.size(); i+=2) {
+                if(tmp.get(i) == key)
+                    return i + 1;
+            }
+            return -1;
+
+        }
+
+        public void remove(int key) {
+            int index = key % 1000;
+            int indexInList = getIndex(key);
+            if(indexInList == -1)
+                return;
+            myMap.get(index).remove(indexInList - 1);
+            myMap.get(index).remove(indexInList - 1);
+        }
+    }
+
+/**
+ * Your MyHashMap object will be instantiated and called as such:
+ * MyHashMap obj = new MyHashMap();
+ * obj.put(key,value);
+ * int param_2 = obj.get(key);
+ * obj.remove(key);
+ */
+
+
 
 }
 
