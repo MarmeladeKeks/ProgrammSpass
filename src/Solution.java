@@ -3510,6 +3510,41 @@ public class Solution {
  * int param_2 = obj.get(key);
  * obj.remove(key);
  */
+    public int lengthOfLastWord(String s) { //bruh wtf is that
+        String[]res = s.split(" ");
+        return res[res.length - 1].length();
+    }
+    public int[] plusOne(int[] digits) {
+        if(plusOneHelper(digits, digits.length - 1)){
+            int[] new_digits = new int[digits.length + 1];
+            System.arraycopy(digits, 1, new_digits, 0, digits.length - 1);
+            new_digits[0] = 1;
+            return new_digits;
+        }
+        else{
+            return digits;
+        }
+
+    }
+    private boolean plusOneHelper(int[] digits, int index){
+        if(index < 0){; //if i have to expand the Array
+            return true;
+        }
+        int i = digits[index];
+        boolean expand = false;
+        switch (i){
+            case 9:{
+                digits[index] = 0;
+                expand = plusOneHelper(digits, index  - 1);
+                break;
+            }
+            default:{
+                digits[index] = i + 1;
+            }
+        }
+        return expand;
+    }
+
 
 
 
