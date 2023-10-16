@@ -3544,6 +3544,99 @@ public class Solution {
         }
         return expand;
     }
+    public String addBinary(String a, String b) {
+        StringBuilder res = new StringBuilder();
+        String longer = b;
+        String shorter = a;
+        if(a.length() > b.length()){
+            longer = a;
+            shorter = b;
+        }
+        int overflow = 0;
+        int indexS = shorter.length() - 1;
+        for (int i = longer.length() -1; i >= 0 ; i--) {
+            if(indexS < 0){
+                int tmp = Character.getNumericValue(longer.charAt(i)) + overflow;
+                if(tmp >= 2){
+                    overflow = 1;
+                    res.append("0");
+                }
+                else{
+                    overflow = 0;
+                    res.append(tmp);
+                }
+            }
+            else{
+                int tmp = Character.getNumericValue(longer.charAt(i)) + overflow + Character.getNumericValue(shorter.charAt(indexS));
+                if(tmp >= 2){
+                    overflow = 1;
+                }
+                else{
+                    overflow = 0;
+                }
+                res.append(tmp % 2);
+            }
+            indexS--;
+        }
+        if(overflow == 1)
+            res.append("1");
+        return res.reverse().toString();
+    }
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode current = head;
+        ListNode before = head;
+        if(head == null)
+            return null;
+        int currentVal = head.val;
+
+        current = current.next;
+        int i = 0;
+        while(current != null){
+            if(current.val != currentVal){
+                before.next = current;
+                before = current;
+                currentVal = current.val;
+            }
+            current = current.next;
+            i++;
+
+        }
+        before.next = null;
+        return head;
+    }
+    public List<Integer> getRow(int rowIndex) { //ez Pferd
+        if(rowIndex == 0){
+            return List.of(1);
+        }
+        ArrayList<Integer> rowBefore = new ArrayList<>();//use it as Pointer
+        rowBefore.add(1);
+        for (int i = 1; i <= rowIndex ; i++) {
+            ArrayList<Integer> nextList = new ArrayList<>(i + 1);
+            for (int j = -1; j < rowBefore.size() ; j++) {
+                int left = (j >= 0) ? rowBefore.get(j) : 0;
+                int right = (j + 1 < rowBefore.size()) ? rowBefore.get(j + 1) : 0;
+                nextList.add(right + left);
+            }
+            rowBefore = nextList;
+        }
+        return rowBefore;
+    }
+    public int removeDuplicates2(int[] nums) {
+        int insertPointer = 0;
+        if(nums == null){ //safety feature against null Pointer abuser
+            return 0;
+        }
+        int beforeValue = nums[0] - 1;
+        for (int i = 0; i < nums.length ; i++) {
+            int current = nums[i];
+            if(beforeValue != current){
+                nums[insertPointer] = current;
+                insertPointer++;
+            }
+            beforeValue = current;
+        }
+        return insertPointer;
+    }
 
 
 
