@@ -3637,6 +3637,73 @@ public class Solution {
         }
         return insertPointer;
     }
+    public boolean validateBinaryTreeNodes(int n, int[] leftChild, int[] rightChild) {
+        int[] parent = new int[n];
+        Arrays.fill(parent, -1); //damn little Bro thinks he's smart xdd
+        HashSet<Integer> connectedToRoot = new HashSet<Integer>();
+        int Connections = 0;
+        for (int i = 0; i < leftChild.length ; i++) {
+            if(leftChild[i] == -1)
+                continue;
+            if(parent[leftChild[i]] != -1){ //maybe falsch
+                return false;
+            }
+            parent[leftChild[i]] = i;
+        }
+        for (int i = 0; i < rightChild.length ; i++) {
+            if(rightChild[i] == -1)
+                continue;
+            if(parent[rightChild[i]] != -1){ //maybe falsch
+                return false; //more than one parent
+            }
+            parent[rightChild[i]] = i;
+        }
+        int node = -1;
+        int nodeCounter = 0;
+        for (int i = 0; i < parent.length ; i++) {
+            if(parent[i] == -1){
+                if(nodeCounter == 0){
+                    nodeCounter++;
+                    node = i;
+                }
+                else{ //more than one note
+                    return false;
+                }
+            }
+        }
+        if(nodeCounter == 0) // no node
+            return false;
+        int res = validBTreeNodeConnection(leftChild, rightChild, connectedToRoot, node);
+        return (res == n);
+
+    }
+    private int validBTreeNodeConnection(int[] leftChild, int[] rightChild, HashSet<Integer> connectedToRoot, int Position){
+        if(connectedToRoot.contains(Position)) //Loop oder so
+            return -1;
+        /*if(Position < 0 || Position >= leftChild.length){
+            throw new RuntimeException("Position out of Range");
+        }*/
+        connectedToRoot.add(Position);
+        //check Left
+        int left = leftChild[Position];
+        int leftValue = 0;
+        if(left != -1){
+            leftValue = validBTreeNodeConnection(leftChild, rightChild, connectedToRoot, left);
+        }
+        if(leftValue == -1) // " Cant be Binary Tree" --> return "false"
+            return -1;
+
+        //check right
+        int right = rightChild[Position];
+        int rightValue = 0;
+        if(right != -1){
+            rightValue = validBTreeNodeConnection(leftChild, rightChild, connectedToRoot, right);
+        }
+        if(rightValue == -1){
+            return -1;
+        }
+        return rightValue + leftValue + 1;
+    }
 
 
 
