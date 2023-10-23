@@ -3678,7 +3678,7 @@ public class Solution {
 
     }
     private int validBTreeNodeConnection(int[] leftChild, int[] rightChild, HashSet<Integer> connectedToRoot, int Position){
-        if(connectedToRoot.contains(Position)) //Loop oder so
+        if(connectedToRoot.contains(Position)) //Loop oder so --> xdd bye
             return -1;
         /*if(Position < 0 || Position >= leftChild.length){
             throw new RuntimeException("Position out of Range");
@@ -3704,8 +3704,73 @@ public class Solution {
         }
         return rightValue + leftValue + 1;
     }
-
-
+    public boolean isPowerOfFour(int n) {
+        if(n % 4 != 0 && n > 1)
+            return false;
+        int left = 0;
+        int right = n;
+        while(left <= right){
+            int mid = (left + right) / 2;
+            double current = Math.pow(4, mid);
+            if(current == n)
+                return true;
+            else {
+                if(current < n){
+                    left = mid + 1;
+                }
+                else{
+                    right = mid - 1;
+                }
+            }
+        }
+        return false;
+    }
+    public int removeDuplicates3(int[] nums) {
+        if(nums == null || nums.length == 0)
+            return 0;
+        int before = nums[0] - 1;
+        int beforeThebefore = before;
+        int insertPointer = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int current = nums[i];
+            nums[insertPointer] = current;
+            if(!(current == before && current == beforeThebefore)){ // everything ok, increment insert Pointer
+                insertPointer++;
+            }
+            beforeThebefore = before;
+            before = current;
+        }
+        return insertPointer;
+    }
+    public int majorityElement2(int[] nums) {
+        Arrays.sort(nums);
+        int element = nums[0] - 1;
+        int counter = 0;
+        double moreThan = (double) nums.length / 2;
+        for (int i = 0; i < nums.length; i++) {
+            if(element != nums[i]){
+                counter = 1;
+                element = nums[i];
+            }
+            else{
+                counter++;
+            }
+            if(counter > moreThan)
+                return element;
+        }
+        return -1; // doesn't exist according to Exercise
+    }
+    public void rotate(int[] nums, int k) {
+        int myK = k % nums.length;
+        int[] myNums = Arrays.copyOf(nums, nums.length);
+        for (int i = 0; i < nums.length; i++) {
+            int index = nums.length - myK;
+            if(myK <= 0)
+                index = (-1) * myK;
+            nums[i] = myNums[index];
+            myK--;
+        }
+    }
 
 
 }
