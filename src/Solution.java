@@ -20,7 +20,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.find132pattern(new int[]{-1,3,2,0}));
+        System.out.println(s.canJump(new int[] {1,1,2,2,0,1,1}));
 
 //        try {
 //            System.in.read();
@@ -3770,6 +3770,84 @@ public class Solution {
             nums[i] = myNums[index];
             myK--;
         }
+    }
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> resList = new ArrayList<>();
+        largestValuesHelper(0, root, resList);
+        return resList;
+    }
+    private void largestValuesHelper(int currentIndex, TreeNode Node, List<Integer> resList){
+        if(Node ==  null)
+            return;
+        int val = Node.val;
+        if(resList.size() <= currentIndex){ //no other value present
+            resList.add(currentIndex, val);
+        }
+        else{ //other value present -> check if new value is larger
+            if(resList.get(currentIndex) < val)
+                resList.set(currentIndex, val);
+        }
+        //go left
+        TreeNode left = Node.left;
+        if(left != null)
+            largestValuesHelper(currentIndex + 1, left, resList);
+        //go right
+        TreeNode right = Node.right;
+        if(right != null)
+            largestValuesHelper(currentIndex + 1, right, resList);
+    }
+    public int maxProfit3(int[] prices) {
+        if(prices == null)
+            return 0;
+        int min = prices[0];
+        int maxProfit = 0;
+        for (int i = 0; i < prices.length; i++) {
+            int current = prices[i];
+            maxProfit = Math.max(maxProfit, current - min);
+            if(current < min){
+                min = current;
+            }
+        }
+        return maxProfit;
+    }
+    public int maxProfit4(int[] prices) {
+        if(prices == null)
+            return 0;
+        int Profit = 0;
+        int min = prices[0];
+        for (int i = 0; i < prices.length; i++) {
+            int sell = prices[i] - min;
+            if(sell > 0){
+                Profit += sell;
+                min = prices[i];
+                continue;
+            }
+            if(min > prices[i])
+                min = prices[i];
+
+        }
+        return Profit;
+    }
+    public boolean canJump(int[] nums) {
+        return canJumpHelper(nums, 0);
+    }
+    private boolean canJumpHelper(int[] nums, int index){
+        if(index >= nums.length - 1)
+            return true;
+        int jumpLength = nums[index];
+        if(jumpLength == 0)
+            return false;
+        if(index + jumpLength >= nums.length - 1)
+            return true;
+        int position = -1;
+        int maxJump = -1;
+        for (int i = index + 1; i <= index + jumpLength ; i++) {
+            if((i - index) + nums[i] > maxJump){
+                maxJump = (i - index) + nums[i];
+                position = i;
+            }
+        }
+        return canJumpHelper(nums, position);
     }
 
 
