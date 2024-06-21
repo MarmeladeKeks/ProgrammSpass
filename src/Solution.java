@@ -417,7 +417,7 @@ public class Solution {
         //  ^-- or you may want to use .parallelStream() here instead
     }
 
-    public String replaceWords(List<String> dictionary, String sentence) {
+    public String replaceWords3(List<String> dictionary, String sentence) {
         String[] strgs = sentence.split(" ");
         int counter = 0;
         String ergebnis = "";
@@ -3848,6 +3848,213 @@ public class Solution {
             }
         }
         return canJumpHelper(nums, position);
+    }
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        if (hand.length % groupSize != 0)
+            return false;
+
+        TreeMap<Integer, Integer> lookUp = new TreeMap<>();
+        for (int element : hand) {
+            lookUp.merge(element, 1, (oldValue, newValue) -> oldValue + 1);
+        }
+
+        while (!lookUp.isEmpty()) {
+            Map.Entry<Integer, Integer> firstEntry = lookUp.firstEntry();
+            dealWithLookUpRemoval(firstEntry.getKey(), lookUp);
+            boolean currentResult = checkNachfolgende(firstEntry.getKey(), lookUp, groupSize);
+            if (!currentResult)
+                return false;
+        }
+        return true;
+
+
+    }
+
+    private void dealWithLookUpRemoval(int key, TreeMap<Integer, Integer> lookUp) {
+        if (lookUp.get(key) <= 1)
+            lookUp.remove(key);
+        else
+            lookUp.put(key, lookUp.get(key) - 1);
+    }
+
+    private boolean checkNachfolgende(int key, TreeMap<Integer, Integer> lookUp, int groupSize) {
+        List<Integer> result = new ArrayList<>();
+        for (int i = key + 1; i <= key + groupSize - 1; i++) {
+            result.add(i);
+        }
+        for (int element : result) {
+            if (!lookUp.containsKey(element))
+                return false;
+            dealWithLookUpRemoval(element, lookUp);
+        }
+        return true;
+    }
+
+    public String MEGAreplaceWords(List<String> dictionary, String sentence) {
+        String[] words = sentence.split(" ");
+        HashSet<String> hashDic = new HashSet<>(dictionary);
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            String solutionWord = word;
+            ArrayList<StringBuilder> possibleWords = new ArrayList<>(word.length());
+            for (int j = 0; j < word.length(); j++) {
+                possibleWords.add(j, new StringBuilder());
+                char current = word.charAt(j);
+                possibleWords.forEach(element -> element.append(current));
+                for (int k = possibleWords.size() - 1; k >= 0; k--) {
+                    String currentDictWord = possibleWords.get(k).toString();
+                    if (hashDic.contains(currentDictWord)) {
+                        solutionWord = (currentDictWord.length() < solutionWord.length()) ? currentDictWord : solutionWord;
+                        break;
+                    }
+                }
+            }
+            words[i] = solutionWord;
+
+        }
+        return String.join(" ", words);
+    }
+
+    public String replaceWords(List<String> dictionary, String sentence) {
+        String[] words = sentence.split(" ");
+        HashSet<String> hashDic = new HashSet<>(dictionary);
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            String solutionWord = word;
+            StringBuilder possibleWord = new StringBuilder(word.length());
+            for (int j = 0; j < word.length(); j++) {
+                possibleWord.append(word.charAt(j));
+                String currentDicWord = possibleWord.toString();
+                if (hashDic.contains(currentDicWord)) {
+                    solutionWord = currentDicWord;
+                    break;
+                }
+            }
+            words[i] = solutionWord;
+
+        }
+        return String.join(" ", words);
+    }
+
+    public boolean checkSubarraySum(int[] nums, int k) {
+        HashMap<Integer, Integer> sum = new HashMap<>(nums.length);
+        sum.put(0, -1);
+        int total = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int currentElement = nums[i];
+            total += currentElement;
+            int reminder = total % k;
+            if (!sum.containsKey(reminder))
+                sum.put(reminder, i);
+            else if (i - sum.get(reminder) > 1) {
+                return true;
+            }
+        }
+        return false;
+
+    }public boolean isNStraightHand2(int[] hand, int groupSize) {
+        if (hand.length % groupSize != 0)
+            return false;
+
+        TreeMap<Integer, Integer> lookUp = new TreeMap<>();
+        for (int element : hand) {
+            lookUp.merge(element, 1, (oldValue, newValue) -> oldValue + 1);
+        }
+
+        while (!lookUp.isEmpty()) {
+            Map.Entry<Integer, Integer> firstEntry = lookUp.firstEntry();
+            dealWithLookUpRemoval(firstEntry.getKey(), lookUp);
+            boolean currentResult = checkNachfolgende(firstEntry.getKey(), lookUp, groupSize);
+            if (!currentResult)
+                return false;
+        }
+        return true;
+
+
+    }
+
+    private void dealWithLookUpRemoval2(int key, TreeMap<Integer, Integer> lookUp) {
+        if (lookUp.get(key) <= 1)
+            lookUp.remove(key);
+        else
+            lookUp.put(key, lookUp.get(key) - 1);
+    }
+
+    private boolean checkNachfolgende2(int key, TreeMap<Integer, Integer> lookUp, int groupSize) {
+        List<Integer> result = new ArrayList<>();
+        for (int i = key + 1; i <= key + groupSize - 1; i++) {
+            result.add(i);
+        }
+        for (int element : result) {
+            if (!lookUp.containsKey(element))
+                return false;
+            dealWithLookUpRemoval(element, lookUp);
+        }
+        return true;
+    }
+
+    public String MEGAreplaceWords2(List<String> dictionary, String sentence) {
+        String[] words = sentence.split(" ");
+        HashSet<String> hashDic = new HashSet<>(dictionary);
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            String solutionWord = word;
+            ArrayList<StringBuilder> possibleWords = new ArrayList<>(word.length());
+            for (int j = 0; j < word.length(); j++) {
+                possibleWords.add(j, new StringBuilder());
+                char current = word.charAt(j);
+                possibleWords.forEach(element -> element.append(current));
+                for (int k = possibleWords.size() - 1; k >= 0; k--) {
+                    String currentDictWord = possibleWords.get(k).toString();
+                    if (hashDic.contains(currentDictWord)) {
+                        solutionWord = (currentDictWord.length() < solutionWord.length()) ? currentDictWord : solutionWord;
+                        break;
+                    }
+                }
+            }
+            words[i] = solutionWord;
+
+        }
+        return String.join(" ", words);
+    }
+
+    public String replaceWords2(List<String> dictionary, String sentence) {
+        String[] words = sentence.split(" ");
+        HashSet<String> hashDic = new HashSet<>(dictionary);
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+            String solutionWord = word;
+            StringBuilder possibleWord = new StringBuilder(word.length());
+            for (int j = 0; j < word.length(); j++) {
+                possibleWord.append(word.charAt(j));
+                String currentDicWord = possibleWord.toString();
+                if (hashDic.contains(currentDicWord)) {
+                    solutionWord = currentDicWord;
+                    break;
+                }
+            }
+            words[i] = solutionWord;
+
+        }
+        return String.join(" ", words);
+    }
+
+    public boolean checkSubarraySum2(int[] nums, int k) {
+        HashMap<Integer, Integer> sum = new HashMap<>(nums.length);
+        sum.put(0, -1);
+        int total = 0;
+        for (int i = 0; i < nums.length; i++) {
+            int currentElement = nums[i];
+            total += currentElement;
+            int reminder = total % k;
+            if (!sum.containsKey(reminder))
+                sum.put(reminder, i);
+            else if (i - sum.get(reminder) > 1) {
+                return true;
+            }
+        }
+        return false;
+
     }
 
 
