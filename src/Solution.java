@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 import javafx.collections.transformation.SortedList;
 import javafx.util.Pair;
 //Änderung wtf is that
-//i cant what is that?
+// Can i push?
 import static java.util.Map.entry;
 
 
