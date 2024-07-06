@@ -22,7 +22,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.canJump(new int[] {1,1,2,2,0,1,1}));
+        System.out.println(s.passThePillow(4, 5));
 
 //        try {
 //            System.in.read();
@@ -4057,6 +4057,14 @@ public class Solution {
         }
         return false;
 
+    }
+    public int passThePillow(int n, int time) {
+        if (time < n)
+            return 1 + time;
+        int modulued = time % (2 * (n - 1));
+        if (modulued < n)
+            return modulued + 1;
+        return n - (modulued - (n - 1));
     }
 
 
