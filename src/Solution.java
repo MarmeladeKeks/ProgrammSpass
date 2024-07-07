@@ -4058,6 +4058,7 @@ public class Solution {
         return false;
 
     }
+
     public int passThePillow(int n, int time) {
         if (time < n)
             return 1 + time;
@@ -4065,6 +4066,19 @@ public class Solution {
         if (modulued < n)
             return modulued + 1;
         return n - (modulued - (n - 1));
+    }
+
+    public int numWaterBottles(int numBottles, int numExchange) {
+        int numberOfDrinks = numBottles;
+        while (true){
+            if (numBottles < numExchange)
+                break;
+            else {
+                numberOfDrinks += numBottles / numExchange;
+                numBottles = (numBottles / numExchange) + numBottles % numExchange;
+            }
+        }
+        return numberOfDrinks;
     }
 
 
