@@ -4,11 +4,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-import javafx.collections.transformation.SortedList;
 import javafx.util.Pair;
 //Änderung wtf is that
 // Can i push?
-import static java.util.Map.entry;
 
 
 public class Solution {
@@ -22,7 +20,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.passThePillow(4, 5));
+        System.out.println(s.maximumGain("aabbaaxybbaabb", 5, 4));
 
 //        try {
 //            System.in.read();
@@ -2445,7 +2443,7 @@ public class Solution {
 
     public List<String> letterCombinations(String digits) {
         globalLetterComb = new LinkedList<>();
-        if (digits.length() == 0) {
+        if (digits.isEmpty()) {
             return globalLetterComb;
         }
         letterCombinationsHelper(digits, 0, "");
@@ -4079,6 +4077,68 @@ public class Solution {
             }
         }
         return numberOfDrinks;
+    }
+
+    public int maximumGain(String s, int x, int y) {
+        // "ab" = x, "ba" = y
+        int result = 0;
+
+        LinkedList<Character> work = new LinkedList<>();
+        for (int i = 0; i < s.length(); i++){
+            work.add(s.charAt(i));
+        }
+        while(containsTwoStringsInList(work, "ab", "ba")){
+            String firstString = (x > y) ? "ab" : "ba";
+            String secondString = (x > y)? "ba" : "ab";
+
+            if (removeFirstOccurrenceInList(work, firstString))
+                result += Math.max(x, y);
+            else{
+                removeFirstOccurrenceInList(work, secondString);
+                result += Math.min(x, y);
+            }
+
+        }
+        return result;
+
+    }
+    private boolean removeFirstOccurrenceInList(LinkedList<Character> stack, String checkString){
+        int length = checkString.length();
+        for (int i = 0; i < stack.size(); i++) {
+            StringBuilder currentCharsToTest = new StringBuilder();
+            for(int j = 0; j < length; j++){
+                if (j + i >= stack.size())
+                    break;
+                currentCharsToTest.append(stack.get(i + j));
+            }
+            if (currentCharsToTest.length() != length)
+                continue;
+            else{
+                if (currentCharsToTest.toString().equals(checkString)){
+                    for (int j = 0; j < length ; j++) {
+                        stack.remove(i);
+                    }
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+    private boolean containsTwoStringsInList(List<Character> myList, String firstString, String secondString){
+        for(int i = 0; i < myList.size(); i++){
+            StringBuilder stringCheck = new StringBuilder();
+            for(int j = 0; j < firstString.length(); j++){
+                if (j + i >= myList.size()){
+                    break;
+                }
+                stringCheck.append(myList.get(i + j));
+            }
+            String s = stringCheck.toString();
+            if ( s.equals(firstString) || s.equals(secondString))
+                return true;
+        }
+        return false;
     }
 
 
