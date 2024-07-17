@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
+import com.sun.source.tree.Tree;
 import javafx.util.Pair;
 //Änderung wtf is that
 // Can i push?
@@ -4128,6 +4129,58 @@ public class Solution {
             builder.append(c);
         }
         return builder.toString();
+    }
+
+    public List<TreeNode> delNodes(TreeNode root, int[] to_delete) {
+        HashSet<Integer> delete = new HashSet<>(to_delete.length);
+        for(int i : to_delete){
+            delete.add(i);
+        }
+        List<TreeNode> result = new ArrayList<>(to_delete.length);
+        return delNodesHelper(root, delete, result, true, null);
+
+
+    }
+    private List<TreeNode> delNodesHelper(TreeNode currentRoot, HashSet<Integer> delete, List<TreeNode> result, boolean NewTree, TreeNode parent){
+        //Base case
+        if (currentRoot == null)
+            return result;
+
+
+
+        if (delete.contains(currentRoot.val)){
+            //delete it from parent
+            deleteChildNode(parent, currentRoot);
+
+            // left Side
+            delNodesHelper(currentRoot.left, delete, result, true, currentRoot);
+
+            //right Side
+            delNodesHelper(currentRoot.right, delete, result, true, currentRoot);
+
+            return result;
+        }
+        else if (NewTree){
+            // add only if New Tree
+            result.add(currentRoot);
+            deleteChildNode(parent, currentRoot);
+        }
+            //left Side
+            delNodesHelper(currentRoot.left, delete, result, false, currentRoot);
+
+            //right Side
+            delNodesHelper(currentRoot.right, delete, result, false, currentRoot);
+
+            return result;
+
+    }
+    private void deleteChildNode(TreeNode parent, TreeNode child){
+        if(parent == null)
+            return;
+        if (parent.left != null && parent.left.val == child.val)
+            parent.left = null;
+        else
+            parent.right = null;
     }
 
 
