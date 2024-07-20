@@ -21,7 +21,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.maximumGain("cdbcbbaaabab", 4, 5));
+        System.out.println(s.minimumCost(new int[] {1,2,3,12}));
 
 //        try {
 //            System.in.read();
@@ -4146,8 +4146,6 @@ public class Solution {
         if (currentRoot == null)
             return result;
 
-
-
         if (delete.contains(currentRoot.val)){
             //delete it from parent
             deleteChildNode(parent, currentRoot);
@@ -4181,6 +4179,24 @@ public class Solution {
             parent.left = null;
         else
             parent.right = null;
+    }
+
+    public int minimumCost(int[] nums) {
+        if(nums.length < 3)
+            return -1;
+        int min1 = Integer.MAX_VALUE;
+        int min2 = Integer.MAX_VALUE;
+
+        for (int i = 1; i < nums.length; i++){
+            if(nums[i] < min1){
+               min2 = min1;
+               min1 = nums[i];
+            }
+            else
+                min2 = Math.min(min2, nums[i]);
+        }
+        return nums[0] + min1 + min2;
+
     }
 
 
