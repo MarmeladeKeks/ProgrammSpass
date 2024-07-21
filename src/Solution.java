@@ -4198,6 +4198,15 @@ public class Solution {
         return nums[0] + min1 + min2;
 
     }
+    public int[] runningSum(int[] nums) {
+        int currentSum = 0;
+        int[] result = new int[nums.length];
+        for (int i = 0; i < nums.length; i++){
+            currentSum += nums[i];
+            result[i] = currentSum;
+        }
+        return result;
+    }
 
 
 
