@@ -21,7 +21,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.minimumCost(new int[] {1,2,3,12}));
+        System.out.println(Arrays.toString(s.sortArray(new int[]{5, 2, 3, 1})));
 
 //        try {
 //            System.in.read();
@@ -4204,6 +4204,50 @@ public class Solution {
         for (int i = 0; i < nums.length; i++){
             currentSum += nums[i];
             result[i] = currentSum;
+        }
+        return result;
+    }
+
+    public int[] sortArray(int[] nums) {
+        LinkedList<Integer> result = (sortArrayHelper(nums, 0, nums.length -1));
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = result.poll();
+        }
+        return nums;
+    }
+
+    private LinkedList<Integer> sortArrayHelper(int[] nums, int startIndex, int endIndex){
+        // base case
+        if (startIndex == endIndex){
+            LinkedList<Integer> result = new LinkedList<>();
+            result.add(nums[startIndex]);
+            return result;
+        }
+        else{
+            int midIndex = ((endIndex - startIndex) / 2) + startIndex;
+            LinkedList<Integer> left = sortArrayHelper(nums, startIndex, midIndex);
+            LinkedList<Integer> right = sortArrayHelper(nums, midIndex + 1, endIndex);
+            return mergeSorted(left, right);
+        }
+    }
+
+    private LinkedList<Integer> mergeSorted(LinkedList<Integer> left, LinkedList<Integer> right){
+        LinkedList<Integer> result = new LinkedList<>();
+        while(!left.isEmpty() || !right.isEmpty()){
+            if(left.isEmpty()){
+                result.addAll(right);
+                return result;
+            } else if (right.isEmpty()) {
+                result.addAll(left);
+                return result;
+            }
+            else{
+                if(left.peek() < right.peek())
+                    result.add(left.poll());
+                else{
+                    result.add(right.poll());
+                }
+            }
         }
         return result;
     }
