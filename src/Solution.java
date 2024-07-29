@@ -21,7 +21,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(Arrays.toString(s.sortArray(new int[]{5, 2, 3, 1})));
+        System.out.println(s.numTeams(new int[]{2,5,3,4,1}));
 
 //        try {
 //            System.in.read();
@@ -4250,6 +4250,40 @@ public class Solution {
             }
         }
         return result;
+    }
+
+    public int numTeams(int[] rating) {
+        TreeSet<Integer> afterSet = new TreeSet<>();
+        TreeSet<Integer> beforeSet = new TreeSet<>();
+        int result = 0;
+
+        for (int i: rating){
+            afterSet.add(i);
+        }
+
+        for (int currentRating : rating) {
+            int zwischen_result = 0;
+            // danach und größer als current
+            zwischen_result += afterSet.tailSet(currentRating +1).size();
+            //davor und kleiner
+            zwischen_result *= beforeSet.headSet(currentRating).size();
+
+            result += zwischen_result;
+            zwischen_result = 0;
+
+            // danach und kleiner als current
+            zwischen_result += afterSet.headSet(currentRating).size();
+            //davor und größer
+            zwischen_result *= beforeSet.tailSet(currentRating + 1).size();
+
+            result += zwischen_result;
+
+            afterSet.remove(currentRating);
+            beforeSet.add(currentRating);
+        }
+
+        return result;
+
     }
 
 
