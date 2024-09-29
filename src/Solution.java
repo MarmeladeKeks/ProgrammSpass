@@ -21,7 +21,7 @@ public class Solution {
         //System.out.println(s.threeSum(new int[]{-1, 0, 1, 2, -1, -4}));
         //System.out.println(s.longestSubsequence(new int[]{4, 12, 10, 0, -2, 7, -8, 9, -9, -12, -12, 8, 8}, 0));
         //s.merge2(new int[]{1, 2, 3, 0, 0, 0}, 3, new int[]{2, 5, 6}, 3);
-        System.out.println(s.numTeams(new int[]{2,5,3,4,1}));
+        System.out.println(s.minHeightShelves(new int[][] {{1,1},{2,3},{2,3},{1,1},{1,1},{1,1},{1,2}}, 4));
 
 //        try {
 //            System.in.read();
@@ -4277,13 +4277,46 @@ public class Solution {
             zwischen_result *= beforeSet.tailSet(currentRating + 1).size();
 
             result += zwischen_result;
-
             afterSet.remove(currentRating);
             beforeSet.add(currentRating);
         }
 
         return result;
 
+    }
+
+    public int minHeightShelves(int[][] books, int shelfWidth) {
+        return minHeightShelvesHelper(books, shelfWidth, books[0][0], 1, new int[books.length],books[0][1]);
+    }
+    private int minHeightShelvesHelper(int[][] books, int shelfWidth, int currentShelfWidth, int index, int[] dp, int currentMax){
+        //base case
+        if(index == books.length -1){
+            int result;
+            if(books[index][0] + currentShelfWidth > shelfWidth){
+                result = currentMax + books[index][1];
+            }
+            else{
+                result = Math.max(currentMax, books[index][1]);
+            }
+            dp[index] = result;
+
+            // na ja
+            return result;
+        }
+
+        // recursive case
+        //add it to bookshelf?
+        int withBook = Integer.MAX_VALUE;
+        if(currentShelfWidth + books[index][0] <= shelfWidth){
+            withBook = minHeightShelvesHelper(books, shelfWidth, currentShelfWidth + books[index][0], index +1, dp, Math.max(currentMax, books[index][1]));
+        }
+
+        // not add it to bookshelf?
+        int withoutBook = currentMax + minHeightShelvesHelper(books, shelfWidth, 0, index +1, dp, books[index][1]);
+
+        int result = Math.min(withBook, withoutBook);
+        dp[index] = result;
+        return result;
     }
 
 
